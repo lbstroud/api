@@ -42,11 +42,13 @@ info:
      - Type   (Push or Pull)
      - Amount (USD 12.43)
      - Status (Pending)
-     ```  
+     ```     
+     If you find a problem (security or otherwise), please contact us at [`security@moov.io`](mailto:security@moov.io).
   version: "v1"
   title: "Moov API"
   contact:
-    url: 'https://groups.google.com/forum/#!forum/moov-users'
+    email: security@moov.io
+    url: "https://groups.google.com/forum/#!forum/moov-users"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
