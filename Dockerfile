@@ -10,6 +10,7 @@ COPY nginx/nginx.conf /opt/nginx/nginx.conf
 COPY nginx/default.conf /opt/nginx/conf.d/default.conf
 
 COPY --from=builder redoc-static.html /opt/nginx/www/index.html
+RUN echo '# empty prometheus metrics response' > /opt/nginx/www/metrics
 
 USER nobody
 EXPOSE 8080
