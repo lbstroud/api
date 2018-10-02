@@ -30,7 +30,7 @@ info:
 
     An *Originator* can initiate a *Transfer* as either a push (credit) or pull (debit) to a *Customer*. Originators and Customers must have a valid *Depository* account for a Transfer. A *Transfer* is initiated by an Originator to a Customer with an amount and flow of funds.
 
-  version: "0.0.1"
+  version: "v1"
   title: "Moov API"
   contact:
     url: 'https://groups.google.com/forum/#!forum/moov-users'
