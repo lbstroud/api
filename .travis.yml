@@ -1,0 +1,10 @@
+language: go
+sudo: true
+services:
+  - docker
+os:
+  - linux
+  # - osx # TravisCI on OSX doesn't support docker yet
+osx_image: xcode9.1
+script:
+- make build
