@@ -986,8 +986,9 @@ paths:
           description: amounts that have been deposited
           schema:
             type: array
-            items: # TODO(adam): "amount" format
+            items: 
               type: string
+              example: "USD 0.02"
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
       responses:
