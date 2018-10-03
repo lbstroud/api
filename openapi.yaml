@@ -87,6 +87,11 @@ paths:
         - User
       summary: Create a new user using an email address not seen before.
       operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/User'
       responses:
         '200':
           description: User object
@@ -125,6 +130,11 @@ paths:
         - User
       summary: Attempt to login with an email and password
       operationId: userLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Login'
       responses:
         '200':
           description: Successful login
@@ -1782,6 +1792,42 @@ components:
             - "reoccurring"
           example: single
   requestBodies:
+    User:
+      description: A Moov API User object
+      required: true
+      content:
+        application/json:
+          schema:
+            properties:
+              email:
+                description: Email address associated to the User
+                type: string
+              password:
+                description: Password associated to User
+                type: string
+              firstName:
+                type: string
+              lastName:
+                type: string
+              phone:
+                description: Phone number associated to user
+              companyUrl:
+                description: Company URL associated to user
+                type: string
+                format: uri
+    Login:
+      description: Authenticating with an email and password
+      required: true
+      content:
+        application/json:
+          schema:
+            properties:
+              email:
+                description: Email address associated to the User
+                type: string
+              password:
+                description: Password associated to User
+                type: string
     File:
       description: A JSON object containing a new File
       required: true
