@@ -1,10 +1,10 @@
-VERSION := v0.1.0-dev
+VERSION := v0.1.0
 
 .PHONY: build
 
 build: AUTHORS
-	docker build -t moov/api.moov.io:$(VERSION) -f Dockerfile .
-	docker tag moov/api.moov.io:$(VERSION) moov/api.moov.io:latest
+	docker build -t moov/api:$(VERSION) -f Dockerfile .
+	docker tag moov/api:$(VERSION) moov/api:latest
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS
@@ -14,4 +14,4 @@ AUTHORS:
 	@echo "$(shell git log --format='\n%aN <%aE>' | LC_ALL=C.UTF-8 sort -uf)" >> $@
 
 release-push:
-	docker push moov/api.moov.io:$(VERSION)
+	docker push moov/api:$(VERSION)
