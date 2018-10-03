@@ -22,7 +22,7 @@ info:
   description: |
     The Moov API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), allowing you to interact securely with our API from client-side web applications (never expose your secret API key in any public website's client-side code). [JSON](http://www.json.org/) is returned by all API responses, including errors, although you can generate client code via [OpenAPI](https://swagger.io/) code generation to convert responses to appropriate language-specific objects.
 
-    The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API. 
+    The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.
 
     When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that’s good for about two weeks; when it expires, you just repeat the call and get a new token.
 
@@ -37,12 +37,12 @@ info:
 
     An *Originator* can initiate a *Transfer* as either a push (credit) or pull (debit) to a *Customer*. Originators and Customers must have a valid *Depository* account for a Transfer. A *Transfer* is initiated by an Originator to a Customer with an amount and flow of funds.
     ```
-    Originator                 ->   Gateway   ->   Customer 
+    Originator                 ->   Gateway   ->   Customer
      - OriginatorDepository                         - CustomerDepository
      - Type   (Push or Pull)
      - Amount (USD 12.43)
      - Status (Pending)
-     ```     
+     ```
      If you find a problem (security or otherwise), please contact us at [`security@moov.io`](mailto:security@moov.io).
   version: "v1"
   title: "Moov API"
@@ -86,7 +86,7 @@ paths:
       tags:
         - User
       summary: Create a new user using an email address not seen before.
-      operationId: createUser      
+      operationId: createUser
       responses:
         '200':
           description: User object
@@ -988,7 +988,7 @@ paths:
           description: amounts that have been deposited
           schema:
             type: array
-            items: 
+            items:
               type: string
               example: "USD 0.02"
         - $ref: '#/components/parameters/idempotencyKey'
@@ -1384,11 +1384,11 @@ components:
   schemas:
     OAuth2Client:
       properties:
-        id:
+        client_id:
           description: OAuth2 client ID
           type: string
           example: 9f2d213ee2a
-        secret:
+        client_secret:
           description: OAuth2 client secret
           type: string
           example: 26e4fe61
@@ -1396,10 +1396,6 @@ components:
           description: HTTP domain for OAuth credentials
           type: string
           example: api.moov.io
-        userId:
-          description: Moov API User ID
-          type: string
-          example: df4486c8
     OAuth2Clients:
       type: array
       items:
