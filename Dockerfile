@@ -1,7 +1,9 @@
 FROM node:8-jessie as builder
-RUN npm install -g --save mobx styled-components react react-dom redoc redoc-cli
+RUN npm install -g --save mobx styled-components react react-dom redoc redoc-cli speccy
 
 COPY openapi.yaml openapi.yaml
+
+RUN speccy lint openapi.yaml
 RUN redoc-cli bundle openapi.yaml
 
 FROM nginx:1.15
