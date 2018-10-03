@@ -53,31 +53,31 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 servers:
-  - url: https://api.moov.io/v1/
+  - url: https://api.moov.io
     description: Production server
-  # - url: https://sbx.moov.io/v1/
+  # - url: https://sbx.moov.io
   #   description: Development server.
 tags:
-  - name: User
-    description: User represents an entity that can create api auth tokens used to make requests.
-  - name: OAuth2
-    description: OAuth2 endpoints are oriented towards providing automated access to Moov API.
-  - name: Files
-    description: File contains the structures of a ACH File. It contains one and only one File Header and File Control with at least one Batches.
   - name: Batches
     description: Batch objects hold the Batch Header and Batch Control and all Entry Records and Addenda records for the Batch.
-  - name: Originators
-    description: Originator objects are an organization or person that initiates an ACH Transfer to a Customer account either as a debit or credit. The API allows you to create, delete, and update your originators. You can retrieve individual originators as well as a list of all your originators. (Batch Header)
   - name: Customers
     description: Customer objects are an individual or business used to perform transfer's with an originator and track multiple transactions associated with the customer. The API allows you to create, delete, and update your customers. You can retrieve individual customers as well as a list of all your customers. (Entry Detail)
   - name: Depositories
     description: Depository objects represent a US bank or credit union that funds can be debited or credit from a transfer. A Depository must be associated with a customer or an originator. The API allows you to create, delete, and update your depositories. You can retrieve individual depositories as well as a list of all your depositories.
-  - name: Transfers
-    description: Transfer objects create a transaction initiated by an originator to a customer with a defined flow and fund amount. The API allows you to create or delete a transfers while the status of the transfer is pending.
   - name: Events
     description: Event objects are a notification of a state change of a resource. When an Event is created any active webhooks will be notified.
+  - name: Files
+    description: File contains the structures of a ACH File. It contains one and only one File Header and File Control with at least one Batches.
   - name: Gateways
     description: Gateway objects identify the origin (sending point) and destination (receiving point) of the entries to be transferred. (File Header)
+  - name: OAuth2
+    description: OAuth2 endpoints are oriented towards providing automated access to Moov API.
+  - name: Originators
+    description: Originator objects are an organization or person that initiates an ACH Transfer to a Customer account either as a debit or credit. The API allows you to create, delete, and update your originators. You can retrieve individual originators as well as a list of all your originators. (Batch Header)
+  - name: Transfers
+    description: Transfer objects create a transaction initiated by an originator to a customer with a defined flow and fund amount. The API allows you to create or delete a transfers while the status of the transfer is pending.
+  - name: User
+    description: User represents an entity that can create api auth tokens used to make requests.
 
 paths:
 # SIGNUP / User Auth
@@ -161,13 +161,16 @@ paths:
       tags:
         - OAuth2
       summary: Verify OAuth2 Bearer token
-      securiry:
+      operationId: checkOAuthClientCredentials
+      security:
         - bearerAuth: []
       parameters:
-        - name: Bearer
+        - name: Authorization
           in: header
-          type: string
-          description: OAuth2 Bearer token
+          description: <ignored>
+          schema:
+            type: string
+            example: Bearer eB2d415A
           required: true
       responses:
         '200':
@@ -188,9 +191,10 @@ paths:
         - cookieAuth: []
       responses:
         '200':
+          description: Created OAuth2 client credentials
           content:
             application/json:
-              schmea:
+              schema:
                 $ref: '#/components/schemas/OAuth2Clients'
         '500':
           description: Internal error occurred, check error(s).
@@ -210,18 +214,20 @@ paths:
         - name: grant_type
           in: query
           description: OAuth2 grant type (must be 'client_credentials')
-          schmea:
+          schema:
             type: string
-            example: client_credentials
+            enum:
+              - client_credentials
+            default: client_credentials
         - name: client_id
           in: query
           description: OAuth2 client ID
-          schmea:
+          schema:
             type: string
         - name: client_secret
           in: query
           description: OAuth2 client secret
-          schmea:
+          schema:
             type: string
       responses:
         '200':
@@ -236,7 +242,7 @@ paths:
                     type: string
                   expires_in:
                     description: Hours until access_token expires
-                    type: numeric
+                    type: integer
                     example: 7200
                   token_type:
                     type: string
@@ -254,7 +260,7 @@ paths:
       - Files
       summary: Gets a list of Files
       operationId: getFiles
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       responses:
@@ -275,7 +281,7 @@ paths:
       - Files
       summary: Create a new File object
       operationId: addFile
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
@@ -314,7 +320,7 @@ paths:
       - Files
       summary: Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
       operationId: getFileByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -340,7 +346,7 @@ paths:
       - Files
       summary: Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
       operationId: updateFile
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -376,7 +382,8 @@ paths:
       tags:
       - Files
       summary: Permanently deletes a File and associated Batches. It cannot be undone.
-      securiry:
+      operationId: deleteACHFile
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -398,7 +405,7 @@ paths:
         - Files
       summary: Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
       operationId: getFileContents
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -423,7 +430,7 @@ paths:
         - Files
       summary: Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
       operationId: validateFile
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -453,7 +460,7 @@ paths:
       - Originators
       summary: Gets a list of Originators
       operationId: getOriginators
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -478,7 +485,7 @@ paths:
       - Originators
       summary: Create a new Originator object
       operationId: addOriginator
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -511,7 +518,7 @@ paths:
       - Originators
       summary: Retrieves the details of an existing Originator. You need only supply the unique Originator identifier that was returned upon customer creation.
       operationId: getOriginatorByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -540,7 +547,7 @@ paths:
       - Originators
       summary: Updates the specified Originator by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
       operationId: updateOriginator
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -578,7 +585,8 @@ paths:
       tags:
       - Originators
       summary: Permanently deletes an Originator and associated Customers, Depositories, and Transfers. It cannot be undone. Also immediately cancels any active Transfers for the Originator.
-      securiry:
+      operationId: deleteOriginator
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -601,7 +609,7 @@ paths:
       - Customers
       summary: Gets a list of Customers
       operationId: getCustomers
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -626,7 +634,7 @@ paths:
       - Customers
       summary: Create a new Customer object
       operationId: addCustomers
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
@@ -659,7 +667,7 @@ paths:
       - Customers
       summary: Get a Customer by ID
       operationId: getCustomerByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -688,7 +696,7 @@ paths:
       - Customers
       summary: Updates the specified Customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
       operationId: updateCustomer
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -728,7 +736,8 @@ paths:
       tags:
         - Customers
       summary: Permanently deletes a customer and associated depositories and transfers. It cannot be undone. Immediately cancels any active Transfers for the customer.
-      securiry:
+      operationId: deleteCustomer
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -750,7 +759,7 @@ paths:
       - Customers
       summary: Get a list of Depository accounts for a Customer
       operationId: getDepositoriesByCustomerID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -778,7 +787,7 @@ paths:
       - Customers
       summary: Get a Depository accounts for a Customer based on it's ID
       operationId: getDepositoriesByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -822,7 +831,7 @@ paths:
       - Depositories
       summary: A list of all Depository objects for the authentication context.
       operationId: getDepositories
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -847,7 +856,7 @@ paths:
       - Depositories
       summary: Create a new depository account for a Customer ID or Originator ID defined in the Parent parameter
       operationId: addDepository
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -881,7 +890,7 @@ paths:
       - Depositories
       summary: Get a Depository object for the supplied ID
       operationId: getDepositoryByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -910,7 +919,7 @@ paths:
       - Depositories
       summary: Updates the specified Depository by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
       operationId: updateDepository
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -950,7 +959,8 @@ paths:
       tags:
       - Depositories
       summary: Permanently deletes a depository and associated transfers. It cannot be undone. Immediately cancels any active Transfers for the depository.
-      securiry:
+      operationId: deleteDepository
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -972,7 +982,7 @@ paths:
       - Depositories
       summary: Initiates micro deposits to be sent to the Depository institution for account validation
       operationId: createMicroDeposits
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1018,7 +1028,7 @@ paths:
       - Transfers
       summary: A list of all Transfer objects
       operationId: getTransfers
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1048,7 +1058,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
@@ -1081,7 +1091,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
@@ -1105,7 +1115,7 @@ paths:
       - Transfers
       summary: Get a Transfer object for the supplied ID
       operationId: getTransferByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1142,7 +1152,7 @@ paths:
           schema:
             type: string
         - $ref: '#/components/parameters/requestID'
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       responses:
@@ -1156,7 +1166,7 @@ paths:
         - Transfers
       summary: Get the NACHA return code and description
       operationId: getTransferNachaCode
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1179,7 +1189,7 @@ paths:
         - Transfers
       summary: Get the ACH files to be used in this transfer.
       operationId: getTransferFiles
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1210,8 +1220,8 @@ paths:
       tags:
       - Transfers
       summary: Get all Events associated with the Transfer object's for the supplied ID
-      operationId: getTransferByID
-      securiry:
+      operationId: getTransferEventsByID
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1243,7 +1253,7 @@ paths:
       - Events
       summary: Gets a list of Events
       operationId: getEvents
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1271,7 +1281,7 @@ paths:
       - Events
       summary: Get a Event by ID
       operationId: getEventByID
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
@@ -1302,7 +1312,7 @@ paths:
         - Gateways
       summary: Gets a list of Gatways
       operationId: getGateways
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       responses:
@@ -1325,7 +1335,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
-      securiry:
+      security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
@@ -1358,6 +1368,7 @@ paths:
     get:
       tags:
       - Monitor
+      operationId: pingACH
       summary: Check that the moov-io/ach service is running
       responses:
         '200':
@@ -1366,6 +1377,7 @@ paths:
     get:
       tags:
       - Monitor
+      operationId: pingAuth
       summary: Check that the moov-io/auth service is running
       responses:
         '200':
@@ -1374,6 +1386,7 @@ paths:
     get:
       tags:
       - Monitor
+      operationId: pingPaygate
       summary: Check that the moov-io/paygate service is running
       responses:
         '200':
@@ -1416,8 +1429,8 @@ components:
           description: Phone number associated to user
         companyUrl:
           description: Company URL associated to user
-          type: url
-          optional: true
+          type: string
+          format: uri
         createdAt:
           description: Timestamp of when user was created
           type: string
@@ -1482,12 +1495,6 @@ components:
           example: "1601"
           minLength: 4
           maxLength: 4
-    FileControl:
-      properties:
-        id:
-          description: File Control ID (same as File)
-          type: string
-          example: 3f2d23ee214
     Error:
       required:
         - error
@@ -1774,7 +1781,6 @@ components:
             - "single"
             - "reoccurring"
           example: single
-          default: single
   requestBodies:
     File:
       description: A JSON object containing a new File
@@ -1888,17 +1894,8 @@ components:
       type: http
       scheme: bearer
       description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.moov.io/docs/auth)
-      example: Bearer C96ACE8CA336
       bearerFormat: Bearer <access_token>
-      flows:
-        authorizationCode:
-          authorizationUrl: /oauth2/authorize
-          tokenUrl: /oauth2/token
-          # TODO(adam): scopes (i.e. 'read:transfers')
-          scopes:
-            admin: Full access to all create, update, view, and delete all resources.
     cookieAuth:
       type: apiKey
       in: cookie
       name: moov_auth
-      example: d7ee21014159
