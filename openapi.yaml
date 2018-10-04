@@ -43,7 +43,7 @@ info:
      - Amount (USD 12.43)
      - Status (Pending)
      ```
-     If you find a problem (security or otherwise), please contact us at [`security@moov.io`](mailto:security@moov.io).
+     If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io).
   version: "v1"
   title: "Moov API"
   contact:
