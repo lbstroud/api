@@ -165,6 +165,7 @@ paths:
       responses:
         '200':
           description: User cookies are invalidated.
+
 # OAUTH2
   /v1/oauth2/authorize:
     get:
@@ -263,6 +264,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
 # FILES
   /v1/ach/files:
     get:
@@ -612,6 +614,7 @@ paths:
             description: Permanently deleted Originator.
           '404':
             description: A originator with the specified ID was not found.
+
 # CUSTOMERS
   /v1/ach/customers:
     get:
@@ -834,6 +837,7 @@ paths:
                 $ref: '#/components/schemas/Depository'
         '404':
           description: A resource object with the specified ID was not found.
+
 # DEPOSITORIES
   /v1/ach/depositories:
     get:
@@ -1428,23 +1432,40 @@ components:
         id:
           description: Moov API user ID
           type: string
+          example: c05ad98a
         email:
           description: Email address associated to the user
           type: string
+          example: user@example.com
         firstName:
           type: string
+          example: Taylor
         lastName:
           type: string
+          example: Swift
         phone:
           description: Phone number associated to user
+          example: 555.555.5555
         companyUrl:
           description: Company URL associated to user
           type: string
           format: uri
+          example: https://moov.io
         createdAt:
           description: Timestamp of when user was created
           type: string
           format: date-time
+          example: 2018-10-03T22:35:06
+    Login:
+      properties:
+        email:
+          description: Email address associated to the User
+          type: string
+          example: "user@example.com"
+        password:
+          description: Password associated to User
+          type: string
+          example: long_passphrase_unique_per_site
     File:
       properties:
         id:
@@ -1821,13 +1842,7 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              email:
-                description: Email address associated to the User
-                type: string
-              password:
-                description: Password associated to User
-                type: string
+            $ref: '#/components/schemas/Login'
     File:
       description: A JSON object containing a new File
       required: true
