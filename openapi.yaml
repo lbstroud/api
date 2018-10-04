@@ -2027,5 +2027,7 @@ components:
       in: header
       name: Cookie
       description: moov_auth Cookie header
+      # We should be able to use 'in: cookie'
+      # https://github.com/OpenAPITools/openapi-generator/issues/208
       # in: cookie
       # name: moov_auth
