@@ -24,7 +24,7 @@ info:
 
     The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.
 
-    When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that’s good for about two weeks; when it expires, you just repeat the call and get a new token.
+    When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.
 
     Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.
 
