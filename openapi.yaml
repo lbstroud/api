@@ -498,7 +498,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -566,7 +565,6 @@ paths:
             example: 3f2d23ee
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
       responses:
         '200':
           description: A Originator object for the supplied ID
@@ -653,7 +651,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -720,7 +717,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -816,7 +812,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -852,7 +847,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -884,7 +878,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -909,7 +902,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       requestBody:
         $ref: '#/components/requestBodies/Depository'
@@ -952,7 +944,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -1089,7 +1080,6 @@ paths:
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/startDate'
         - $ref: '#/components/parameters/endDate'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -1184,7 +1174,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -1294,7 +1283,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -1320,7 +1308,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/startDate'
         - $ref: '#/components/parameters/endDate'
         - $ref: '#/components/parameters/requestID'
@@ -1356,7 +1343,6 @@ paths:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/expand'
         - $ref: '#/components/parameters/requestID'
       responses:
         '200':
@@ -2006,14 +1992,6 @@ components:
       schema:
         type: string
         format: date-time
-    expand:
-      in: query
-      name: expand
-      required: false
-      description: Return nested objects rather than ID's in the response body.
-      example: depository
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: oauth2
