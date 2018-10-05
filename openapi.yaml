@@ -90,10 +90,7 @@ paths:
       summary: Create a new user using an email address not seen before.
       operationId: createUser
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/requestBodies/User'
+        $ref: '#/components/requestBodies/User'
       responses:
         '200':
           description: User object
@@ -139,10 +136,7 @@ paths:
       summary: Attempt to login with an email and password
       operationId: userLogin
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/requestBodies/Login'
+        $ref: '#/components/requestBodies/Login'
       responses:
         '200':
           description: Successful login
