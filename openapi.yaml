@@ -319,6 +319,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/requestBodies/File'
+              description: JSON File structure
           text/plain:
             schema:
               description: A plaintext ACH file
@@ -1858,10 +1859,14 @@ components:
                 type: string
               firstName:
                 type: string
+                description: Legal first name
               lastName:
                 type: string
+                description: Legal last name
               phone:
-                description: Phone number associated to user
+                type: string
+                description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
+                example: 555.555.5555
               companyUrl:
                 description: Company URL associated to user
                 type: string
