@@ -1769,7 +1769,7 @@ components:
         origin:
           type: string
           description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
-          example: 99991234
+          example: "99991234"
         originName:
           type: string
           description: Legal name associated with the origin routing number.
@@ -1777,7 +1777,7 @@ components:
         destination:
           type: string
           description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
-          example: 69100013
+          example: "69100013"
         destinationName:
           type: string
           description: Legal name associated with the destination routing number
@@ -2093,7 +2093,7 @@ components:
               origin:
                 type: string
                 description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
-                example: 99991234
+                example: "99991234"
               originName:
                 type: string
                 description: Legal name associated with the origin routing number.
@@ -2101,7 +2101,7 @@ components:
               destination:
                 type: string
                 description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
-                example: 69100013
+                example: "69100013"
               destinationName:
                 type: string
                 description: Legal name associated with the destination routing number
