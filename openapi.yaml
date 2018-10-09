@@ -60,8 +60,6 @@ servers:
   # - url: https://sbx.moov.io
   #   description: Development server.
 tags:
-  - name: Batches
-    description: Batch objects hold the Batch Header and Batch Control and all Entry Records and Addenda records for the Batch.
   - name: Customers
     description: Customer objects are an individual or business used to perform transfer's with an originator and track multiple transactions associated with the customer. The API allows you to create, delete, and update your customers. You can retrieve individual customers as well as a list of all your customers. (Entry Detail)
   - name: Depositories
@@ -69,7 +67,9 @@ tags:
   - name: Events
     description: Event objects are a notification of a state change of a resource. When an Event is created any active webhooks will be notified.
   - name: Files
-    description: File contains the structures of a ACH File. It contains one and only one File Header and File Control with at least one Batch.
+    description: |
+      File contains the structures of a ACH File. It contains one and only one File Header and File Control with at least one Batch.
+      Batch objects within Files hold the Batch Header and Batch Control and all Entry Records and Addenda records for the Batch.
   - name: Gateways
     description: Gateway objects identify the origin (sending point) and destination (receiving point) of the entries to be transferred. (File Header)
   - name: OAuth2
@@ -512,11 +512,92 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Batches'
-    # post:
-  # /v1/ach/files/{file_id}/batches/{batch_id}:
-  #   get:
-  #   delete:
-
+    post:
+      tags:
+        - Files
+      summary: Add Batch to File
+      operationId: addBatchToFile
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/cookie'
+        - name: file_id
+          in: path
+          description: File ID
+          required: true
+          schema:
+            type: string
+            example: 3f2d23ee214
+      responses:
+        '200':
+          description: Batch added to File
+  /v1/ach/files/{file_id}/batches/{batch_id}:
+    get:
+      tags:
+        - Files
+      summary: Get a specific Batch on a FIle
+      operationId: getFileBatch
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/cookie'
+        - name: file_id
+          in: path
+          description: File ID
+          required: true
+          schema:
+            type: string
+            example: 3f2d23ee214
+        - name: batch_id
+          in: path
+          description: Batch ID
+          required: true
+          schema:
+            type: string
+            example: 45758063
+      responses:
+        '200':
+          description: Batch object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+        '404':
+          description: Batch or File not found
+    delete:
+      tags:
+        - Files
+      summary: Delete a Batch from a File
+      operationId: deleteFileBatch
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/cookie'
+        - name: file_id
+          in: path
+          description: File ID
+          required: true
+          schema:
+            type: string
+            example: 3f2d23ee214
+        - name: batch_id
+          in: path
+          description: Batch ID
+          required: true
+          schema:
+            type: string
+            example: 45758063
+      responses:
+        '200':
+          description: Batch deleted
+        '404':
+          description: Batch or File not found
 # Originators
   /v1/ach/originators:
     get:
@@ -1285,11 +1366,10 @@ paths:
       responses:
         '200':
           description: The ACH files generated for a transfer.
-          # TODO(adam): needs Open API specs merged for this $ref to work..
-          # content:
-          #   application/json:
-          #     schema:
-          #       $ref: '#/components/schemas/Files'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Files'
         '400':
           description: ACH files failed validation, check response body.
           content:
