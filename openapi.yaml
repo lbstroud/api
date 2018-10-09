@@ -17,7 +17,7 @@
 # - Subsequent characters can be a letter, a digit, an underscore, or a dollar sign.
 # - Reserved JavaScript keywords should be avoided
 
-openapi: "3.0.0"
+openapi: "3.0.1"
 info:
   description: |
     _Note_: We're currently in pre-release of our API. We expect breaking changes before launching v1 so please join our [mailing list](https://groups.google.com/forum/#!forum/moov-users) for more updates and notices.
@@ -69,7 +69,7 @@ tags:
   - name: Events
     description: Event objects are a notification of a state change of a resource. When an Event is created any active webhooks will be notified.
   - name: Files
-    description: File contains the structures of a ACH File. It contains one and only one File Header and File Control with at least one Batches.
+    description: File contains the structures of a ACH File. It contains one and only one File Header and File Control with at least one Batch.
   - name: Gateways
     description: Gateway objects identify the origin (sending point) and destination (receiving point) of the entries to be transferred. (File Header)
   - name: OAuth2
@@ -481,6 +481,41 @@ paths:
         '500':
           # TODO(adam): should be a 4xx error
           description: Validation failed. Check response for errors
+  /v1/ach/files/{file_id}/batches:
+    get:
+      tags:
+        - Files
+      summary: Get the batches on a File.
+      operationId: getFileBatches
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/cookie'
+        - name: file_id
+          in: path
+          description: File ID
+          required: true
+          schema:
+            type: string
+            example: 3f2d23ee214
+      responses:
+        '200':
+          description: A list of Batch objects
+          headers:
+            X-Total-Count:
+              description: The total number of Batches on the File.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batches'
+    # post:
+  # /v1/ach/files/{file_id}/batches/{batch_id}:
+  #   get:
+  #   delete:
 
 # Originators
   /v1/ach/originators:
@@ -1497,26 +1532,6 @@ components:
           type: string
           description: File ID
           example: 3f2d23ee214
-        FileHeader:
-          $ref: '#/components/schemas/FileHeader'
-    RawFile:
-      type: string
-      example: 101 222380104 1210428821805100000A094101Citadel                Bank Name
-    Files:
-      type: array
-      items:
-        $ref: '#/components/schemas/File'
-    FileHeader:
-      required:
-        - immediateOrigin
-        - immediateOriginName
-        - immediateDestination
-        - immediateDestinationName
-      properties:
-        id:
-          description: File Header ID (same as File)
-          type: string
-          example: 3f2d23ee214
         immediateOrigin:
           type: string
           description: contains the Routing Number of the ACH Operator or sending point that is sending the file.
@@ -1541,16 +1556,184 @@ components:
           example: Federal Reserve Bank
         fileCreationDate:
           type: string
-          description: expressed in a "YYMMDD" format. The File Creation Date is the date on which the file is prepared by an ODFI
+          description: Expressed in a "YYMMDD" (Y=Year, M=Month, D=Day) format. The File Creation Date is the date on which the file is prepared by an ODFI
           example: "102318"
           minLength: 6
           maxLength: 6
         fileCreationTime:
           type: string
-          description: Expressed in "HHMM" (24 hour clock) format.
+          description: Expressed in "HHMM" (H=Hour, M=Minute, 24 hour clock) format.
           example: "1601"
           minLength: 4
           maxLength: 4
+      required:
+        - immediateOrigin
+        - immediateOriginName
+        - immediateDestination
+        - immediateDestinationName
+    RawFile:
+      type: string
+      example: 101 222380104 1210428821805100000A094101Citadel                Bank Name
+    Files:
+      type: array
+      items:
+        $ref: '#/components/schemas/File'
+    Batch:
+      required:
+        - id
+        - serviceClassCode
+        - companyName
+        - companyIdentification
+        - ODFIIdentification
+      properties:
+        id:
+          type: string
+          description: Batch Header ID
+          example: 913b5742
+        serviceClassCode:
+          type: integer
+          description: Service Class Code - ACH Credits Only 220 and ACH Debits Only 225
+          example: 220
+        companyName:
+          type: string
+          description: Company originating the entries in the batch
+          example: Acme Corp
+        companyDiscretionaryData:
+          type: string
+          description: The 9 digit FEIN number (proceeded by a predetermined alpha or numeric character) of the entity in the company name field
+          example: 123456789
+        standardEntryClassCode:
+          type: string
+          description: Identifies the payment type (product) found within an ACH batch-using a 3-character code.
+          example: PPD
+        companyEntryDescription:
+          type: string
+          description: |
+            A description of the entries contained in the batch.
+            The Originator establishes the value of this field to provide a description of the purpose of the entry to be displayed back to the receive For example, "GAS BILL," "REG. SALARY," "INS. PREM,", "SOC. SEC.," "DTC," "TRADE PAY," "PURCHASE," etc.
+            This field must contain the word "REVERSAL" (left justified) when the batch contains reversing entries.
+            This field must contain the word "RECLAIM" (left justified) when the batch contains reclamation entries.
+            This field must contain the word "NONSETTLED" (left justified) when the batch contains entries which could not settle.
+          example: PURCHASE
+        companyDescriptiveDate:
+          type: string
+          description: |
+            The Originator establishes this field as the date it would like to see displayed to the receiver for descriptive purposes. This field is never used to control timing of any computer or manual operation. It is solely for descriptive purposes. The RDFI should not assume any specific format.
+        effectiveEntryDate:
+          description: Date on which the entries are to settle
+          type: string
+          format: date-time
+        originatorStatusCode:
+          type: integer
+          description: |
+            ODFI initiating the Entry.
+            0 ADV File prepared by an ACH Operator.
+            1 This code identifies the Originator as a depository financial institution.
+            2 This code identifies the Originator as a Federal Government entity or agency.
+        ODFIIdentification:
+          description: First 8 digits of the originating DFI transit routing number
+          type: string
+          example: 12345678
+        batchNumber:
+          type: string
+          description: |
+            BatchNumber is assigned in ascending sequence to each batch by the ODFI or its Sending Point in a given file of entries. Since the batch number in the Batch Header Record and the Batch Control Record is the same, the ascending sequence number should be assigned by batch and not by record.
+    Batches:
+      type: array
+      items:
+        $ref: '#/components/schemas/Batch'
+    EntryDetail:
+      required:
+        - id
+        - transactionCode
+        - RDFIIdentification
+        - checkDigit
+        - DFIAccountNumber
+        - amount
+        - individualName
+      properties:
+        id:
+          type: string
+          description: Entry Detail ID
+          example: 842a2261
+        transactionCode:
+          type: integer
+          description: |
+            transactionCode if the receivers account is:
+            Credit (deposit) to checking account 22
+            Prenote for credit to checking account 23
+            Debit (withdrawal) to checking account 27
+            Prenote for debit to checking account 28
+            Credit to savings account 32
+            Prenote for credit to savings account 33
+            Debit to savings account 37
+            Prenote for debit to savings account 38
+          example: 22
+        RDFIIdentification:
+          type: string
+          description: RDFI's routing number without the last digit.
+          example: 12345678
+        checkDigit:
+          type: string
+          description: Last digit in RDFI routing number.
+          example: "0"
+        DFIAccountNumber:
+          type: string
+          description: |
+            The receiver's bank account number you are crediting/debiting. It important to note that this is an alphanumeric field, so its space padded, no zero padded
+          example: 181141847
+        amount: # TODO(adam): use "USD 12.53" format?
+          # type: string
+          type: integer
+          description: Number of cents you are debiting/crediting this account
+          # example: "USD 12.35"
+          example: 1235
+        identificationNumber:
+          type: string
+          description: Internal identification (alphanumeric) that you use to uniquely identify this Entry Detail Record
+          example: 8aa786
+        individualName:
+          type: string
+          description: The name of the receiver, usually the name on the bank account
+          example: Taylor Swift
+        discretionaryData:
+          type: string
+          description: |
+            DiscretionaryData allows ODFIs to include codes, of significance only to them, to enable specialized handling of the entry. There will be no standardized interpretation for the value of this field. It can either be a single two-character code, or two distinct one-character codes, according to the needs of the ODFI and/or Originator involved. This field must be returned intact for any returned entry.
+            WEB uses the Discretionary Data Field as the Payment Type Code
+          example: AB
+        addendaRecordIndicator:
+          type: integer
+          description: |
+            AddendaRecordIndicator indicates the existence of an Addenda Record. A value of "1" indicates that one ore more addenda records follow, and "0" means no such record is present.
+          example: 1
+        traceNumber:
+          type: integer
+          description: |
+            TraceNumber assigned by the ODFI in ascending sequence, is included in each Entry Detail Record, Corporate Entry Detail Record, and addenda Record.
+            Trace Numbers uniquely identify each entry within a batch in an ACH input file. In association with the Batch Number, transmission (File Creation) Date, and File ID Modifier, the Trace Number uniquely identifies an entry within a given file.
+            For addenda Records, the Trace Number will be identical to the Trace Number in the associated Entry Detail Record, since the Trace Number is associated with an entry or item rather than a physical record.
+        addendum:
+          type: array
+          description: List of Addenda for the Entry Detail
+          items:
+            $ref: '#/components/schemas/Addendum'
+        category:
+          type: string
+          description: Category defines if the entry is a Forward, Return, or NOC
+          example: Forward
+    EntryDetails:
+      type: array
+      items:
+        $ref: '#/components/schemas/EntryDetail'
+    Addendum:
+      required:
+        - typeCode
+      properties:
+        typeCode:
+          type: string
+          description: TODO
+          example: '02'
     Error:
       required:
         - error
