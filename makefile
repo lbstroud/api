@@ -5,7 +5,7 @@ VERSION := v0.2.6-dev
 build: AUTHORS
 	docker build -t moov/api:$(VERSION) -f Dockerfile .
 	docker tag moov/api:$(VERSION) moov/api:latest
-	git tag $(VERSION)
+	git tag -f $(VERSION)
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS
