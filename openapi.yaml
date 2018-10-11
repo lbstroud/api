@@ -169,6 +169,28 @@ paths:
       responses:
         '200':
           description: User cookies are invalidated.
+  /v1/users/{user_id}:
+    patch:
+      tags:
+        - User
+      summary: Update a User's profile information
+      operationId: updateUserProfile
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: '#/components/parameters/cookie'
+        - name: user_id
+          in: path
+          description: Moov API User ID
+          required: true
+          schema:
+            type: string
+            example: 3f2d23ee214
+      requestBody:
+        $ref: '#/components/requestBodies/UserProfile'
+      responses:
+        '200':
+          description: User profile updated
 
 # OAUTH2
   /v1/oauth2/authorize:
@@ -2133,6 +2155,31 @@ components:
               - password
               - firstName
               - lastName
+              - phone
+    UserProfile:
+      description: User profile information
+      content:
+        application/json:
+          schema:
+            properties:
+              firstName:
+                type: string
+                description: Legal first name
+              lastName:
+                type: string
+                description: Legal last name
+              phone:
+                type: string
+                description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
+                example: 555.555.5555
+              companyUrl:
+                description: Company URL associated to user
+                type: string
+                format: uri
+            required:
+              - firstName
+              - lastName
+              - email
               - phone
     Login:
       description: Authenticating with an email and password
