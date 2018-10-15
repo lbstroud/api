@@ -1,6 +1,6 @@
 VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' internal/version/version.go)
 
-.PHONY: build release
+.PHONY: build docker release
 
 build: AUTHORS
 # api.moov.io docker file
@@ -8,8 +8,9 @@ build: AUTHORS
 	docker tag moov/api:$(VERSION) moov/api:latest
 # apitest binary
 	go fmt ./...
-	CGO_ENABLED=1 go build -o bin/apitest ./cmd/apitest/
-# TODO(adam): build apitest docker image
+	CGO_ENABLED=0 go build -o bin/apitest ./cmd/apitest/
+	docker build -t moov/apitest:$(VERSION) -f Dockerfile-apitest .
+	docker tag moov/apitest:$(VERSION) moov/apitest:latest
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS
