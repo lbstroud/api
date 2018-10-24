@@ -1634,6 +1634,22 @@ components:
           type: string
           description: File ID
           example: 3f2d23ee214
+        fileHeader:
+          $ref: '#/components/schemas/FileHeader'
+        batches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Batch'
+        IATBatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/IATBatch'
+        fileControl:
+          $ref: '#/components/schemas/FileControl'
+        # NotificationOfChange: # TODO(adam)
+        # ReturnEntries: # TODO(adam)
+    FileHeader:
+      properties:
         immediateOrigin:
           type: string
           description: contains the Routing Number of the ACH Operator or sending point that is sending the file.
@@ -1668,11 +1684,46 @@ components:
           example: "1601"
           minLength: 4
           maxLength: 4
+        fileIDModifier:
+          type: string
+          description: TODO
+          example: TODO
       required:
         - immediateOrigin
         - immediateOriginName
         - immediateDestination
         - immediateDestinationName
+    FileControl:
+      properties:
+        id:
+          description: Moov API File ID
+          type: string
+          example: d1e26288
+        batchCount:
+          description: Count of Batches in the File
+          type: integer
+          example: 1
+        blockCount:
+          description: |
+            BlockCount total number of records in the file (include all headers and trailer) divided by 10 (This number must be evenly divisible by 10. If not, additional records consisting of all 9’s are added to the file after the initial ‘9’ record to fill out the block 10.)
+          type: integer
+          example: 1
+        entryAddendaCount:
+          description: Total detail and addenda records in the file
+          type: integer
+          example: 0
+        entryHash:
+          description: EntryHash calculated in the same manner as the batch has total but includes total from entire file
+          type: integer
+          example: 0
+        totalDebit:
+          description: Accumulated Batch debit totals within the file.
+          type: integer
+          example: 100
+        totalCredit:
+          description: Accumulated Batch credit totals within the file.
+          type: integer
+          example: 20
     RawFile:
       type: string
       example: 101 222380104 1210428821805100000A094101Citadel                Bank Name
@@ -1681,6 +1732,16 @@ components:
       items:
         $ref: '#/components/schemas/File'
     Batch:
+      properties:
+        batchHeader:
+          $ref: '#/components/schemas/BatchHeader'
+        entryDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryDetail'
+        batchControl:
+          $ref: '#/components/schemas/BatchControl'
+    BatchHeader:
       required:
         - id
         - serviceClassCode
@@ -1740,6 +1801,53 @@ components:
           type: string
           description: |
             BatchNumber is assigned in ascending sequence to each batch by the ODFI or its Sending Point in a given file of entries. Since the batch number in the Batch Header Record and the Batch Control Record is the same, the ascending sequence number should be assigned by batch and not by record.
+    BatchControl:
+      properties:
+        id:
+          description: Batch ID
+          type: string
+          example: 62d8f0cd
+        serviceClassCode:
+          description: Same as ServiceClassCode in BatchHeaderRecord
+          type: integer
+          example: 220
+        entryAddendaÇount:
+          description: EntryAddendaCount is a tally of each Entry Detail Record and each Addenda Record processed, within either the batch or file as appropriate.
+          type: integer
+          example: 1
+        entryHash:
+          description: |
+            Validate the Receiving DFI Identification in each Entry Detail Record is hashed to provide a check against inadvertent alteration of data contents due to hardware failure or program error.
+            In this context the Entry Hash is the sum of the corresponding fields in the Entry Detail Records on the file.
+          type: integer
+          example: 0
+        totalDebit:
+          description: Contains accumulated Entry debit totals within the batch.
+          type: integer
+          example: 100
+        totalCredit:
+          description: Contains accumulated Entry credit totals within the batch.
+          type: integer
+          example: 100
+        companyIdentification:
+          description: |
+            Alphanumeric code used to identify an Originator The Company Identification Field must be included on all prenotification records and on each entry initiated pursuant to such prenotification. The Company ID may begin with the ANSI one-digit Identification Code Designator (ICD), followed by the identification number The ANSI Identification Numbers and related Identification Code
+            IRS Employer Identification Number (EIN) "1"
+            Data Universal Numbering Systems (DUNS) "3"
+            User Assigned Number "9"
+          type: string
+          example: 1
+        messageAuthentication:
+          description: MAC is an eight character code derived from a special key used in conjunction with the DES algorithm. The purpose of the MAC is to validate the authenticity of ACH entries. The DES algorithm and key message standards must be in accordance with standards adopted by the American National Standards Institute. The remaining eleven characters of this field are blank.
+          type: string
+          example: 3fe106cf
+        ODFIIdentification:
+          description: The routing number is used to identify the DFI originating entries within a given branch.
+          type: string
+          example: 123456789
+        batchNumber:
+          type: string
+          description: BatchNumber is assigned in ascending sequence to each batch by the ODFI or its Sending Point in a given file of entries. Since the batch number in the Batch Header Record and the Batch Control Record is the same, the ascending sequence number should be assigned by batch and not by record.
     Batches:
       type: array
       items:
@@ -1836,6 +1944,114 @@ components:
           type: string
           description: TODO
           example: '02'
+    IATBatch:
+      properties:
+        id:
+          description: Client defined string used as a reference to this record.
+          type: string
+          example: a747e53f
+        IATBatchHeader:
+          $ref: '#/components/schemas/IATBatchHeader'
+    IATBatchHeader:
+      properties:
+        id:
+          description: ID is a client defined string used as a reference to this record.
+          type: string
+          example: a747e53f
+        serviceClassCode:
+          description: |
+            ServiceClassCode ACH Mixed Debits and Credits ‘200’
+            ACH Credits Only ‘220’
+            ACH Debits Only ‘225'
+          type: integer
+          example: 220
+        IATIndicator:
+          description: Leave Blank. Only used for corrected IAT entries
+          type: string
+          example: ""
+        foreignExchangeIndicator:
+          description: |
+            Code indicating currency conversion.
+            FV Fixed-to-Variable – Entry is originated in a fixed-value amount and is to be received in a variable amount resulting from the execution of the foreign exchange conversion.
+            VF Variable-to-Fixed – Entry is originated in a variable-value amount based on a specific foreign exchange rate for conversion to a fixed-value amount in which the entry is to be received.
+            FF Fixed-to-Fixed – Entry is originated in a fixed-value amount and is to be received in the same fixed-value amount in the same currency denomination. There is no foreign exchange conversion for entries transmitted using this code. For entries originated in a fixed value amount, the foreign Exchange Reference Field will be space filled.
+          type: string
+          example: FF
+        foreignExchangeReferenceIndicator:
+          description: |
+            Code used to indicate the content of the Foreign Exchange Reference Field and is filled by the gateway operator. Valid entries are
+            1 - Foreign Exchange Rate;
+            2 - Foreign Exchange Reference Number; or
+            3 - Space Filled
+          type: integer
+          example: 2
+        foreignExchangeReference:
+          description: |
+            Contains either the foreign exchange rate used to execute the foreign exchange conversion of a cross-border entry or another reference to the foreign exchange transaction.
+          type: string
+        ISODestinationCountryCode:
+          description: Two-character code, as approved by the International Organization for Standardization (ISO), to identify the country in which the entry is to be received. For United States use US.
+          type: string
+          example: US
+        originatorIdentification:
+          description: |
+            For U.S. entities: the number assigned will be your tax ID (often Social Security Number)
+            For non-U.S. entities: the number assigned will be your DDA number, or the last 9 characters of your account number if it exceeds 9 characters
+          type: string
+          example: 123456789
+        standardEntryClassCode:
+          description: |
+            StandardEntryClassCode for consumer and non consumer international payments is IAT.
+            Identifies the payment type (product) found within an ACH batch-using a 3-character code.
+            The SEC Code pertains to all items within batch.
+            Determines format of the detail records.
+            Determines addenda records (required or optional PLUS one or up to 9,999 records).
+            Determines rules to follow (return time frames).
+            Some SEC codes require specific data in predetermined fields within the ACH record
+          type: string
+          example: IAT
+        companyEntryDescription:
+          description: |
+            A description of the entries contained in the batch
+            The Originator establishes the value of this field to provide a description of the purpose of the entry to be displayed back to the receive For example, "GAS BILL," "REG. SALARY," "INS. PREM," "SOC. SEC.," "DTC," "TRADE PAY," "PURCHASE," etc.
+            This field must contain the word "REVERSAL" (left justified) when the batch contains reversing entries.
+            This field must contain the word "RECLAIM" (left justified) when the batch contains reclamation entries.
+            This field must contain the word "NONSETTLED" (left justified) when the batch contains entries which could not settle.
+          type: string
+          example: GAS BILL
+        ISOOriginatingCurrencyCode:
+          description: |
+            Three-character code, as approved by the International Organization for Standardization (ISO), to identify the currency denomination in which the entry was first originated. If the source of funds is within the territorial jurisdiction of the U.S., enter 'USD', otherwise refer to International Organization for Standardization website for value: www.iso.org
+          type: string
+          example: USD
+        ISODestinationCurrencyCode:
+          description: |
+            ISODestinationCurrencyCode is the three-character code, as approved by the International Organization for Standardization (ISO), to identify the currency denomination in which the entry will ultimately be settled. If the final destination of funds is within the territorial jurisdiction of the U.S., enter “USD”, otherwise refer to International Organization for Standardization website for value: www.iso.org
+          type: string
+          example: USD
+        effectiveEntryDate:
+          description: |
+            EffectiveEntryDate the date on which the entries are to settle format YYMMDD (Y=Year, M=Month, D=Day)
+          type: string
+          example: 181231
+        originatorStatusCode:
+          description: |
+            SettlementDate Leave blank, this field is inserted by the ACH operator settlementDate string OriginatorStatusCode refers to the ODFI initiating the Entry.
+            0 ADV File prepared by an ACH Operator.
+            1 This code identifies the Originator as a depository financial institution.
+            2 This code identifies the Originator as a Federal Government entity or agency.
+          type: integer
+          example: 1
+        ODFIIdentification:
+          description: |
+            ODFIIdentification First 8 digits of the originating DFI transit routing number for Inbound IAT Entries, this field contains the routing number of the U.S. Gateway Operator.  For Outbound IAT Entries, this field contains the standard routing number, as assigned by Accuity, that identifies the U.S. ODFI initiating the Entry. Format - TTTTAAAA
+          type: string
+          example: 12345678
+        batchNumber:
+          description: |
+            BatchNumber is assigned in ascending sequence to each batch by the ODFI or its Sending Point in a given file of entries. Since the batch number in the Batch Header Record and the Batch Control Record is the same, the ascending sequence number should be assigned by batch and not by record.
+          type: integer
+          example: 1
     Error:
       required:
         - error
