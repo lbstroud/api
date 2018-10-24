@@ -1,10 +1,14 @@
 language: go
 sudo: true
+go:
+  - 1.11.x
 services:
   - docker
 os:
   - linux
   # - osx # TravisCI on OSX doesn't support docker yet
 osx_image: xcode9.1
+before_script:
+  - go get -u github.com/moov-io/go-client/client
 script:
-- make build
+  - make build
