@@ -2,7 +2,7 @@ VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' inte
 
 .PHONY: build docker release
 
-build: AUTHORS
+build:
 # api.moov.io docker file
 	docker build -t moov/api:$(VERSION) -f Dockerfile .
 	docker tag moov/api:$(VERSION) moov/api:latest
