@@ -2,6 +2,14 @@
 // Use of this source code is governed by an Apache License
 // license that can be found in the LICENSE file.
 
+// apitest is a cli tool (and Docker image) used for testing the Moov API.
+// This tool is designed to operate against the production API and a local
+// setup.
+//
+// With no arguments the contaier runs tests against the production API.
+//
+// apitest is not a stable tool. Please contact Moov developers if you intend to use this tool,
+// otherwise we might change the tool (or remove it) without notice.
 package main
 
 import (
