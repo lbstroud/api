@@ -17,7 +17,7 @@
 # - Subsequent characters can be a letter, a digit, an underscore, or a dollar sign.
 # - Reserved JavaScript keywords should be avoided
 
-openapi: "3.0.1"
+openapi: "3.0.2"
 info:
   description: |
     _Note_: We're currently in pre-release of our API. We expect breaking changes before launching v1 so please join our [mailing list](https://groups.google.com/forum/#!forum/moov-users) for more updates and notices.
@@ -90,7 +90,10 @@ paths:
       summary: Create a new user using an email address not seen before.
       operationId: createUser
       requestBody:
-        $ref: '#/components/requestBodies/User'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/User'
       responses:
         '200':
           description: User object
@@ -136,7 +139,20 @@ paths:
       summary: Attempt to login with an email and password
       operationId: userLogin
       requestBody:
-        $ref: '#/components/requestBodies/Login'
+        description: Authenticating with an email and password
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  description: Email address associated to the User
+                  type: string
+                  example: "user@example.com"
+                password:
+                  description: Password associated to User
+                  type: string
+                  example: long_passphrase_unique_per_site
       responses:
         '200':
           description: Successful login
@@ -187,10 +203,37 @@ paths:
             type: string
             example: 3f2d23ee214
       requestBody:
-        $ref: '#/components/requestBodies/UserProfile'
+        description: 'User profile information'
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                firstName:
+                  type: string
+                  description: Legal first name
+                  example: Jane
+                lastName:
+                  type: string
+                  description: Legal last name
+                  example: Doe
+                phone:
+                  type: string
+                  description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
+                  example: 555.555.5555
+                companyUrl:
+                  description: Company URL associated to user
+                  type: string
+                  format: uri
       responses:
         '200':
           description: User profile updated
+        '400':
+          description: Invalid request body, check error(s).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 # OAUTH2
   /v1/oauth2/authorize:
@@ -406,7 +449,10 @@ paths:
             example: 3f2d23ee214
         - $ref: '#/components/parameters/cookie'
       requestBody:
-        $ref: '#/components/requestBodies/File'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/File'
       responses:
         '201':
           description: A JSON object containing a new File
@@ -660,7 +706,10 @@ paths:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
       requestBody:
-        $ref: '#/components/requestBodies/Originator'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Originator'
       responses:
         '201':
           description: A JSON object containing a new Originator
@@ -730,7 +779,10 @@ paths:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
       requestBody:
-        $ref: '#/components/requestBodies/Originator'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Originator'
       responses:
         '201':
           description: A JSON object containing a new Originator
@@ -809,7 +861,10 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
-        $ref: '#/components/requestBodies/Customer'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Customer'
       parameters:
         - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
@@ -883,7 +938,10 @@ paths:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
       requestBody:
-        $ref: '#/components/requestBodies/Customer'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Customer'
       responses:
         '201':
           description: A JSON object containing a new Customer
@@ -1040,7 +1098,10 @@ paths:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
       requestBody:
-        $ref: '#/components/requestBodies/Depository'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Depository'
       responses:
         '201':
           description: Created
@@ -1110,7 +1171,10 @@ paths:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestID'
       requestBody:
-        $ref: '#/components/requestBodies/Depository'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Depository'
       responses:
         '201':
           description: A JSON object containing a new Depository
@@ -1242,7 +1306,10 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
-        $ref: '#/components/requestBodies/Transfer'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Transfer'
       responses:
         '201':
           description: Created
@@ -1276,7 +1343,10 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
-        $ref: '#/components/requestBodies/Transfers'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Transfers'
       responses:
         '200':
           description: Created
@@ -1488,6 +1558,7 @@ paths:
                 $ref: '#/components/schemas/Event'
         '404':
           description: A event object with the specified ID was not found.
+
 # GATEWAYS
   /v1/ach/gateways:
     get:
@@ -1525,7 +1596,10 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
-        $ref: '#/components/requestBodies/Gateway'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Gateway'
       responses:
         '201':
           description: Created
@@ -1726,7 +1800,8 @@ components:
           example: 20
     RawFile:
       type: string
-      example: 101 222380104 1210428821805100000A094101Citadel                Bank Name
+      description: Plaintext ACH file
+      example: "101 222380104 1210428821805100000A094101Citadel                Bank Name"
     Files:
       type: array
       items:
@@ -2372,49 +2447,6 @@ components:
               - firstName
               - lastName
               - phone
-    UserProfile:
-      description: User profile information
-      content:
-        application/json:
-          schema:
-            properties:
-              firstName:
-                type: string
-                description: Legal first name
-              lastName:
-                type: string
-                description: Legal last name
-              phone:
-                type: string
-                description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
-                example: 555.555.5555
-              companyUrl:
-                description: Company URL associated to user
-                type: string
-                format: uri
-            required:
-              - firstName
-              - lastName
-              - email
-              - phone
-    Login:
-      description: Authenticating with an email and password
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              email:
-                description: Email address associated to the User
-                type: string
-                example: "user@example.com"
-              password:
-                description: Password associated to User
-                type: string
-                example: long_passphrase_unique_per_site
-            required:
-              - email
-              - password
     File:
       description: A JSON object containing a new File
       required: true
