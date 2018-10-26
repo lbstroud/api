@@ -1,4 +1,4 @@
-VERSION := v0.2.9-dev
+VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' internal/version/version.go)
 
 .PHONY: build docker release
 
