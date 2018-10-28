@@ -1,14 +1,26 @@
+# This is the Moov API OpenAPI specification.
+#
+# The purpose of this document is to provide a specification for the Moov API from a user's
+# point of view. This means viewing the services combined under https://api.moov.io (or another
+# URL).
+#
+# If you're working on internal service calls you may or may not be able to use a generated
+# client from this document.
+#
+# Docs: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
+#
+#
 # TODO amount fields now take a currency code. USD default
 #  - Look at https://godoc.org/golang.org/x/text/currency
-
+#
 # TODO GET endpoints should use the OAS 3 Link Object specification
 #  - https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#linkObject
-
+#
 # TODO Transfers objects now have an estimated ?posting? date
 # TODO add Documents allowing Customer ID(passport, drivers license, idCard) to be uploaded and verified
 # TODO Webhooks have been documented for retrieving events
 # TODO add support for retrieving 1099-k for Originators
-
+#
 # Property names must conform to the following guidelines:
 # - Resources are plural nouns /customers/
 # - Property names should be meaningful names with defined semantics.
@@ -58,7 +70,7 @@ servers:
   - url: https://api.moov.io
     description: Production server
   # - url: https://sbx.moov.io
-  #   description: Development server.
+  #   description: Development server
 tags:
   - name: Customers
     description: Customer objects are an individual or business used to perform transfer's with an originator and track multiple transactions associated with the customer. The API allows you to create, delete, and update your customers. You can retrieve individual customers as well as a list of all your customers. (Entry Detail)
@@ -89,7 +101,10 @@ paths:
         - User
       summary: Create a new user using an email address not seen before.
       operationId: createUser
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -118,7 +133,7 @@ paths:
       security:
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: User object
@@ -138,6 +153,8 @@ paths:
         - User
       summary: Attempt to login with an email and password
       operationId: userLogin
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       requestBody:
         description: Authenticating with an email and password
         required: true
@@ -181,7 +198,7 @@ paths:
       security:
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: User cookies are invalidated.
@@ -194,7 +211,7 @@ paths:
       security:
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - name: user_id
           in: path
           description: Moov API User ID
@@ -245,6 +262,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/requestId'
         - name: Authorization
           in: header
           description: <ignored>
@@ -270,7 +288,7 @@ paths:
       security:
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Created OAuth2 client credentials
@@ -293,6 +311,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/requestId'
         - name: grant_type
           in: query
           description: OAuth2 grant type (must be 'client_credentials')
@@ -347,7 +366,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of File objects
@@ -365,12 +384,12 @@ paths:
       tags:
       - Files
       summary: Create a new File object
-      operationId: addFile
+      operationId: createFile
       security:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       requestBody:
         description: Content of the ACH file (in json or raw text)
         required: true
@@ -413,8 +432,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -440,6 +458,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -447,8 +466,8 @@ paths:
           schema:
             type: string
             example: 3f2d23ee214
-        - $ref: '#/components/parameters/cookie'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -488,7 +507,7 @@ paths:
           schema:
             type: string
             example: 3f2d23ee214
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       responses:
           '200':
             description: Permanently deleted File.
@@ -504,7 +523,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -512,7 +531,6 @@ paths:
           schema:
             type: string
             example: 3f2d23ee214
-        - $ref: '#/components/parameters/cookie'
       responses:
         '200':
           description: File built successfully without errors.
@@ -530,7 +548,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -538,7 +556,6 @@ paths:
           schema:
             type: string
             example: 3f2d23ee214
-        - $ref: '#/components/parameters/cookie'
       responses:
         '200':
           description: File validated successfully without errors.
@@ -559,8 +576,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/requestID'
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -589,8 +605,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/requestID'
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -611,8 +626,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/requestID'
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -645,8 +659,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/requestID'
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - name: file_id
           in: path
           description: File ID
@@ -677,10 +690,9 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: A list of Originator objects
@@ -702,10 +714,10 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -739,8 +751,6 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
         - name: originatorId
           in: path
           description: Originator ID
@@ -748,6 +758,7 @@ paths:
           schema:
             type: string
             example: 3f2d23ee
+        - $ref: '#/components/parameters/requestId'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
       responses:
@@ -768,7 +779,6 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - name: originatorId
           in: path
           description: Originator ID
@@ -777,8 +787,9 @@ paths:
             type: string
             example: 3f2d23ee
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -817,8 +828,7 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
           '200':
             description: Permanently deleted Originator.
@@ -836,10 +846,9 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Customer objects
@@ -861,14 +870,14 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/requestBodies/Customer'
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '201':
           description: A JSON object containing a new Customer
@@ -905,10 +914,9 @@ paths:
           schema:
             type: string
             example: feb492e6
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A Customer object for the supplied Customer ID
@@ -934,10 +942,10 @@ paths:
           schema:
             type: string
             example: feb492e6
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -979,8 +987,7 @@ paths:
         schema:
           type: string
       - $ref: '#/components/parameters/bearerToken'
-      - $ref: '#/components/parameters/cookie'
-      - $ref: '#/components/parameters/requestID'
+      - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Permanently deleted Customer.
@@ -1003,10 +1010,9 @@ paths:
           schema:
             type: string
             example: feb492e6
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Depository objects for a Customer ID
@@ -1038,10 +1044,9 @@ paths:
           schema:
             type: string
             example: 0c5e215c
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A Depository objects for the supplied ID
@@ -1069,10 +1074,9 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Depository objects
@@ -1094,10 +1098,10 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1138,10 +1142,9 @@ paths:
           schema:
             type: string
             example: 0c5e215c
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A depository object for the supplied ID
@@ -1167,10 +1170,10 @@ paths:
           schema:
             type: string
             example: feb492e6
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1211,8 +1214,7 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Permanently deleted Depository.
@@ -1243,9 +1245,8 @@ paths:
             items:
               type: string
               example: "USD 0.02"
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Micro deposits verified
@@ -1275,12 +1276,11 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/startDate'
         - $ref: '#/components/parameters/endDate'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Transfer objects
@@ -1299,13 +1299,13 @@ paths:
       summary: Create a new transfer between an Originator and a Customer. Transfers cannot be modified. Instead delete the old and create a new transfer.
       operationId: addTransfer
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1336,13 +1336,13 @@ paths:
       summary: Create a new list of transfer, validate, build, and process. Transfers cannot be modified.
       operationId: addTransfers
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1377,10 +1377,9 @@ paths:
           schema:
             type: string
             example: 33164ac6
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A transfer object for the supplied ID
@@ -1402,8 +1401,7 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       security:
         - bearerAuth: []
         - cookieAuth: []
@@ -1429,8 +1427,7 @@ paths:
           schema:
             type: string
             example: 33164ac6
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: TODO, check error json
@@ -1453,8 +1450,7 @@ paths:
           schema:
             type: string
             example: 33164ac6
-        - $ref: '#/components/parameters/cookie'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: The ACH files generated for a transfer.
@@ -1485,10 +1481,9 @@ paths:
           schema:
             type: string
             example: 33164ac6
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Event objects for the supplied Transfer ID
@@ -1510,12 +1505,11 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/startDate'
         - $ref: '#/components/parameters/endDate'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Event objects
@@ -1545,10 +1539,9 @@ paths:
           schema:
             type: string
             example: 94cf1126
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A Event object for the supplied Customer ID
@@ -1570,7 +1563,7 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       parameters:
-        - $ref: '#/components/parameters/cookie'
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: A list of Gateway objects
@@ -1589,13 +1582,13 @@ paths:
       summary: Create a new Gateway object
       operationId: addGateway
       parameters:
-        - $ref: '#/components/parameters/cookie'
         - $ref: '#/components/parameters/idempotencyKey'
-        - $ref: '#/components/parameters/requestID'
+        - $ref: '#/components/parameters/requestId'
       security:
         - bearerAuth: []
         - cookieAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1630,6 +1623,8 @@ paths:
       - Monitor
       operationId: pingACH
       summary: Check that the moov-io/ach service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Service is running properly
@@ -1639,6 +1634,8 @@ paths:
       - Monitor
       operationId: pingAuth
       summary: Check that the moov-io/auth service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Service is running properly
@@ -1648,6 +1645,8 @@ paths:
       - Monitor
       operationId: pingPaygate
       summary: Check that the moov-io/paygate service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Service is running properly
@@ -2712,7 +2711,7 @@ components:
       required: false
       schema:
         type: string
-    requestID:
+    requestId:
       in: header
       name: X-Request-Id
       description: Optional Request ID allows application developer to trace requests through the systems logs
