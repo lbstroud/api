@@ -13,14 +13,14 @@
 package main
 
 import (
-	"crypto/rand"
-	"strings"
-	"log"
-	"encoding/hex"
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/moov-io/api/internal/version"
