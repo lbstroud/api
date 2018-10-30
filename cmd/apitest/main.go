@@ -13,6 +13,10 @@
 package main
 
 import (
+	"crypto/rand"
+	"strings"
+	"log"
+	"encoding/hex"
 	"context"
 	"flag"
 	"fmt"
@@ -32,7 +36,7 @@ var (
 
 func main() {
 	flag.Parse()
-	fmt.Printf("Starting apitest %s\n", version.Version)
+	log.Printf("Starting apitest %s", version.Version)
 
 	ctx := context.TODO()
 
@@ -48,12 +52,52 @@ func main() {
 			IdleConnTimeout:     1 * time.Minute,
 		},
 	}
+
+	requestId := generateID()
+	conf.AddDefaultHeader("X-Request-ID", requestId)
+	log.Printf("Using X-Request-ID: %s", requestId)
+
 	api := moov.NewAPIClient(conf)
 
+	// Run tests
+	if err := pingApps(ctx, api); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// generateID creates a unique random string
+func generateID() string {
+	bs := make([]byte, 20)
+	n, err := rand.Read(bs)
+	if err != nil || n == 0 {
+		return ""
+	}
+	return strings.ToLower(hex.EncodeToString(bs))
+}
+
+func pingApps(ctx context.Context, api *moov.APIClient) error {
+	// ACH
 	resp, err := api.MonitorApi.PingACH(ctx)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("ERROR: failed to ping ACH: %v", err)
 	}
 	resp.Body.Close()
-	fmt.Printf("PONG - %s\n", conf.BasePath)
+	log.Println("ACH PONG")
+
+	// auth
+	resp, err = api.MonitorApi.PingAuth(ctx)
+	if err != nil {
+		return fmt.Errorf("ERROR: failed to ping auth: %v", err)
+	}
+	resp.Body.Close()
+	log.Println("auth PONG")
+
+	// paygate
+	resp, err = api.MonitorApi.PingPaygate(ctx)
+	if err != nil {
+		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)
+	}
+	resp.Body.Close()
+	log.Println("paygaate PONG")
+	return nil
 }
