@@ -24,8 +24,9 @@ import (
 	"time"
 
 	"github.com/moov-io/api/internal/version"
-
 	moov "github.com/moov-io/go-client/client"
+
+	"github.com/antihax/optional"
 )
 
 var (
@@ -79,7 +80,7 @@ func main() {
 	api := moov.NewAPIClient(conf)
 
 	// Run tests
-	if err := pingApps(ctx, api); err != nil {
+	if err := pingApps(ctx, api, requestId); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -94,9 +95,11 @@ func generateID() string {
 	return strings.ToLower(hex.EncodeToString(bs))
 }
 
-func pingApps(ctx context.Context, api *moov.APIClient) error {
+func pingApps(ctx context.Context, api *moov.APIClient, requestId string) error {
 	// ACH
-	resp, err := api.MonitorApi.PingACH(ctx)
+	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{
+		XRequestId: optional.NewString(requestId),
+	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping ACH: %v", err)
 	}
@@ -104,7 +107,9 @@ func pingApps(ctx context.Context, api *moov.APIClient) error {
 	log.Println("ACH PONG")
 
 	// auth
-	resp, err = api.MonitorApi.PingAuth(ctx)
+	resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{
+		XRequestId: optional.NewString(requestId),
+	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping auth: %v", err)
 	}
@@ -112,7 +117,9 @@ func pingApps(ctx context.Context, api *moov.APIClient) error {
 	log.Println("auth PONG")
 
 	// paygate
-	resp, err = api.MonitorApi.PingPaygate(ctx)
+	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{
+		XRequestId: optional.NewString(requestId),
+	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)
 	}
