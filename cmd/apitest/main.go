@@ -33,6 +33,7 @@ var (
 	defaultApiAddress = "https://api.moov.io"
 
 	flagApiAddress = flag.String("address", defaultApiAddress, "Moov API address")
+	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses")
 )
 
 func main() {
@@ -42,8 +43,20 @@ func main() {
 	ctx := context.TODO()
 
 	conf := moov.NewConfiguration()
-	conf.BasePath = *flagApiAddress
+	if *flagLocal {
+		// If '-local and -address <foo>' use <foo>
+		if addr := *flagApiAddress; addr != defaultApiAddress {
+			conf.BasePath = addr
+		} else {
+			conf.BasePath = "http://localhost"
+		}
+	} else {
+		conf.BasePath = *flagApiAddress
+	}
+	log.Printf("Using %s as base API address", conf.BasePath)
 	conf.UserAgent = fmt.Sprintf("apitest/%s", version.Version)
+
+	// setup HTTP client
 	conf.HTTPClient = &http.Client{
 		Timeout: 10 * time.Second,
 		Transport: &http.Transport{
@@ -52,6 +65,12 @@ func main() {
 			MaxConnsPerHost:     100,
 			IdleConnTimeout:     1 * time.Minute,
 		},
+	}
+	if *flagLocal {
+		tr := conf.HTTPClient.Transport
+		conf.HTTPClient.Transport = &localPathTransport{
+			tr: tr,
+		}
 	}
 
 	requestId := generateID()
@@ -105,6 +124,6 @@ func pingApps(ctx context.Context, api *moov.APIClient, requestId string) error 
 		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)
 	}
 	resp.Body.Close()
-	log.Println("paygaate PONG")
+	log.Println("paygate PONG")
 	return nil
 }
