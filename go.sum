@@ -2,7 +2,13 @@ github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6 h1:uZuxRZCz65cG1o
 github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6/go.mod h1:V8iCPQYkqmusNa815XgQio277wI47sdRh1dUOLdyC6Q=
 github.com/moov-io/go-client v0.0.0-20181026213606-ed22a61a68ba h1:PmvcOKOV7g3J0DDyjtJ69X8sfOg3MWJuB5peblohUyg=
 github.com/moov-io/go-client v0.0.0-20181026213606-ed22a61a68ba/go.mod h1:gSd36ioGlQ0Ws3U06jpGnG3QBN1rH6xSai6gzhqxg7g=
+github.com/moov-io/go-client v0.0.0-20181030205347-acffa4111d0d h1:ZaCM4P+Lkv3Y0x6aXyWpwlQfs9NusaUFKccKWt+1zrs=
+github.com/moov-io/go-client v0.0.0-20181030205347-acffa4111d0d/go.mod h1:gSd36ioGlQ0Ws3U06jpGnG3QBN1rH6xSai6gzhqxg7g=
 golang.org/x/net v0.0.0-20181003013248-f5e5bdd77824 h1:MkjFNbaZJyH98M67Q3umtwZ+EdVdrNJLqSwZp5vcv60=
 golang.org/x/net v0.0.0-20181003013248-f5e5bdd77824/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+golang.org/x/net v0.0.0-20181101160248-e11730110bbd h1:CUahYPsNPTOh4Ug1YYwt0fqZMOoOvbbHnwrXTStpWzQ=
+golang.org/x/net v0.0.0-20181101160248-e11730110bbd/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/oauth2 v0.0.0-20181003184128-c57b0facaced h1:4oqSq7eft7MdPKBGQK11X9WYUxmj6ZLgGTqYIbY1kyw=
 golang.org/x/oauth2 v0.0.0-20181003184128-c57b0facaced/go.mod h1:N/0e6XlmueqKjAGxoOufVs8QHGRruUQn6yWY3a++T0U=
+golang.org/x/oauth2 v0.0.0-20181101160152-c453e0c75759 h1:TMrx+Qdx7uJAeUbv15N72h5Hmyb5+VDjEiMufAEAM04=
+golang.org/x/oauth2 v0.0.0-20181101160152-c453e0c75759/go.mod h1:N/0e6XlmueqKjAGxoOufVs8QHGRruUQn6yWY3a++T0U=
