@@ -161,15 +161,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                email:
-                  description: Email address associated to the User
-                  type: string
-                  example: "user@example.com"
-                password:
-                  description: Password associated to User
-                  type: string
-                  example: long_passphrase_unique_per_site
+              $ref: '#/components/requestBodies/Login'
       responses:
         '200':
           description: Successful login
@@ -225,23 +217,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                firstName:
-                  type: string
-                  description: Legal first name
-                  example: Jane
-                lastName:
-                  type: string
-                  description: Legal last name
-                  example: Doe
-                phone:
-                  type: string
-                  description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
-                  example: 555.555.5555
-                companyUrl:
-                  description: Company URL associated to user
-                  type: string
-                  format: uri
+              $ref: '#/components/requestBodies/UserProfile'
       responses:
         '200':
           description: User profile updated
@@ -2413,6 +2389,24 @@ components:
             - "reoccurring"
           example: single
   requestBodies:
+    Login:
+      description: Credentials used to authentivate to the Moov API
+      required: true
+      content:
+        application/json:
+          schema:
+            properties:
+              email:
+                description: Email address associated to the User
+                type: string
+                example: "user@example.com"
+              password:
+                description: Password associated to User
+                type: string
+                example: long_passphrase_unique_per_site
+            required:
+              - email
+              - password
     User:
       description: A Moov API User object
       required: true
@@ -2446,6 +2440,29 @@ components:
               - firstName
               - lastName
               - phone
+    UserProfile:
+      description: A JSON object with updates to a User profile
+      required: true
+      content:
+        application/json:
+          schema:
+            properties:
+              firstName:
+                type: string
+                description: Legal first name
+                example: Jane
+              lastName:
+                type: string
+                description: Legal last name
+                example: Doe
+              phone:
+                type: string
+                description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
+                example: 555.555.5555
+              companyUrl:
+                description: Company URL associated to user
+                type: string
+                format: uri
     File:
       description: A JSON object containing a new File
       required: true
