@@ -6,7 +6,7 @@ COPY openapi.yaml openapi.yaml
 RUN speccy lint openapi.yaml
 RUN redoc-cli bundle openapi.yaml
 
-FROM nginx:1.15
+FROM nginx:1.15.6
 RUN chmod 777 -R /var/cache/nginx/
 COPY nginx/nginx.conf /opt/nginx/nginx.conf
 COPY nginx/default.conf /opt/nginx/conf.d/default.conf
