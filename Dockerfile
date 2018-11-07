@@ -1,5 +1,5 @@
 FROM node:8-jessie as builder
-RUN npm update -g && npm install -g --save mobx styled-components react react-dom redoc@1.22.2 redoc-cli speccy
+RUN npm update -g && npm install -g --save mobx styled-components react react-dom redoc redoc-cli@0.7.0 speccy core-js rxjs typescript mobx
 
 COPY openapi.yaml openapi.yaml
 
