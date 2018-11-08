@@ -1201,7 +1201,7 @@ paths:
       tags:
       - Depositories
       summary: Initiates micro deposits to be sent to the Depository institution for account validation
-      operationId: createMicroDeposits
+      operationId: initiateMicroDeposits
       security:
         - bearerAuth: []
         - cookieAuth: []
@@ -1213,27 +1213,46 @@ paths:
           schema:
             type: string
             example: feb492e6
-        - name: amounts
-          in: query
-          description: amounts that have been deposited
-          schema:
-            type: array
-            items:
-              type: string
-              example: "USD 0.02"
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestId'
       responses:
         '200':
-          description: Micro deposits verified
-          headers:
-            Location:
-              description: The location of the new resource
-              schema:
-                type: string
-                format: uri
-        '201':
           description: Micro deposits initiated
+        '400':
+          description: Problem initiating micro deposts, see error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/ach/depositories/{depositoryId}/micro-deposits/confirm:
+    post:
+      tags:
+        - Depositories
+      summary: Confirm micro deposit amounts after they have been posted to the depository account
+      operationId:
+        confirmMicroDeposits
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - name: depositoryId
+          in: path
+          description: Depository ID
+          required: true
+          schema:
+            type: string
+            example: 978e6ddb
+        - $ref: '#/components/parameters/idempotencyKey'
+        - $ref: '#/components/parameters/requestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Amounts'
+      responses:
+        '200':
+          description: Micro deposits confirmed
         '400':
           description: Invalid Amounts
         '404':
@@ -1630,6 +1649,16 @@ paths:
 # COMPONENTS
 components:
   schemas:
+    Amounts:
+      description: A JSON array of currency amounts
+      required:
+        - amounts
+      properties:
+        amounts:
+          type: array
+          items:
+            type: string
+          example: ["USD 0.02", "USD -0.03"]
     OAuth2Client:
       properties:
         client_id:
