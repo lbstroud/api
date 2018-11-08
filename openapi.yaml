@@ -372,7 +372,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/File'
+              $ref: '#/components/schemas/CreateFile'
               description: JSON File structure
           text/plain:
             schema:
@@ -447,7 +447,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/File'
+              $ref: '#/components/schemas/CreateFile'
       responses:
         '201':
           description: A JSON object containing a new File
@@ -1677,6 +1677,26 @@ components:
           type: string
           format: date-time
           example: 2018-10-03T22:35:06
+    CreateFile:
+      properties:
+        id:
+          type: string
+          description: File ID
+          example: 3f2d23ee214
+        fileHeader:
+          $ref: '#/components/schemas/FileHeader'
+        batches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Batch'
+        IATBatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/IATBatch'
+        fileControl:
+          $ref: '#/components/schemas/FileControl'
+      required:
+        - fileHeader
     File:
       properties:
         id:
@@ -2463,40 +2483,6 @@ components:
                 description: Company URL associated to user
                 type: string
                 format: uri
-    File:
-      description: A JSON object containing a new File
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              immediateOrigin:
-                type: string
-                description: contains the Routing Number of the ACH Operator or sending point that is sending the file.
-                minLength: 9
-                maxLength: 10
-                example: "99991234"
-              immediateOriginName:
-                type: string
-                description: The name of the ACH operator or sending point that is sending the file.
-                maxLength: 23
-                example: My Bank Name
-              immediateDestination:
-                type: string
-                maxLength: 10
-                minLength: 9
-                example: "69100013"
-                description: contains the Routing Number of the ACH Operator or receiving point to which the file is being sent
-              immediateDestinationName:
-                type: string
-                description: The name of the ACH or receiving point for which that file is destined.
-                maxLength: 23
-                example: Federal Reserve Bank
-            required:
-              - immediateOrigin
-              - immediateOriginName
-              - immediateDestination
-              - immediateDestinationName
     Originator:
       description: A JSON object containing a new Originator
       required: true
