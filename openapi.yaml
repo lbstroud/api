@@ -103,6 +103,7 @@ paths:
       operationId: createUser
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
       requestBody:
         required: true
         content:
@@ -155,6 +156,7 @@ paths:
       operationId: userLogin
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
       requestBody:
         description: Authenticating with an email and password
         required: true
@@ -203,6 +205,7 @@ paths:
       security:
         - cookieAuth: []
       parameters:
+        - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestId'
         - name: user_id
           in: path
@@ -265,6 +268,7 @@ paths:
         - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
       responses:
         '200':
           description: Created OAuth2 client credentials
@@ -288,6 +292,7 @@ paths:
         - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
         - name: grant_type
           in: query
           description: OAuth2 grant type (must be 'client_credentials')
@@ -366,6 +371,7 @@ paths:
         - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
       requestBody:
         description: Content of the ACH file (in json or raw text)
         required: true
@@ -435,6 +441,7 @@ paths:
         - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
         - name: file_id
           in: path
           description: File ID
@@ -582,6 +589,7 @@ paths:
         - cookieAuth: []
       parameters:
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
         - name: file_id
           in: path
           description: File ID
@@ -1404,6 +1412,7 @@ paths:
             type: string
             example: 33164ac6
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
       responses:
         '200':
           description: TODO, check error json
@@ -1427,6 +1436,7 @@ paths:
             type: string
             example: 33164ac6
         - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/idempotencyKey'
       responses:
         '200':
           description: The ACH files generated for a transfer.
