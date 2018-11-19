@@ -379,7 +379,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateFile'
-              description: JSON File structure
           text/plain:
             schema:
               description: A plaintext ACH file
@@ -2046,10 +2045,6 @@ components:
           type: string
           description: Category defines if the entry is a Forward, Return, or NOC
           example: Forward
-    EntryDetails:
-      type: array
-      items:
-        $ref: '#/components/schemas/EntryDetail'
     Addendum:
       required:
         - typeCode
