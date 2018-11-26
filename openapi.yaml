@@ -43,6 +43,7 @@ info:
     Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.
 
     The following order of API operations is suggested to start developing against the Moov API:
+
     1. [Create a Moov API user](#operation/createUser) with a unique email address
     1. [Login with user/password credentials](#operation/userLogin)
     1. [Create an OAuth2 client](#operation/createOAuth2Client) and [Generate an OAuth access token](#operation/createOAuth2Token)
@@ -50,6 +51,8 @@ info:
        - [Originator](#operation/addOriginator) and [Originator Depository](#operation/addDepository) (requires micro deposit setup)
        - [Customer](#operation/addCustomers) and [Customer Depository](#operation/addDepository) (requires micro deposit setup)
     1. [Submit the Transfer](#operation/addTransfer)
+
+    After signup clients can [submit ACH files](#operation/addFile) (either in JSON or plaintext) for [validation](#operation/validateFile) and [tabulation](#operation/getFileContents).
 
     The Moov API offers many services:
     - Automated Clearing House (ACH) origination and file management
