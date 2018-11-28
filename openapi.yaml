@@ -1731,6 +1731,7 @@ components:
           type: string
           example: Swift
         phone:
+          type: string
           description: Phone number associated to user
           example: 555.555.5555
         companyUrl:
