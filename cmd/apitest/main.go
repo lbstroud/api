@@ -38,6 +38,8 @@ var (
 
 func main() {
 	flag.Parse()
+
+	log.SetFlags(log.Ldate | log.Ltime | log.LUTC | log.Lmicroseconds | log.Lshortfile)
 	log.Printf("Starting apitest %s", version.Version)
 
 	ctx := context.TODO()
