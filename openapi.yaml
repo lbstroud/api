@@ -126,7 +126,7 @@ paths:
         '200':
           description: User object
           content:
-            application/json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/User'
         '400':
