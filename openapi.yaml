@@ -175,7 +175,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Login'
+              $ref: '#/components/schemas/Login'
       responses:
         '200':
           description: Successful login
@@ -1704,6 +1704,16 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/OAuth2Client'
+    Login:
+      properties:
+        email:
+          description: Email address associated to the User
+          type: string
+          example: "user@example.com"
+        password:
+          description: Password associated to User
+          type: string
+          example: long_passphrase_unique_per_site
     User:
       properties:
         id:
@@ -1733,6 +1743,24 @@ components:
           type: string
           format: date-time
           example: 2018-10-03T22:35:06
+    UserProfile:
+      properties:
+        firstName:
+          type: string
+          description: Legal first name
+          example: Jane
+        lastName:
+          type: string
+          description: Legal last name
+          example: Doe
+        phone:
+          type: string
+          description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
+          example: 555.555.5555
+        companyUrl:
+          description: Company URL associated to user
+          type: string
+          format: uri
     CreateFile:
       properties:
         id:
@@ -2466,15 +2494,7 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              email:
-                description: Email address associated to the User
-                type: string
-                example: "user@example.com"
-              password:
-                description: Password associated to User
-                type: string
-                example: long_passphrase_unique_per_site
+            $ref: '#/components/schemas/Login'
             required:
               - email
               - password
@@ -2517,23 +2537,7 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              firstName:
-                type: string
-                description: Legal first name
-                example: Jane
-              lastName:
-                type: string
-                description: Legal last name
-                example: Doe
-              phone:
-                type: string
-                description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
-                example: 555.555.5555
-              companyUrl:
-                description: Company URL associated to user
-                type: string
-                format: uri
+            $ref: '#/components/schemas/UserProfile'
     Originator:
       description: A JSON object containing a new Originator
       required: true
