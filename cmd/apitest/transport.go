@@ -10,12 +10,13 @@ import (
 )
 
 var (
-	// localhostOverrides is a mapping of $app (from /v1/$app/* paths) to port.
+	// localhostOverrides is a mapping of $app (from /v1/$app/* paths) to port and path.
 	localhostOverrides = map[string]string{
-		"ach":     "8080",
-		"auth":    "8081",
-		"paygate": "8082",
-		"x9":      "8083",
+		"ach":     ":8080",
+		"auth":    ":8081",
+		"paygate": ":8082",
+		"users":   ":8081/users/",
+		"x9":      ":8083",
 	}
 )
 
@@ -41,13 +42,18 @@ func (t *localPathTransport) RoundTrip(r *http.Request) (*http.Response, error) 
 		return t.tr.RoundTrip(r)
 	}
 
-	if port, exists := localhostOverrides[parts[2]]; exists {
-		r.URL.Host = "localhost:" + port
+	if over, exists := localhostOverrides[parts[2]]; exists {
 		r.URL.Scheme = "http"
-	}
 
-	// fixup our path now
-	r.URL.Path = "/" + strings.Join(parts[3:], "/") // everything after $app
+		idx := strings.Index(over, "/")
+		if idx > -1 {
+			r.URL.Host = "localhost" + over[:idx]
+			r.URL.Path = over[idx:] + strings.Join(parts[3:], "/")
+		} else {
+			r.URL.Host = "localhost" + over
+			r.URL.Path = "/" + strings.Join(parts[3:], "/") // everything after $app
+		}
+	}
 
 	return t.tr.RoundTrip(r)
 }
