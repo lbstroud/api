@@ -16,7 +16,19 @@ func TestLocalPathTransport(t *testing.T) {
 		tr: &http.Transport{},
 	}
 
-	resp, _ := tr.RoundTrip(r)
+	svc := &http.Server{
+		Addr: ":8080",
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("pong"))
+		}),
+	}
+	go svc.ListenAndServe()
+	defer svc.Close()
+
+	resp, err := tr.RoundTrip(r)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if resp.Request.URL.Path != "/files/fileId" {
 		t.Errorf("got %s", resp.Request.URL.Path)
