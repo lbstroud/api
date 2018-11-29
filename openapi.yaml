@@ -121,7 +121,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/User'
+              $ref: '#/components/requestBodies/CreateUser'
       responses:
         '200':
           description: User object
@@ -1762,6 +1762,28 @@ components:
           description: Company URL associated to user
           type: string
           format: uri
+    CreateUser:
+      properties:
+        email:
+          description: Email address associated to the User
+          type: string
+        password:
+          description: Password associated to User
+          type: string
+        firstName:
+          type: string
+          description: Legal first name
+        lastName:
+          type: string
+          description: Legal last name
+        phone:
+          type: string
+          description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
+          example: 555.555.5555
+        companyUrl:
+          description: Company URL associated to user
+          type: string
+          format: uri
     CreateFile:
       properties:
         id:
@@ -2499,33 +2521,13 @@ components:
             required:
               - email
               - password
-    User:
+    CreateUser:
       description: A Moov API User object
       required: true
       content:
         application/json:
           schema:
-            properties:
-              email:
-                description: Email address associated to the User
-                type: string
-              password:
-                description: Password associated to User
-                type: string
-              firstName:
-                type: string
-                description: Legal first name
-              lastName:
-                type: string
-                description: Legal last name
-              phone:
-                type: string
-                description: Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
-                example: 555.555.5555
-              companyUrl:
-                description: Company URL associated to user
-                type: string
-                format: uri
+            $ref: '#/components/schemas/CreateUser'
             required:
               - email
               - password
