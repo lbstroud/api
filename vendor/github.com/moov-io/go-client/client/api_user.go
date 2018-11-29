@@ -117,7 +117,7 @@ func (a *UserApiService) CheckUserLogin(ctx context.Context, localVarOptionals *
 /*
 UserApiService Create a new user using an email address not seen before.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param user
+ * @param createUser
  * @param optional nil or *CreateUserOpts - Optional Parameters:
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
@@ -129,7 +129,7 @@ type CreateUserOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *UserApiService) CreateUser(ctx context.Context, user User, localVarOptionals *CreateUserOpts) (User, *http.Response, error) {
+func (a *UserApiService) CreateUser(ctx context.Context, createUser CreateUser, localVarOptionals *CreateUserOpts) (User, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -156,7 +156,7 @@ func (a *UserApiService) CreateUser(ctx context.Context, user User, localVarOpti
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
+	localVarHttpHeaderAccepts := []string{"text/plain", "application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -170,7 +170,7 @@ func (a *UserApiService) CreateUser(ctx context.Context, user User, localVarOpti
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
 	}
 	// body params
-	localVarPostBody = &user
+	localVarPostBody = &createUser
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err

@@ -1,9 +1,15 @@
 github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6 h1:uZuxRZCz65cG1o6K/xUqImNcYKtmk9ylqaH0itMSvzA=
 github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6/go.mod h1:V8iCPQYkqmusNa815XgQio277wI47sdRh1dUOLdyC6Q=
+github.com/docker/docker v1.13.1 h1:5VBhsO6ckUxB0A8CE5LlUJdXzik9cbEbBTQ/ggeml7M=
+github.com/docker/docker v1.13.1/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
-github.com/moov-io/go-client v0.0.0-20181128212140-97e46c35dd04 h1:w3jKYyf7G2tUJdzCSGStQOsxTXWdFN+SmfP5gqBywG4=
-github.com/moov-io/go-client v0.0.0-20181128212140-97e46c35dd04/go.mod h1:NbwnxycXfl1NWpvzLc81AWT5krubRA90qknbRW8R+Zo=
+github.com/moov-io/go-client v0.0.0-20181128234209-171c5c6e9144 h1:cOpGNJuimxTsgNxzRuiH0Sg8u6h8CgW55OmDfX+MKno=
+github.com/moov-io/go-client v0.0.0-20181128234209-171c5c6e9144/go.mod h1:NbwnxycXfl1NWpvzLc81AWT5krubRA90qknbRW8R+Zo=
+github.com/moov-io/go-client v0.0.0-20181128235221-d887ae00fed6 h1:eHKvyqO16xneAiSMsA/80yv7yULQEgjt2e5RjfyquOk=
+github.com/moov-io/go-client v0.0.0-20181128235221-d887ae00fed6/go.mod h1:NbwnxycXfl1NWpvzLc81AWT5krubRA90qknbRW8R+Zo=
+github.com/moov-io/go-client v0.0.0-20181129000043-a64195f1f820 h1:wjLktqI63VdpzhnH8Rsdw7ubFLzL254Td/jNz2PAK/M=
+github.com/moov-io/go-client v0.0.0-20181129000043-a64195f1f820/go.mod h1:NbwnxycXfl1NWpvzLc81AWT5krubRA90qknbRW8R+Zo=
 golang.org/x/net v0.0.0-20180724234803-3673e40ba225/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20181102091132-c10e9556a7bc h1:ZMCWScCvS2fUVFw8LOpxyUUW5qiviqr4Dg5NdjLeiLU=
 golang.org/x/net v0.0.0-20181102091132-c10e9556a7bc/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=

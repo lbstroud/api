@@ -10,21 +10,17 @@
 
 package openapi
 
-import (
-	"time"
-)
-
-type User struct {
-	// Moov API user ID
-	Id string `json:"id,omitempty"`
-	// Email address associated to the user
-	Email     string `json:"email,omitempty"`
+type CreateUser struct {
+	// Email address associated to the User
+	Email string `json:"email,omitempty"`
+	// Password associated to User
+	Password string `json:"password,omitempty"`
+	// Legal first name
 	FirstName string `json:"firstName,omitempty"`
-	LastName  string `json:"lastName,omitempty"`
-	// Phone number associated to user
+	// Legal last name
+	LastName string `json:"lastName,omitempty"`
+	// Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
 	Phone string `json:"phone,omitempty"`
 	// Company URL associated to user
 	CompanyUrl string `json:"companyUrl,omitempty"`
-	// Timestamp of when user was created
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 }

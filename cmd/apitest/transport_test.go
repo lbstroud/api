@@ -16,6 +16,15 @@ func TestLocalPathTransport(t *testing.T) {
 		tr: &http.Transport{},
 	}
 
+	svc := &http.Server{
+		Addr: ":8080",
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("pong"))
+		}),
+	}
+	go svc.ListenAndServe()
+	defer svc.Close()
+
 	resp, err := tr.RoundTrip(r)
 	if err != nil {
 		t.Fatal(err)

@@ -95,6 +95,7 @@ Class | Method | HTTP request | Description
  - [BatchHeader](docs/BatchHeader.md)
  - [Batches](docs/Batches.md)
  - [CreateFile](docs/CreateFile.md)
+ - [CreateUser](docs/CreateUser.md)
  - [Customer](docs/Customer.md)
  - [Customers](docs/Customers.md)
  - [Depositories](docs/Depositories.md)

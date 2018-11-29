@@ -85,6 +85,13 @@ func main() {
 	if err := pingApps(ctx, api, requestId); err != nil {
 		log.Fatal(err)
 	}
+
+	// Create our random user
+	userId, email, err := createUser(ctx, api, requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created user %s (email: %s)", userId, email)
 }
 
 // generateID creates a unique random string

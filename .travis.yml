@@ -11,4 +11,5 @@ osx_image: xcode9.1
 before_script:
   - go get -u github.com/moov-io/go-client/client
 script:
+  - go test ./...
   - make build

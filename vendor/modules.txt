@@ -1,8 +1,11 @@
 # github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 github.com/antihax/optional
+# github.com/docker/docker v1.13.1
+github.com/docker/docker/pkg/namesgenerator
+github.com/docker/docker/pkg/random
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
-# github.com/moov-io/go-client v0.0.0-20181128212140-97e46c35dd04
+# github.com/moov-io/go-client v0.0.0-20181129000043-a64195f1f820
 github.com/moov-io/go-client/client
 # golang.org/x/net v0.0.0-20181114220301-adae6a3d119a
 golang.org/x/net/context/ctxhttp
