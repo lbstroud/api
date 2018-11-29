@@ -5,8 +5,6 @@ github.com/docker/docker/pkg/namesgenerator
 github.com/docker/docker/pkg/random
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
-# github.com/moov-io/base v0.0.0-20181127010612-e1e22f6949b7
-github.com/moov-io/base/http/bind
 # github.com/moov-io/go-client v0.0.0-20181129000043-a64195f1f820
 github.com/moov-io/go-client/client
 # golang.org/x/net v0.0.0-20181114220301-adae6a3d119a

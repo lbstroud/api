@@ -5,11 +5,18 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
+)
 
-	"github.com/moov-io/base/http/bind"
+var (
+	// localhostOverrides is a mapping of $app (from /v1/$app/* paths) to port.
+	localhostOverrides = map[string]string{
+		"ach":     "8080",
+		"auth":    "8081",
+		"paygate": "8082",
+		"x9":      "8083",
+	}
 )
 
 type localPathTransport struct {
@@ -34,13 +41,10 @@ func (t *localPathTransport) RoundTrip(r *http.Request) (*http.Response, error) 
 		return t.tr.RoundTrip(r)
 	}
 
-	port := bind.HTTP(parts[2])
-	if port == "" {
-		return nil, fmt.Errorf("unknown HTTP port for %s", parts[2])
+	if port, exists := localhostOverrides[parts[2]]; exists {
+		r.URL.Host = "localhost:" + port
+		r.URL.Scheme = "http"
 	}
-
-	r.URL.Host = "localhost" + port
-	r.URL.Scheme = "http"
 
 	// fixup our path now
 	r.URL.Path = "/" + strings.Join(parts[3:], "/") // everything after $app
