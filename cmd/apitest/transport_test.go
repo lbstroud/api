@@ -16,10 +16,7 @@ func TestLocalPathTransport(t *testing.T) {
 		tr: &http.Transport{},
 	}
 
-	resp, err := tr.RoundTrip(r)
-	if err != nil {
-		t.Fatal(err)
-	}
+	resp, _ := tr.RoundTrip(r)
 
 	if resp.Request.URL.Path != "/files/fileId" {
 		t.Errorf("got %s", resp.Request.URL.Path)
