@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/moov-io/base/http/bind"
 )
 
 func TestLocalPathTransport(t *testing.T) {
@@ -17,7 +19,7 @@ func TestLocalPathTransport(t *testing.T) {
 	}
 
 	svc := &http.Server{
-		Addr: ":8080",
+		Addr: bind.HTTP("ach"),
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("pong"))
 		}),
