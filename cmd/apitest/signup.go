@@ -43,12 +43,14 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (str
 		XRequestId:      optional.NewString(requestId),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
-	if err != nil {
-		if !strings.Contains(err.Error(), "undefined response type") && resp.StatusCode >= 400 {
+	if err != nil && !strings.Contains(err.Error(), "undefined response type") {
+		if resp != nil && resp.StatusCode >= 400 {
 			log.Fatalf("problem creating user %s: %v", req.Email, err)
 		}
 	}
-	resp.Body.Close()
+	if resp != nil {
+		resp.Body.Close()
+	}
 
 	// Now login
 	login := moov.Login{Email: req.Email, Password: *flagPassword}
