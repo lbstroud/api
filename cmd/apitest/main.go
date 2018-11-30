@@ -94,9 +94,7 @@ func main() {
 	log.Printf("Created user %s (email: %s)", user.ID, user.Email)
 
 	// Add moov_auth cookie on every request from now on
-	if user.Cookie.Value != "" {
-		conf.AddDefaultHeader("Cookie", fmt.Sprintf("moov_auth=%s", user.Cookie.Value))
-	}
+	setMoovCookie(conf, user.Cookie)
 
 	// Verify Cookie works
 	if err := verifyUserIsLoggedIn(ctx, api, user, requestId); err != nil {

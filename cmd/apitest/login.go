@@ -7,13 +7,23 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
 )
 
-func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *User, requestId string) error {
+// setMoovCookie adds authentication onto our Moov API client for all requests
+func setMoovCookie(conf *moov.Configuration, cookie *http.Cookie) {
+	if cookie.Value != "" {
+		conf.AddDefaultHeader("Cookie", fmt.Sprintf("moov_auth=%s", cookie.Value))
+	}
+}
+
+// verifyUserIsLoggedIn takes the given moov.APIClient and checks if it's is logged in. A non-nil error signals
+// the client doens't have valid authentication.
+func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, requestId string) error {
 	resp, err := api.UserApi.CheckUserLogin(ctx, &moov.CheckUserLoginOpts{
 		XRequestId: optional.NewString(requestId),
 	})
