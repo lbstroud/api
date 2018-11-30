@@ -31,6 +31,9 @@ func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, 
 		return fmt.Errorf("problem checking user (id=%s) login: %v", user.ID, err)
 	}
 	if resp != nil {
+		if resp.StatusCode != 200 {
+			return fmt.Errorf("on cookie check, got %s status", resp.Status)
+		}
 		return resp.Body.Close()
 	}
 	return nil
