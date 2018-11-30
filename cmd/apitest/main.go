@@ -56,7 +56,7 @@ func main() {
 		conf.BasePath = *flagApiAddress
 	}
 	log.Printf("Using %s as base API address", conf.BasePath)
-	conf.UserAgent = fmt.Sprintf("apitest/%s", version.Version)
+	conf.UserAgent = fmt.Sprintf("moov apitest/%s", version.Version)
 
 	// setup HTTP client
 	conf.HTTPClient = &http.Client{
@@ -101,6 +101,14 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("Cookie works for user %s", user.ID)
+
+	// Create Originator Depository
+	origFI := &fiInfo{Name: "orig bank", AccountNumber: "132", RoutingNumber: "121042882"}
+	origDep, err := createDepository(ctx, api, user, origFI, requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created Originator Depository (id=%s) for user", origDep.Id)
 }
 
 // generateID creates a unique random string

@@ -32,6 +32,7 @@ var (
 type user struct {
 	ID    string
 	Email string
+	Name  string
 
 	Cookie *http.Cookie
 }
@@ -71,6 +72,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 	}
 	return &user{
 		ID:     u.Id,
+		Name:   fmt.Sprintf("%s %s", u.FirstName, u.LastName),
 		Email:  u.Email,
 		Cookie: findMoovCookie(resp.Cookies()),
 	}, nil
