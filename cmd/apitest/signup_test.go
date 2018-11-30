@@ -5,10 +5,34 @@
 package main
 
 import (
+	"net/http"
 	"strings"
 	"testing"
 	"unicode/utf8"
 )
+
+func TestSignup__findMoovCookie(t *testing.T) {
+	var cookies []*http.Cookie
+	cookies = append(cookies, &http.Cookie{
+		Name:  "moov_auth",
+		Value: "foobar",
+	})
+
+	// happy path
+	cookie := findMoovCookie(cookies)
+	if cookie == nil {
+		t.Fatal("should have found moov_auth")
+	}
+	if cookie.Value != "foobar" {
+		t.Fatalf("expected foobar got %s", cookie.Value)
+	}
+
+	// non happy path
+	cookie = findMoovCookie(nil)
+	if cookie != nil {
+		t.Errorf("cookie shouldn't have been found, got %s", cookie.String())
+	}
+}
 
 func TestSignup__email(t *testing.T) {
 	v := email("Jane", "Doe")

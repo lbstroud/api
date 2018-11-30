@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 
@@ -28,9 +29,15 @@ var (
 	flagPassword = flag.String("user.password", "password", "Password to set for user")
 )
 
+type user struct {
+	ID    string
+	Email string
+
+	Cookie *http.Cookie
+}
+
 // createUser randomly generates a user (with profile data) and creates it against the given Moov API.
-// Returned is the User's Id and Email address
-func createUser(ctx context.Context, api *moov.APIClient, requestId string) (string, string, error) {
+func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*user, error) {
 	first, last := name()
 	req := moov.CreateUser{
 		Email:     email(first, last),
@@ -52,7 +59,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (str
 
 	// Now login
 	login := moov.Login{Email: req.Email, Password: *flagPassword}
-	user, resp, err := api.UserApi.UserLogin(ctx, login, &moov.UserLoginOpts{
+	u, resp, err := api.UserApi.UserLogin(ctx, login, &moov.UserLoginOpts{
 		XRequestId:      optional.NewString(requestId),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
@@ -62,13 +69,37 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (str
 	if resp != nil {
 		defer resp.Body.Close()
 	}
-	return user.Id, user.Email, nil
+	return &user{
+		ID:     u.Id,
+		Email:  u.Email,
+		Cookie: findMoovCookie(resp.Cookies()),
+	}, nil
 }
 
+// findMoovCookie pulls out the Moov API cookie. It's designed to be used
+// directly from *http.Response.Cookies()
+func findMoovCookie(cookies []*http.Cookie) *http.Cookie {
+	for i := range cookies {
+		if cookies[i].Name == "moov_auth" {
+			return cookies[i]
+		}
+	}
+	return nil
+}
+
+// email creates an email address of the form X.YD@example.com
+// X - first name
+// Y - last name
+// D - random int between 0 and 50
+//
+// An email address returned is not guarenteed to be unique.
 func email(first, last string) string {
 	return fmt.Sprintf("%s.%s%d@example.com", strings.ToLower(first), strings.ToLower(last), randSource.Int63()%50)
 }
 
+// name generates a random first and last name
+//
+// The names come from a fixed list so overlaps are probable.
 func name() (string, string) {
 	parts := strings.Split(namesgenerator.GetRandomName(0), "_")
 	if len(parts) != 2 {
@@ -77,6 +108,7 @@ func name() (string, string) {
 	return strings.Title(parts[0]), strings.Title(parts[1])
 }
 
+// phone generates a random phone number accepted by the Moov API in the form XXX.YYY.ZZZZ
 func phone() string {
 	tpl, out := "XXX.XXX.XXXX", ""
 	for _, c := range tpl {
