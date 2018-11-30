@@ -82,8 +82,23 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 	return nil
 }
 
-// Create Originator
-// curl -s -o /tmp/paygate/orig.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/originators --data "{\"defaultDepository\": \"$origDepId\", \"identification\": \"12104288\"}"
+func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId string) (moov.Originator, error) {
+	req := moov.Originator{
+		DefaultDepository: depId,
+		Identification:    "123-45-6789", // SSN
+	}
+	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, req, &moov.AddOriginatorOpts{
+		XIdempotencyKey: optional.NewString(generateID()),
+		XRequestId:      optional.NewString(requestId),
+	})
+	if err != nil {
+		return orig, fmt.Errorf("problem creating originator: %v", err)
+	}
+	if resp != nil {
+		resp.Body.Close()
+	}
+	return orig, nil
+}
 
 // Create Customer Depository
 // curl -s -o /tmp/paygate/custDep.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/depositories --data '{"bankName":"cust bank", "holder": "you", "holderType": "individual", "type": "Checking", "routingNumber": "231380104", "accountNumber": "451"}'

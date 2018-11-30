@@ -109,6 +109,13 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("Created Originator Depository (id=%s) for user", origDep.Id)
+
+	// Create Originator
+	orig, err := createOriginator(ctx, api, origDep.Id, requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created Originator (id=%s) for user", orig.Id)
 }
 
 // generateID creates a unique random string
