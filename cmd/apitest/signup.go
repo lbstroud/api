@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 
@@ -28,9 +29,16 @@ var (
 	flagPassword = flag.String("user.password", "password", "Password to set for user")
 )
 
+type User struct {
+	ID    string
+	Email string
+
+	Cookie *http.Cookie
+}
+
 // createUser randomly generates a user (with profile data) and creates it against the given Moov API.
 // Returned is the User's Id and Email address
-func createUser(ctx context.Context, api *moov.APIClient, requestId string) (string, string, error) {
+func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*User, error) {
 	first, last := name()
 	req := moov.CreateUser{
 		Email:     email(first, last),
@@ -62,7 +70,20 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (str
 	if resp != nil {
 		defer resp.Body.Close()
 	}
-	return user.Id, user.Email, nil
+	return &User{
+		ID:     user.Id,
+		Email:  user.Email,
+		Cookie: findMoovCookie(resp.Cookies()),
+	}, nil
+}
+
+func findMoovCookie(cookies []*http.Cookie) *http.Cookie {
+	for i := range cookies {
+		if cookies[i].Name == "moov_auth" {
+			return cookies[i]
+		}
+	}
+	return nil
 }
 
 func email(first, last string) string {
