@@ -2368,7 +2368,7 @@ components:
           type: string
           description: Optional ID to uniquely identify this transfer. If omitted, one will be generated
           example: 33164ac6
-        type:
+        transferType:
           type: string
           enum:
             - "push"
@@ -2644,7 +2644,7 @@ components:
         application/json:
           schema:
             properties:
-              type:
+              transferType:
                 type: string
                 enum:
                   - "push"
