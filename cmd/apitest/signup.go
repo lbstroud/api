@@ -8,7 +8,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -32,6 +31,7 @@ var (
 type user struct {
 	ID    string
 	Email string
+	Name  string
 
 	Cookie *http.Cookie
 }
@@ -51,7 +51,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
-		log.Fatalf("problem creating user: %v", err)
+		return nil, fmt.Errorf("problem creating user: %v", err)
 	}
 	if resp != nil {
 		defer resp.Body.Close()
@@ -64,13 +64,14 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
-		log.Fatalf("problem logging in for user: %v", err)
+		return nil, fmt.Errorf("problem logging in for user: %v", err)
 	}
 	if resp != nil {
 		defer resp.Body.Close()
 	}
 	return &user{
 		ID:     u.Id,
+		Name:   fmt.Sprintf("%s %s", u.FirstName, u.LastName),
 		Email:  u.Email,
 		Cookie: findMoovCookie(resp.Cookies()),
 	}, nil
