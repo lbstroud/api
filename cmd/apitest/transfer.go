@@ -100,15 +100,44 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId
 	return orig, nil
 }
 
-// Create Customer Depository
-// curl -s -o /tmp/paygate/custDep.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/depositories --data '{"bankName":"cust bank", "holder": "you", "holderType": "individual", "type": "Checking", "routingNumber": "231380104", "accountNumber": "451"}'
+func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, requestId string) (moov.Customer, error) {
+	req := moov.Customer{
+		Email:             fmt.Sprintf("%s+apitest@moov.io", u.Name),
+		DefaultDepository: depId,
+	}
+	cust, resp, err := api.CustomersApi.AddCustomers(ctx, req, &moov.AddCustomersOpts{
+		XIdempotencyKey: optional.NewString(generateID()),
+		XRequestId:      optional.NewString(requestId),
+	})
+	if err != nil {
+		return cust, fmt.Errorf("problem creating customer: %v", err)
+	}
+	if resp != nil {
+		resp.Body.Close()
+	}
+	return cust, nil
+}
 
-// Verify Customer Depository
-// curl -s -o /tmp/paygate/custDep-initverify.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/depositories/"$custDepId"/micro-deposits --data '{"amounts": ["USD 0.01", "USD 0.03"]}'
-// curl -s -o /tmp/paygate/custDep-verify.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/depositories/"$custDepId"/micro-deposits/confirm --data '{"amounts": ["USD 0.01", "USD 0.03"]}'
-
-// Create Customer
-// curl -s -o /tmp/paygate/cust.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/customers --data "{\"defaultDepository\": \"$custDepId\", \"email\": \"test@moov.io\"}"
-
-// Create Transfer
-// curl -s -o /tmp/paygate/transfer.json -XPOST -H "x-user-id: $userId" -H "x-request-id: $requestId" http://localhost:8082/transfers --data "{\"transferType\": \"push\", \"amount\": \"USD 78.54\", \"originator\": \"$orig\", \"originatorDepository\": \"$origDepId\", \"customer\": \"$cust\", \"customerDepository\": \"$custDepId\", \"description\": \"test payment\", \"standardEntryClassCode\": \"PPD\"}"
+func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
+	req := moov.Transfer{
+		Type:                   "Push",
+		Amount:                 amount,
+		Originator:             orig.Id,
+		OriginatorDepository:   orig.DefaultDepository,
+		Customer:               cust.Id,
+		CustomerDepository:     cust.DefaultDepository,
+		Description:            "apitest transfer",
+		StandardEntryClassCode: "PPD",
+	}
+	tx, resp, err := api.TransfersApi.AddTransfer(ctx, req, &moov.AddTransferOpts{
+		XIdempotencyKey: optional.NewString(generateID()),
+		XRequestId:      optional.NewString(requestId),
+	})
+	if err != nil {
+		return tx, fmt.Errorf("problem creating transfer: %v", err)
+	}
+	if resp != nil {
+		resp.Body.Close()
+	}
+	return tx, nil
+}

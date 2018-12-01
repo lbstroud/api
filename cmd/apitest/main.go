@@ -116,6 +116,34 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("Created Originator (id=%s) for user", orig.Id)
+
+	// Create Customer Depository
+	custFI := &fiInfo{Name: "cust bank", AccountNumber: "5211", RoutingNumber: "231380104"}
+	custDep, err := createDepository(ctx, api, user, custFI, requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created Customer Depository (id=%s) for user", custDep.Id)
+
+	// Create Customer
+	cust, err := createCustomer(ctx, api, user, custDep.Id, requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created Customer (id=%s) for user", cust.Id)
+
+	// Create Transfer
+	tx, err := createTransfer(ctx, api, cust, orig, amount(), requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
+}
+
+// amount returns a random amount in string form accepted by the Moov API
+func amount() string {
+	n := float64(randSource.Int63()%2500) / 10.2 // max out at $250
+	return fmt.Sprintf("USD %.2f", n)
 }
 
 // generateID creates a unique random string
