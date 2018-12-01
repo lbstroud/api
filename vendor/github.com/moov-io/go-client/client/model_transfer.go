@@ -18,7 +18,7 @@ type Transfer struct {
 	// Optional ID to uniquely identify this transfer. If omitted, one will be generated
 	Id string `json:"id,omitempty"`
 	// Type of transaction being actioned against the receiving institution. Expected values are pull (debits) or push (credits). Only one period used to signify decimal value will be included.
-	Type string `json:"type"`
+	TransferType string `json:"transferType,omitempty"`
 	// Amount of money. USD - United States.
 	Amount string `json:"amount"`
 	// ID of the Originator account initiating the transfer.

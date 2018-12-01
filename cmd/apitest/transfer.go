@@ -120,7 +120,7 @@ func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, re
 
 func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
 	req := moov.Transfer{
-		Type:                   "Push",
+		TransferType:           "Push",
 		Amount:                 amount,
 		Originator:             orig.Id,
 		OriginatorDepository:   orig.DefaultDepository,
