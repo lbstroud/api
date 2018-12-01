@@ -8,7 +8,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -52,7 +51,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
-		log.Fatalf("problem creating user: %v", err)
+		return nil, fmt.Errorf("problem creating user: %v", err)
 	}
 	if resp != nil {
 		defer resp.Body.Close()
@@ -65,7 +64,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
-		log.Fatalf("problem logging in for user: %v", err)
+		return nil, fmt.Errorf("problem logging in for user: %v", err)
 	}
 	if resp != nil {
 		defer resp.Body.Close()
