@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	moov "github.com/moov-io/go-client/client"
@@ -18,6 +19,8 @@ import (
 func setMoovCookie(conf *moov.Configuration, cookie *http.Cookie) {
 	if cookie.Value != "" {
 		conf.AddDefaultHeader("Cookie", fmt.Sprintf("moov_auth=%s", cookie.Value))
+	} else {
+		log.Fatal("no cookie found")
 	}
 }
 
