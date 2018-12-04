@@ -15,8 +15,11 @@ import (
 	"github.com/antihax/optional"
 )
 
+// OAuthToken token holds various values from the OAuth2 Token generation.
+// These values include: access token, expires, refresh token, etc..
 type OAuthToken map[string]interface{}
 
+// Get returns a specific OAuth2 token or value by their given name.
 func (o OAuthToken) Get(name string) string {
 	v, ok := o[name].(string)
 	if !ok {
@@ -25,10 +28,14 @@ func (o OAuthToken) Get(name string) string {
 	return v
 }
 
+// Access returns the OAuth access token value.
+//
+// Note: In order to use in a header you must prefix 'Bearer ' with this value.
 func (o OAuthToken) Access() string {
 	return o.Get("access_token")
 }
 
+// Expires returns a Duration for when the access/refresh tokens expire.
 func (o OAuthToken) Expires() time.Duration {
 	v, ok := o["expires_in"].(float64)
 	if !ok {
