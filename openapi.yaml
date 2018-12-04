@@ -287,7 +287,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OAuth2Clients'
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OAuth2Client'
         '500':
           description: Internal error occurred, check error(s).
           content:
@@ -1700,10 +1702,6 @@ components:
           description: HTTP domain for OAuth credentials
           type: string
           example: api.moov.io
-    OAuth2Clients:
-      type: array
-      items:
-        $ref: '#/components/schemas/OAuth2Client'
     Login:
       properties:
         email:
