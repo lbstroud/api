@@ -102,6 +102,12 @@ func main() {
 	}
 	log.Printf("Cookie works for user %s", user.ID)
 
+	oauthToken, err := createOAuthToken(ctx, api, user, requestId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Created OAuth access token, expires in %v", oauthToken.Expires())
+
 	// Create Originator Depository
 	origFI := &fiInfo{Name: "orig bank", AccountNumber: "132", RoutingNumber: "121042882"}
 	origDep, err := createDepository(ctx, api, user, origFI, requestId)

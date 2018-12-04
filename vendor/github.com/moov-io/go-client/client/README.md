@@ -114,7 +114,6 @@ Class | Method | HTTP request | Description
  - [IatBatchHeader](docs/IatBatchHeader.md)
  - [Login](docs/Login.md)
  - [OAuth2Client](docs/OAuth2Client.md)
- - [OAuth2Clients](docs/OAuth2Clients.md)
  - [Originator](docs/Originator.md)
  - [Originators](docs/Originators.md)
  - [Transfer](docs/Transfer.md)
