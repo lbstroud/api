@@ -142,6 +142,9 @@ func main() {
 	tx, err := createTransfer(ctx, api, cust, orig, amount(), requestId)
 	if err != nil {
 		log.Fatal(err)
+	// Attempt a Failed login
+	if err := attemptFailedLogin(ctx, api, requestId); err != nil {
+		log.Fatalf("FAILURE: %v", err)
 	}
 	log.Printf("Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
 }

@@ -6,7 +6,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -38,6 +40,30 @@ func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, 
 			return fmt.Errorf("on cookie check, got %s status", resp.Status)
 		}
 		return resp.Body.Close()
+	}
+	return nil
+}
+
+// attemptFailedLogin will try with random data to ensure failed credentials don't authenticate a request.
+func attemptFailedLogin(ctx context.Context, api *moov.APIClient, requestId string) error {
+	email, password := name()                                                     // random noise
+	login := moov.Login{Email: email + "@moov.io", Password: password + password} // email format, make sure it's long enough
+	_, resp, err := api.UserApi.UserLogin(ctx, login, &moov.UserLoginOpts{
+		XRequestId:      optional.NewString(requestId),
+		XIdempotencyKey: optional.NewString(generateID()),
+	})
+	if resp != nil {
+		if resp.StatusCode != http.StatusForbidden {
+			return fmt.Errorf("got %s response code", resp.Status)
+		}
+		defer resp.Body.Close()
+	}
+	if err == nil {
+		bs, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return fmt.Errorf("%v: %v", string(bs), err)
+		}
+		return errors.New("expected error, but got nothing")
 	}
 	return nil
 }
