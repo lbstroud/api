@@ -85,7 +85,7 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId string) (moov.Originator, error) {
 	req := moov.Originator{
 		DefaultDepository: depId,
-		Identification:    "123-45-6789", // SSN
+		Identification:    "123456789", // SSN
 	}
 	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, req, &moov.AddOriginatorOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
