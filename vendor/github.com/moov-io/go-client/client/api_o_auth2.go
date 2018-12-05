@@ -118,7 +118,7 @@ OAuth2ApiService Create OAuth2 client credentials
  * @param optional nil or *CreateOAuth2ClientOpts - Optional Parameters:
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
-@return OAuth2Clients
+@return []OAuth2Client
 */
 
 type CreateOAuth2ClientOpts struct {
@@ -126,14 +126,14 @@ type CreateOAuth2ClientOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *OAuth2ApiService) CreateOAuth2Client(ctx context.Context, localVarOptionals *CreateOAuth2ClientOpts) (OAuth2Clients, *http.Response, error) {
+func (a *OAuth2ApiService) CreateOAuth2Client(ctx context.Context, localVarOptionals *CreateOAuth2ClientOpts) ([]OAuth2Client, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  OAuth2Clients
+		localVarReturnValue  []OAuth2Client
 	)
 
 	// create path and map variables
@@ -201,7 +201,7 @@ func (a *OAuth2ApiService) CreateOAuth2Client(ctx context.Context, localVarOptio
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v OAuth2Clients
+			var v []OAuth2Client
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
