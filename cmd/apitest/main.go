@@ -107,7 +107,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Created OAuth access token, expires in %v", oauthToken.Expires())
+	log.Printf("SUCCESS: Created OAuth access token, expires in %v", oauthToken.Expires())
 
 	// Create Originator Depository
 	origFI := &fiInfo{Name: "orig bank", AccountNumber: "132", RoutingNumber: "121042882"}
