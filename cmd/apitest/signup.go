@@ -8,6 +8,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -51,6 +52,13 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
+		if resp != nil {
+			bs, _ := ioutil.ReadAll(resp.Body)
+			fmt.Println("Response:")
+			fmt.Printf("  Status: %v\n", resp.Status)
+			fmt.Printf("  Header: %v\n", resp.Header)
+			fmt.Printf("  Body: %v\n", string(bs))
+		}
 		return nil, fmt.Errorf("problem creating user: %v", err)
 	}
 	if resp != nil {

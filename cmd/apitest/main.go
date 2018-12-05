@@ -33,6 +33,7 @@ var (
 	defaultApiAddress = "https://api.moov.io"
 
 	flagApiAddress = flag.String("address", defaultApiAddress, "Moov API address")
+	flagDebug      = flag.Bool("debug", false, "Enable Debug logging.")
 	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses")
 )
 
@@ -83,24 +84,24 @@ func main() {
 
 	// Run tests
 	if err := pingApps(ctx, api, requestId); err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
 
 	// Create our random user
 	user, err := createUser(ctx, api, requestId)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Created user %s (email: %s)", user.ID, user.Email)
+	log.Printf("SUCCESS: Created user %s (email: %s)", user.ID, user.Email)
 
-	// Add moov_auth cookie on every request from now on
-	setMoovCookie(conf, user.Cookie)
+	// Add auth cookie and userId on every request from now on
+	setMoovAuthHeaders(conf, user)
 
 	// Verify Cookie works
 	if err := verifyUserIsLoggedIn(ctx, api, user, requestId); err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Cookie works for user %s", user.ID)
+	log.Printf("SUCCESS: Cookie works for user %s", user.ID)
 
 	oauthToken, err := createOAuthToken(ctx, api, user, requestId)
 	if err != nil {
@@ -112,38 +113,44 @@ func main() {
 	origFI := &fiInfo{Name: "orig bank", AccountNumber: "132", RoutingNumber: "121042882"}
 	origDep, err := createDepository(ctx, api, user, origFI, requestId)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Created Originator Depository (id=%s) for user", origDep.Id)
+	log.Printf("SUCCESS: Created Originator Depository (id=%s) for user", origDep.Id)
 
 	// Create Originator
 	orig, err := createOriginator(ctx, api, origDep.Id, requestId)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Created Originator (id=%s) for user", orig.Id)
+	log.Printf("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
 	// Create Customer Depository
 	custFI := &fiInfo{Name: "cust bank", AccountNumber: "5211", RoutingNumber: "231380104"}
 	custDep, err := createDepository(ctx, api, user, custFI, requestId)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Created Customer Depository (id=%s) for user", custDep.Id)
+	log.Printf("SUCCESS: Created Customer Depository (id=%s) for user", custDep.Id)
 
 	// Create Customer
 	cust, err := createCustomer(ctx, api, user, custDep.Id, requestId)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Created Customer (id=%s) for user", cust.Id)
+	log.Printf("SUCCESS: Created Customer (id=%s) for user", cust.Id)
 
 	// Create Transfer
 	tx, err := createTransfer(ctx, api, cust, orig, amount(), requestId)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("FAILURE: %v", err)
 	}
-	log.Printf("Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
+	log.Printf("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
+
+	// Attempt a Failed login
+	if err := attemptFailedLogin(ctx, api, requestId); err != nil {
+		log.Fatalf("FAILURE: %v", err)
+	}
+	log.Println("SUCCESS: invalid login credentials were rejected")
 }
 
 // amount returns a random amount in string form accepted by the Moov API
