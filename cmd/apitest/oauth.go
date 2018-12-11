@@ -48,6 +48,12 @@ func (o OAuthToken) Expires() time.Duration {
 	return dur
 }
 
+func setMoovOAuthToken(conf *moov.Configuration, oauthToken OAuthToken) {
+	if v := oauthToken.Access(); v != "" {
+		conf.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", v))
+	}
+}
+
 func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, requestId string) (OAuthToken, error) {
 	// Create OAuth client credentials
 	clients, resp, err := api.OAuth2Api.CreateOAuth2Client(ctx, &moov.CreateOAuth2ClientOpts{

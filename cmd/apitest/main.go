@@ -35,6 +35,8 @@ var (
 	flagApiAddress = flag.String("address", defaultApiAddress, "Moov API address")
 	flagDebug      = flag.Bool("debug", false, "Enable Debug logging.")
 	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses")
+
+	flagOAuth = flag.Bool("oauth", false, "Use OAuth instead of cookie auth")
 )
 
 func main() {
@@ -95,7 +97,7 @@ func main() {
 	log.Printf("SUCCESS: Created user %s (email: %s)", user.ID, user.Email)
 
 	// Add auth cookie and userId on every request from now on
-	setMoovAuthHeaders(conf, user)
+	setMoovAuthCookie(conf, user)
 
 	// Verify Cookie works
 	if err := verifyUserIsLoggedIn(ctx, api, user, requestId); err != nil {
@@ -108,6 +110,13 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("SUCCESS: Created OAuth access token, expires in %v", oauthToken.Expires())
+
+	if *flagOAuth {
+		log.Printf("Using OAuth for all requests now.")
+
+		removeMoovAuthCookie(conf) // we only want OAuth credentials on requests
+		setMoovOAuthToken(conf, oauthToken)
+	}
 
 	// Create Originator Depository
 	origFI := &fiInfo{Name: "orig bank", AccountNumber: "132", RoutingNumber: "121042882"}
