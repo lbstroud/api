@@ -139,5 +139,17 @@ func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer
 	if resp != nil {
 		resp.Body.Close()
 	}
+
+	// Delete the transfer (and underlying file)
+	resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.Id, &moov.DeleteTransferByIDOpts{
+		XRequestId: optional.NewString(requestId),
+	})
+	if err != nil {
+		return tx, fmt.Errorf("problem deleting transfer: %v", err)
+	}
+	if resp != nil {
+		resp.Body.Close()
+	}
+
 	return tx, nil
 }
