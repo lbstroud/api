@@ -13,8 +13,8 @@ build:
 	docker tag moov/apitest:$(VERSION) moov/apitest:latest
 
 serve:
-	@echo Load http://localhost:8080 in a web browser...
-	@docker run -p '8080:8080' -it moov/api:latest
+	@echo Load http://localhost:8000 in a web browser...
+	@docker run -p '8000:8080' -it moov/api:latest
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS
