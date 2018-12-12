@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	moov "github.com/moov-io/go-client/client"
@@ -46,6 +47,14 @@ func (o OAuthToken) Expires() time.Duration {
 		return time.Duration(0 * time.Second)
 	}
 	return dur
+}
+
+func setMoovOAuthToken(conf *moov.Configuration, oauthToken OAuthToken) {
+	if v := oauthToken.Access(); v != "" {
+		conf.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", v))
+	} else {
+		log.Fatal("FAILURE: No OAuth token provided")
+	}
 }
 
 func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, requestId string) (OAuthToken, error) {
