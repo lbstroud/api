@@ -121,7 +121,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/CreateUser'
+              $ref: '#/components/schemas/CreateUser'
       responses:
         '200':
           description: User object
@@ -232,7 +232,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/UserProfile'
+              $ref: '#/components/schemas/UserProfile'
       responses:
         '200':
           description: User profile updated
@@ -724,7 +724,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Originator'
+              $ref: '#/components/schemas/CreateOriginator'
       responses:
         '201':
           description: A JSON object containing a new Originator
@@ -796,7 +796,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Originator'
+              $ref: '#/components/schemas/CreateOriginator'
       responses:
         '201':
           description: A JSON object containing a new Originator
@@ -877,7 +877,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Customer'
+              $ref: '#/components/schemas/CreateCustomer'
       parameters:
         - $ref: '#/components/parameters/idempotencyKey'
         - $ref: '#/components/parameters/requestId'
@@ -952,7 +952,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Customer'
+              $ref: '#/components/schemas/CreateCustomer'
       responses:
         '201':
           description: A JSON object containing a new Customer
@@ -1108,7 +1108,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Depository'
+              $ref: '#/components/schemas/CreateDepository'
       responses:
         '201':
           description: Created
@@ -1180,7 +1180,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Depository'
+              $ref: '#/components/schemas/CreateDepository'
       responses:
         '201':
           description: A JSON object containing a new Depository
@@ -1331,7 +1331,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Transfer'
+              $ref: '#/components/schemas/CreateTransfer'
       responses:
         '201':
           description: Created
@@ -1368,7 +1368,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Transfers'
+              $ref: '#/components/schemas/CreateTransfers'
       responses:
         '200':
           description: Created
@@ -1616,7 +1616,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/requestBodies/Gateway'
+              $ref: '#/components/schemas/CreateGateway'
       responses:
         '201':
           description: Created
@@ -1782,6 +1782,12 @@ components:
           description: Company URL associated to user
           type: string
           format: uri
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - phone
     CreateFile:
       properties:
         id:
@@ -2230,6 +2236,23 @@ components:
           type: string
           description: An error message describing the problem intended for humans.
           example: Validation error(s) present.
+    CreateOriginator:
+      properties:
+        defaultDepository:
+          type: string
+          description: The depository account to be used by default per transfer. ID must be a valid Originator Depository account
+          example: 0c0c3412
+        identification:
+          type: string
+          maxLength: 14
+          description: An identification number by which the customer is known to the originator.
+        metadata:
+          type: string
+          description: Additional meta data to be used for display only
+          example: Primary payment account
+      required:
+        - defaultDepository
+        - identification
     Originator:
       properties:
         id:
@@ -2259,6 +2282,24 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Originator'
+    CreateCustomer:
+      properties:
+        email:
+          type: string
+          description: The customers email address
+          example: "example@moov.io"
+          format: e-mail
+        defaultDepository:
+          type: string
+          description: The depository account to be used by default per transfer. ID must be a valid Customer Depository account
+          example: 0c5e215c
+        metadata:
+          type: string
+          example: 'Authorized for re-occurring WEB'
+          description: Additional meta data to be used for display only
+      required:
+        - email
+        - defaultDepository
     Customer:
       properties:
         id:
@@ -2295,6 +2336,53 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Customer'
+    CreateDepository:
+      properties:
+        bankName:
+          type: string
+          description: Legal name of the financial institution.
+          example: "MVB Bank, Inc."
+        holder:
+          type: string
+          description: Legal holder name on the account
+          example: "My Company,llc or Wade Arnold"
+        holderType:
+          type: string
+          description: Defines the type of entity of the account holder as an *individual* or *company*
+          enum:
+            - individual
+            - company
+        type:
+          type: string
+          description: Defines the account as *checking* or *savings*
+          enum:
+            - Checking
+            - Savings
+          example: "checking"
+        routingNumber:
+          type: string
+          description: The ABA routing transit number for the depository account.
+          example: "051504597"
+        accountNumber:
+          type: string
+          description: The account number for the depository account
+          example: "0001027028"
+        metadata:
+          type: string
+          description: Additional meta data to be used for display only
+          example: Payroll
+        parent:
+          type: string
+          description: The depository owner's valid Customer ID or Originator ID
+          example: feb492e6
+      required:
+        - bankName
+        - holder
+        - holderType
+        - type
+        - routingNumber
+        - accountNumber
+        - parent
     Depository:
       properties:
         id:
@@ -2360,6 +2448,62 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Depository'
+    CreateTransfer:
+      properties:
+        transferType:
+          type: string
+          enum:
+            - "push"
+            - "pull"
+          example: "push"
+          description: Type of transaction being actioned against the receiving institution. Expected values are pull (debits) or push (credits). Only one period used to signify decimal value will be included.
+        amount:
+          type: string
+          format: currency
+          example: "USD 99.99"
+          description: Amount of money. USD - United States.
+        originator:
+          type: string
+          example: 724b6abe
+          description: ID of the Originator account initiating the transfer.
+        originatorDepository:
+          type: string
+          example: 59276ce4
+          description: ID of the Originator Depository to be be used to override the default depository.
+        customer:
+          type: string
+          example: feb492e6
+          description: ID of the Customer account the transfer was sent to.
+        customerDepository:
+          type: string
+          example: dad7ddfb
+          description: ID of the Customer Depository to be used to override the default depository
+        description:
+          type: string
+          description: Brief description of the transaction, that may appear on the receiving entity’s financial statement
+          example: Loan Pay
+          minLength: 1
+          maxLength: 79
+        standardEntryClassCode:
+          type: string
+          description: Standard Entry Class code will be generated based on Customer type for CCD and PPD
+          example: WEB
+        sameDay:
+          type: boolean
+          default: false
+          description: When set to true this indicates the transfer should be processed the same day if possible.
+        WEBDetail:
+          $ref: '#/components/schemas/WEBDetail'
+      required:
+        - type
+        - amount
+        - customer
+        - originator
+        - description
+    CreateTransfers:
+      type: array
+      items:
+        $ref: '#/components/schemas/CreateTransfer'
     Transfer:
       properties:
         id:
@@ -2432,6 +2576,29 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Transfer'
+    CreateGateway:
+      properties:
+        origin:
+          type: string
+          description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
+          example: "99991234"
+        originName:
+          type: string
+          description: Legal name associated with the origin routing number.
+          example: My Bank Name
+        destination:
+          type: string
+          description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
+          example: "69100013"
+        destinationName:
+          type: string
+          description: Legal name associated with the destination routing number
+          example: Federal Reserve Bank
+      required:
+        - origin
+        - originName
+        - destination
+        - destinationName
     Gateway:
       properties:
         id:
@@ -2496,7 +2663,7 @@ components:
           type: string
           format: date-time
     Events:
-      type: object
+      type: array
       items:
         $ref: '#/components/schemas/Event'
     WEBDetail:
@@ -2508,225 +2675,6 @@ components:
             - "single"
             - "reoccurring"
           example: single
-  requestBodies:
-    Login:
-      description: Credentials used to authentivate to the Moov API
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Login'
-            required:
-              - email
-              - password
-    CreateUser:
-      description: A Moov API User object
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateUser'
-            required:
-              - email
-              - password
-              - firstName
-              - lastName
-              - phone
-    UserProfile:
-      description: A JSON object with updates to a User profile
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserProfile'
-    Originator:
-      description: A JSON object containing a new Originator
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              defaultDepository:
-                type: string
-                description: The depository account to be used by default per transfer. ID must be a valid Originator Depository account
-                example: 0c0c3412
-              identification:
-                type: string
-                maxLength: 14
-                description: An identification number by which the customer is known to the originator.
-              metadata:
-                type: string
-                description: Additional meta data to be used for display only
-                example: Primary payment account
-            required:
-              - defaultDepository
-              - identification
-    Customer:
-      description: A JSON object containing a new Customer
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              email:
-                type: string
-                description: The customers email address
-                format: e-mail
-              defaultDepository:
-                type: string
-                description: The depository account to be used by default per transfer. ID must be a valid Customer Depository account
-                example: 0c5e215c
-              metadata:
-                type: string
-                description: Additional meta data to be used for display only
-                example: Authorized for re-occurring WEB
-            required:
-              - email
-              - defaultDepository
-    Depository:
-      description: A JSON object containing a new Depository
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              bankName:
-                type: string
-                description: Legal name of the financial institution.
-                example: "MVB Bank, Inc."
-              holder:
-                type: string
-                description: Legal holder name on the account
-                example: "My Company,llc or Wade Arnold"
-              holderType:
-                type: string
-                description: Defines the type of entity of the account holder as an *individual* or *company*
-                enum:
-                  - individual
-                  - company
-              type:
-                type: string
-                description: Defines the account as *checking* or *savings*
-                enum:
-                  - Checking
-                  - Savings
-                example: "checking"
-              routingNumber:
-                type: string
-                description: The ABA routing transit number for the depository account.
-                example: "051504597"
-              accountNumber:
-                type: string
-                description: The account number for the depository account
-                example: "0001027028"
-              metadata:
-                type: string
-                description: Additional meta data to be used for display only
-                example: Payroll
-              parent:
-                type: string
-                description: The depository owner's valid Customer ID or Originator ID
-                example: feb492e6
-            required:
-              - bankName
-              - holder
-              - holderType
-              - type
-              - routingNumber
-              - accountNumber
-              - parent
-    Transfer:
-      description: A JSON object containing a new Transfer
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              transferType:
-                type: string
-                enum:
-                  - "push"
-                  - "pull"
-                example: "push"
-                description: Type of transaction being actioned against the receiving institution. Expected values are pull (debits) or push (credits). Only one period used to signify decimal value will be included.
-              amount:
-                type: string
-                format: currency
-                example: "USD 99.99"
-                description: Amount of money. USD - United States.
-              originator:
-                type: string
-                example: 724b6abe
-                description: ID of the Originator account initiating the transfer.
-              originatorDepository:
-                type: string
-                example: 59276ce4
-                description: ID of the Originator Depository to be be used to override the default depository.
-              customer:
-                type: string
-                example: feb492e6
-                description: ID of the Customer account the transfer was sent to.
-              customerDepository:
-                type: string
-                example: dad7ddfb
-                description: ID of the Customer Depository to be used to override the default depository
-              description:
-                type: string
-                description: Brief description of the transaction, that may appear on the receiving entity’s financial statement
-                example: Loan Pay
-                minLength: 1
-                maxLength: 79
-              standardEntryClassCode:
-                type: string
-                description: Standard Entry Class code will be generated based on Customer type for CCD and PPD
-                example: WEB
-              sameDay:
-                type: boolean
-                default: false
-                description: When set to true this indicates the transfer should be processed the same day if possible.
-              WEBDetail:
-                $ref: '#/components/schemas/WEBDetail'
-            required:
-              - type
-              - amount
-              - customer
-              - originator
-              - description
-    Transfers:
-      description: A JSON array containing Transfers
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/requestBodies/Transfers'
-    Gateway:
-      description: A JSON object containing a new Gateway
-      required: true
-      content:
-        application/json:
-          schema:
-            properties:
-              origin:
-                type: string
-                description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
-                example: "99991234"
-              originName:
-                type: string
-                description: Legal name associated with the origin routing number.
-                example: My Bank Name
-              destination:
-                type: string
-                description: Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
-                example: "69100013"
-              destinationName:
-                type: string
-                description: Legal name associated with the destination routing number
-                example: Federal Reserve Bank
-            required:
-              - origin
-              - originName
-              - destination
-              - destinationName
 # continuning 'components:'
   parameters:
     cookie:
