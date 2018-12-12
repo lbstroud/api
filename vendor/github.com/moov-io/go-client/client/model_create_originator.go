@@ -10,5 +10,11 @@
 
 package openapi
 
-type Transfers struct {
+type CreateOriginator struct {
+	// The depository account to be used by default per transfer. ID must be a valid Originator Depository account
+	DefaultDepository string `json:"defaultDepository"`
+	// An identification number by which the customer is known to the originator.
+	Identification string `json:"identification"`
+	// Additional meta data to be used for display only
+	Metadata string `json:"metadata,omitempty"`
 }

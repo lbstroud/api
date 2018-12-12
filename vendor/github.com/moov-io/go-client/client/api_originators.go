@@ -30,7 +30,7 @@ type OriginatorsApiService service
 /*
 OriginatorsApiService Create a new Originator object
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param originator
+ * @param createOriginator
  * @param optional nil or *AddOriginatorOpts - Optional Parameters:
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
@@ -42,7 +42,7 @@ type AddOriginatorOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *OriginatorsApiService) AddOriginator(ctx context.Context, originator Originator, localVarOptionals *AddOriginatorOpts) (Originator, *http.Response, error) {
+func (a *OriginatorsApiService) AddOriginator(ctx context.Context, createOriginator CreateOriginator, localVarOptionals *AddOriginatorOpts) (Originator, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -83,7 +83,7 @@ func (a *OriginatorsApiService) AddOriginator(ctx context.Context, originator Or
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
 	}
 	// body params
-	localVarPostBody = &originator
+	localVarPostBody = &createOriginator
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -369,7 +369,7 @@ OriginatorsApiService Gets a list of Originators
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
-@return Originators
+@return []Originator
 */
 
 type GetOriginatorsOpts struct {
@@ -378,14 +378,14 @@ type GetOriginatorsOpts struct {
 	Limit      optional.Int32
 }
 
-func (a *OriginatorsApiService) GetOriginators(ctx context.Context, localVarOptionals *GetOriginatorsOpts) (Originators, *http.Response, error) {
+func (a *OriginatorsApiService) GetOriginators(ctx context.Context, localVarOptionals *GetOriginatorsOpts) ([]Originator, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Originators
+		localVarReturnValue  []Originator
 	)
 
 	// create path and map variables
@@ -456,7 +456,7 @@ func (a *OriginatorsApiService) GetOriginators(ctx context.Context, localVarOpti
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Originators
+			var v []Originator
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -484,7 +484,7 @@ func (a *OriginatorsApiService) GetOriginators(ctx context.Context, localVarOpti
 OriginatorsApiService Updates the specified Originator by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param originatorId Originator ID
- * @param originator
+ * @param createOriginator
  * @param optional nil or *UpdateOriginatorOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -496,7 +496,7 @@ type UpdateOriginatorOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *OriginatorsApiService) UpdateOriginator(ctx context.Context, originatorId string, originator Originator, localVarOptionals *UpdateOriginatorOpts) (Originator, *http.Response, error) {
+func (a *OriginatorsApiService) UpdateOriginator(ctx context.Context, originatorId string, createOriginator CreateOriginator, localVarOptionals *UpdateOriginatorOpts) (Originator, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Patch")
 		localVarPostBody     interface{}
@@ -538,7 +538,7 @@ func (a *OriginatorsApiService) UpdateOriginator(ctx context.Context, originator
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &originator
+	localVarPostBody = &createOriginator
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {

@@ -30,7 +30,7 @@ type TransfersApiService service
 /*
 TransfersApiService Create a new transfer between an Originator and a Customer. Transfers cannot be modified. Instead delete the old and create a new transfer.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transfer
+ * @param createTransfer
  * @param optional nil or *AddTransferOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -42,7 +42,7 @@ type AddTransferOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *TransfersApiService) AddTransfer(ctx context.Context, transfer Transfer, localVarOptionals *AddTransferOpts) (Transfer, *http.Response, error) {
+func (a *TransfersApiService) AddTransfer(ctx context.Context, createTransfer CreateTransfer, localVarOptionals *AddTransferOpts) (Transfer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -83,7 +83,7 @@ func (a *TransfersApiService) AddTransfer(ctx context.Context, transfer Transfer
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &transfer
+	localVarPostBody = &createTransfer
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -156,11 +156,11 @@ func (a *TransfersApiService) AddTransfer(ctx context.Context, transfer Transfer
 /*
 TransfersApiService Create a new list of transfer, validate, build, and process. Transfers cannot be modified.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transfer
+ * @param createTransfer
  * @param optional nil or *AddTransfersOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Transfers
+@return []Transfer
 */
 
 type AddTransfersOpts struct {
@@ -168,14 +168,14 @@ type AddTransfersOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *TransfersApiService) AddTransfers(ctx context.Context, transfer []Transfer, localVarOptionals *AddTransfersOpts) (Transfers, *http.Response, error) {
+func (a *TransfersApiService) AddTransfers(ctx context.Context, createTransfer []CreateTransfer, localVarOptionals *AddTransfersOpts) ([]Transfer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Transfers
+		localVarReturnValue  []Transfer
 	)
 
 	// create path and map variables
@@ -209,7 +209,7 @@ func (a *TransfersApiService) AddTransfers(ctx context.Context, transfer []Trans
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &transfer
+	localVarPostBody = &createTransfer
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -245,7 +245,7 @@ func (a *TransfersApiService) AddTransfers(ctx context.Context, transfer []Trans
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Transfers
+			var v []Transfer
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -496,7 +496,7 @@ TransfersApiService Get all Events associated with the Transfer object's for the
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Events
+@return []Event
 */
 
 type GetTransferEventsByIDOpts struct {
@@ -505,14 +505,14 @@ type GetTransferEventsByIDOpts struct {
 	XRequestId optional.String
 }
 
-func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transferId string, localVarOptionals *GetTransferEventsByIDOpts) (Events, *http.Response, error) {
+func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transferId string, localVarOptionals *GetTransferEventsByIDOpts) ([]Event, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Events
+		localVarReturnValue  []Event
 	)
 
 	// create path and map variables
@@ -584,7 +584,7 @@ func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transfe
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Events
+			var v []Event
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -615,7 +615,7 @@ TransfersApiService Get the ACH files to be used in this transfer.
  * @param optional nil or *GetTransferFilesOpts - Optional Parameters:
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
-@return Files
+@return []File
 */
 
 type GetTransferFilesOpts struct {
@@ -623,14 +623,14 @@ type GetTransferFilesOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId string, localVarOptionals *GetTransferFilesOpts) (Files, *http.Response, error) {
+func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId string, localVarOptionals *GetTransferFilesOpts) ([]File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Files
+		localVarReturnValue  []File
 	)
 
 	// create path and map variables
@@ -699,7 +699,7 @@ func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId s
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Files
+			var v []File
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -836,7 +836,7 @@ TransfersApiService A list of all Transfer objects
  * @param "StartDate" (optional.Time) -  Filter objects created after this date. ISO-8601 format YYYY-MM-DD. Can optionally be used with endDate to specify a date range.
  * @param "EndDate" (optional.Time) -  Filter objects created before this date. ISO-8601 format YYYY-MM-DD. Can optionally be used with startDate to specify a date range.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Transfers
+@return []Transfer
 */
 
 type GetTransfersOpts struct {
@@ -847,14 +847,14 @@ type GetTransfersOpts struct {
 	XRequestId optional.String
 }
 
-func (a *TransfersApiService) GetTransfers(ctx context.Context, localVarOptionals *GetTransfersOpts) (Transfers, *http.Response, error) {
+func (a *TransfersApiService) GetTransfers(ctx context.Context, localVarOptionals *GetTransfersOpts) ([]Transfer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Transfers
+		localVarReturnValue  []Transfer
 	)
 
 	// create path and map variables
@@ -931,7 +931,7 @@ func (a *TransfersApiService) GetTransfers(ctx context.Context, localVarOptional
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Transfers
+			var v []Transfer
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

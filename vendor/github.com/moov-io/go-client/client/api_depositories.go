@@ -30,7 +30,7 @@ type DepositoriesApiService service
 /*
 DepositoriesApiService Create a new depository account for a Customer ID or Originator ID defined in the Parent parameter
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param depository
+ * @param createDepository
  * @param optional nil or *AddDepositoryOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -42,7 +42,7 @@ type AddDepositoryOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *DepositoriesApiService) AddDepository(ctx context.Context, depository Depository, localVarOptionals *AddDepositoryOpts) (Depository, *http.Response, error) {
+func (a *DepositoriesApiService) AddDepository(ctx context.Context, createDepository CreateDepository, localVarOptionals *AddDepositoryOpts) (Depository, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -83,7 +83,7 @@ func (a *DepositoriesApiService) AddDepository(ctx context.Context, depository D
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &depository
+	localVarPostBody = &createDepository
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -346,7 +346,7 @@ DepositoriesApiService A list of all Depository objects for the authentication c
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Depositories
+@return []Depository
 */
 
 type GetDepositoriesOpts struct {
@@ -355,14 +355,14 @@ type GetDepositoriesOpts struct {
 	XRequestId optional.String
 }
 
-func (a *DepositoriesApiService) GetDepositories(ctx context.Context, localVarOptionals *GetDepositoriesOpts) (Depositories, *http.Response, error) {
+func (a *DepositoriesApiService) GetDepositories(ctx context.Context, localVarOptionals *GetDepositoriesOpts) ([]Depository, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Depositories
+		localVarReturnValue  []Depository
 	)
 
 	// create path and map variables
@@ -433,7 +433,7 @@ func (a *DepositoriesApiService) GetDepositories(ctx context.Context, localVarOp
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Depositories
+			var v []Depository
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -685,7 +685,7 @@ func (a *DepositoriesApiService) InitiateMicroDeposits(ctx context.Context, depo
 DepositoriesApiService Updates the specified Depository by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param depositoryId Depository ID
- * @param depository
+ * @param createDepository
  * @param optional nil or *UpdateDepositoryOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -697,7 +697,7 @@ type UpdateDepositoryOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *DepositoriesApiService) UpdateDepository(ctx context.Context, depositoryId string, depository Depository, localVarOptionals *UpdateDepositoryOpts) (Depository, *http.Response, error) {
+func (a *DepositoriesApiService) UpdateDepository(ctx context.Context, depositoryId string, createDepository CreateDepository, localVarOptionals *UpdateDepositoryOpts) (Depository, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Patch")
 		localVarPostBody     interface{}
@@ -739,7 +739,7 @@ func (a *DepositoriesApiService) UpdateDepository(ctx context.Context, depositor
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &depository
+	localVarPostBody = &createDepository
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {

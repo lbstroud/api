@@ -10,5 +10,24 @@
 
 package openapi
 
-type Originators struct {
+type CreateTransfer struct {
+	// Type of transaction being actioned against the receiving institution. Expected values are pull (debits) or push (credits). Only one period used to signify decimal value will be included.
+	TransferType string `json:"transferType,omitempty"`
+	// Amount of money. USD - United States.
+	Amount string `json:"amount"`
+	// ID of the Originator account initiating the transfer.
+	Originator string `json:"originator"`
+	// ID of the Originator Depository to be be used to override the default depository.
+	OriginatorDepository string `json:"originatorDepository,omitempty"`
+	// ID of the Customer account the transfer was sent to.
+	Customer string `json:"customer"`
+	// ID of the Customer Depository to be used to override the default depository
+	CustomerDepository string `json:"customerDepository,omitempty"`
+	// Brief description of the transaction, that may appear on the receiving entity’s financial statement
+	Description string `json:"description"`
+	// Standard Entry Class code will be generated based on Customer type for CCD and PPD
+	StandardEntryClassCode string `json:"standardEntryClassCode,omitempty"`
+	// When set to true this indicates the transfer should be processed the same day if possible.
+	SameDay   bool      `json:"sameDay,omitempty"`
+	WEBDetail WebDetail `json:"WEBDetail,omitempty"`
 }

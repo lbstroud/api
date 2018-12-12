@@ -29,7 +29,7 @@ type GatewaysApiService service
 /*
 GatewaysApiService Create a new Gateway object
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param gateway
+ * @param createGateway
  * @param optional nil or *AddGatewayOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -41,7 +41,7 @@ type AddGatewayOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *GatewaysApiService) AddGateway(ctx context.Context, gateway Gateway, localVarOptionals *AddGatewayOpts) (Gateway, *http.Response, error) {
+func (a *GatewaysApiService) AddGateway(ctx context.Context, createGateway CreateGateway, localVarOptionals *AddGatewayOpts) (Gateway, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -82,7 +82,7 @@ func (a *GatewaysApiService) AddGateway(ctx context.Context, gateway Gateway, lo
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &gateway
+	localVarPostBody = &createGateway
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -157,21 +157,21 @@ GatewaysApiService Gets a list of Gatways
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *GetGatewaysOpts - Optional Parameters:
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Gateways
+@return []Gateway
 */
 
 type GetGatewaysOpts struct {
 	XRequestId optional.String
 }
 
-func (a *GatewaysApiService) GetGateways(ctx context.Context, localVarOptionals *GetGatewaysOpts) (Gateways, *http.Response, error) {
+func (a *GatewaysApiService) GetGateways(ctx context.Context, localVarOptionals *GetGatewaysOpts) ([]Gateway, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Gateways
+		localVarReturnValue  []Gateway
 	)
 
 	// create path and map variables
@@ -236,7 +236,7 @@ func (a *GatewaysApiService) GetGateways(ctx context.Context, localVarOptionals 
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Gateways
+			var v []Gateway
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

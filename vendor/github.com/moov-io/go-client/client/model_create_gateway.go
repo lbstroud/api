@@ -10,5 +10,13 @@
 
 package openapi
 
-type Gateways struct {
+type CreateGateway struct {
+	// Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
+	Origin string `json:"origin"`
+	// Legal name associated with the origin routing number.
+	OriginName string `json:"originName"`
+	// Routing Number - four digit Federal Reserve Routing Symbol and the four digit ABA Institution Identifier
+	Destination string `json:"destination"`
+	// Legal name associated with the destination routing number
+	DestinationName string `json:"destinationName"`
 }

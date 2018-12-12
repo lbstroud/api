@@ -12,15 +12,15 @@ package openapi
 
 type CreateUser struct {
 	// Email address associated to the User
-	Email string `json:"email,omitempty"`
+	Email string `json:"email"`
 	// Password associated to User
-	Password string `json:"password,omitempty"`
+	Password string `json:"password"`
 	// Legal first name
-	FirstName string `json:"firstName,omitempty"`
+	FirstName string `json:"firstName"`
 	// Legal last name
-	LastName string `json:"lastName,omitempty"`
+	LastName string `json:"lastName"`
 	// Phone number associated to user. Dots, hyphens and spaces are trimmed. +1 is the assumed country code.
-	Phone string `json:"phone,omitempty"`
+	Phone string `json:"phone"`
 	// Company URL associated to user
 	CompanyUrl string `json:"companyUrl,omitempty"`
 }

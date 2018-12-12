@@ -22,7 +22,7 @@ type fiInfo struct {
 }
 
 func createDepository(ctx context.Context, api *moov.APIClient, u *user, fi *fiInfo, requestId string) (moov.Depository, error) {
-	req := moov.Depository{
+	req := moov.CreateDepository{
 		BankName:      fi.Name,
 		AccountNumber: fi.AccountNumber,
 		RoutingNumber: fi.RoutingNumber,
@@ -83,7 +83,7 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 }
 
 func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId string) (moov.Originator, error) {
-	req := moov.Originator{
+	req := moov.CreateOriginator{
 		DefaultDepository: depId,
 		Identification:    "123456789", // SSN
 	}
@@ -101,7 +101,7 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId
 }
 
 func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, requestId string) (moov.Customer, error) {
-	req := moov.Customer{
+	req := moov.CreateCustomer{
 		Email:             fmt.Sprintf("%s+apitest@moov.io", u.Name),
 		DefaultDepository: depId,
 	}
@@ -119,7 +119,7 @@ func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, re
 }
 
 func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
-	req := moov.Transfer{
+	req := moov.CreateTransfer{
 		TransferType:           "Push",
 		Amount:                 amount,
 		Originator:             orig.Id,

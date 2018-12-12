@@ -10,5 +10,21 @@
 
 package openapi
 
-type Batches struct {
+type CreateDepository struct {
+	// Legal name of the financial institution.
+	BankName string `json:"bankName"`
+	// Legal holder name on the account
+	Holder string `json:"holder"`
+	// Defines the type of entity of the account holder as an *individual* or *company*
+	HolderType string `json:"holderType"`
+	// Defines the account as *checking* or *savings*
+	Type string `json:"type"`
+	// The ABA routing transit number for the depository account.
+	RoutingNumber string `json:"routingNumber"`
+	// The account number for the depository account
+	AccountNumber string `json:"accountNumber"`
+	// Additional meta data to be used for display only
+	Metadata string `json:"metadata,omitempty"`
+	// The depository owner's valid Customer ID or Originator ID
+	Parent string `json:"parent"`
 }

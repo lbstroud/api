@@ -30,7 +30,7 @@ type CustomersApiService service
 /*
 CustomersApiService Create a new Customer object
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param customer
+ * @param createCustomer
  * @param optional nil or *AddCustomersOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -42,7 +42,7 @@ type AddCustomersOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *CustomersApiService) AddCustomers(ctx context.Context, customer Customer, localVarOptionals *AddCustomersOpts) (Customer, *http.Response, error) {
+func (a *CustomersApiService) AddCustomers(ctx context.Context, createCustomer CreateCustomer, localVarOptionals *AddCustomersOpts) (Customer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -83,7 +83,7 @@ func (a *CustomersApiService) AddCustomers(ctx context.Context, customer Custome
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &customer
+	localVarPostBody = &createCustomer
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -374,7 +374,7 @@ CustomersApiService Gets a list of Customers
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Customers
+@return []Customer
 */
 
 type GetCustomersOpts struct {
@@ -383,14 +383,14 @@ type GetCustomersOpts struct {
 	XRequestId optional.String
 }
 
-func (a *CustomersApiService) GetCustomers(ctx context.Context, localVarOptionals *GetCustomersOpts) (Customers, *http.Response, error) {
+func (a *CustomersApiService) GetCustomers(ctx context.Context, localVarOptionals *GetCustomersOpts) ([]Customer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Customers
+		localVarReturnValue  []Customer
 	)
 
 	// create path and map variables
@@ -461,7 +461,7 @@ func (a *CustomersApiService) GetCustomers(ctx context.Context, localVarOptional
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Customers
+			var v []Customer
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -493,7 +493,7 @@ CustomersApiService Get a list of Depository accounts for a Customer
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Depositories
+@return []Depository
 */
 
 type GetDepositoriesByCustomerIDOpts struct {
@@ -502,14 +502,14 @@ type GetDepositoriesByCustomerIDOpts struct {
 	XRequestId optional.String
 }
 
-func (a *CustomersApiService) GetDepositoriesByCustomerID(ctx context.Context, customerId string, localVarOptionals *GetDepositoriesByCustomerIDOpts) (Depositories, *http.Response, error) {
+func (a *CustomersApiService) GetDepositoriesByCustomerID(ctx context.Context, customerId string, localVarOptionals *GetDepositoriesByCustomerIDOpts) ([]Depository, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Depositories
+		localVarReturnValue  []Depository
 	)
 
 	// create path and map variables
@@ -581,7 +581,7 @@ func (a *CustomersApiService) GetDepositoriesByCustomerID(ctx context.Context, c
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Depositories
+			var v []Depository
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -731,7 +731,7 @@ func (a *CustomersApiService) GetDepositoriesByID(ctx context.Context, customerI
 CustomersApiService Updates the specified Customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param customerId Customer ID
- * @param customer
+ * @param createCustomer
  * @param optional nil or *UpdateCustomerOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -743,7 +743,7 @@ type UpdateCustomerOpts struct {
 	XRequestId      optional.String
 }
 
-func (a *CustomersApiService) UpdateCustomer(ctx context.Context, customerId string, customer Customer, localVarOptionals *UpdateCustomerOpts) (Customer, *http.Response, error) {
+func (a *CustomersApiService) UpdateCustomer(ctx context.Context, customerId string, createCustomer CreateCustomer, localVarOptionals *UpdateCustomerOpts) (Customer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Patch")
 		localVarPostBody     interface{}
@@ -785,7 +785,7 @@ func (a *CustomersApiService) UpdateCustomer(ctx context.Context, customerId str
 		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
 	}
 	// body params
-	localVarPostBody = &customer
+	localVarPostBody = &createCustomer
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {

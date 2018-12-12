@@ -156,7 +156,7 @@ EventsApiService Gets a list of Events
  * @param "StartDate" (optional.Time) -  Filter objects created after this date. ISO-8601 format YYYY-MM-DD. Can optionally be used with endDate to specify a date range.
  * @param "EndDate" (optional.Time) -  Filter objects created before this date. ISO-8601 format YYYY-MM-DD. Can optionally be used with startDate to specify a date range.
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Events
+@return []Event
 */
 
 type GetEventsOpts struct {
@@ -167,14 +167,14 @@ type GetEventsOpts struct {
 	XRequestId optional.String
 }
 
-func (a *EventsApiService) GetEvents(ctx context.Context, localVarOptionals *GetEventsOpts) (Events, *http.Response, error) {
+func (a *EventsApiService) GetEvents(ctx context.Context, localVarOptionals *GetEventsOpts) ([]Event, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Events
+		localVarReturnValue  []Event
 	)
 
 	// create path and map variables
@@ -251,7 +251,7 @@ func (a *EventsApiService) GetEvents(ctx context.Context, localVarOptionals *Get
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v Events
+			var v []Event
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

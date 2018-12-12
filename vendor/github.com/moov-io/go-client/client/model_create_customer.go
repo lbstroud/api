@@ -10,5 +10,11 @@
 
 package openapi
 
-type Depositories struct {
+type CreateCustomer struct {
+	// The customers email address
+	Email string `json:"email"`
+	// The depository account to be used by default per transfer. ID must be a valid Customer Depository account
+	DefaultDepository string `json:"defaultDepository"`
+	// Additional meta data to be used for display only
+	Metadata string `json:"metadata,omitempty"`
 }
