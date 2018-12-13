@@ -2,7 +2,7 @@
 // Use of this source code is governed by an Apache License
 // license that can be found in the LICENSE file.
 
-package main
+package local
 
 import (
 	"net/http"
@@ -10,10 +10,10 @@ import (
 	"testing"
 )
 
-func TestLocalPathTransport(t *testing.T) {
+func TestTransport(t *testing.T) {
 	r := httptest.NewRequest("GET", "https://api.moov.io/v1/ach/files/fileId", nil)
-	tr := &localPathTransport{
-		tr: &http.Transport{},
+	tr := &Transport{
+		Underlying: &http.Transport{},
 	}
 
 	svc := &http.Server{

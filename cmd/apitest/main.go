@@ -23,6 +23,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/moov-io/api/cmd/apitest/local"
 	"github.com/moov-io/api/internal/version"
 	moov "github.com/moov-io/go-client/client"
 
@@ -73,8 +74,9 @@ func main() {
 	}
 	if *flagLocal {
 		tr := conf.HTTPClient.Transport
-		conf.HTTPClient.Transport = &LocalTransport{
-			tr: tr,
+		conf.HTTPClient.Transport = &local.Transport{
+			Underlying: tr,
+			Debug:      *flagDebug,
 		}
 	}
 

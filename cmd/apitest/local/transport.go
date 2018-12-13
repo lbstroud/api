@@ -2,7 +2,7 @@
 // Use of this source code is governed by an Apache License
 // license that can be found in the LICENSE file.
 
-package main
+package local
 
 import (
 	"log"
@@ -10,8 +10,10 @@ import (
 	"strings"
 )
 
-type LocalTransport struct {
-	tr http.RoundTripper
+type Transport struct {
+	Underlying http.RoundTripper
+
+	Debug bool
 }
 
 // RoundTrip modifies the incoming request to reshape a Moov API production URL to a local dev URL.
@@ -22,7 +24,7 @@ type LocalTransport struct {
 //  - Dropping /v1/$app routing prefix
 //  - Changing the local port used (each app runs on its own port now)
 //    - Adjusting the scheme if needed.
-func (t *LocalTransport) RoundTrip(r *http.Request) (*http.Response, error) {
+func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	origURL := r.URL.String()
 
 	// Each route looks like /v1/$app/... so we need to trim off the v1 and $app segments
@@ -31,7 +33,7 @@ func (t *LocalTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 
 	if len(parts) < 3 { // parts splits into: "", v1, $app, (rest of url)
 		// Pass through whatever this request is.
-		return t.tr.RoundTrip(r)
+		return t.Underlying.RoundTrip(r)
 	}
 
 	r.URL.Scheme = "http"
@@ -61,9 +63,9 @@ func (t *LocalTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 
 	r.URL.Path += strings.Join(parts[3:], "/") // everything after $app
 
-	if *flagDebug {
+	if t.Debug {
 		log.Printf("%v %v request URL (Original: %v) (Headers: %v)", r.Method, r.URL.String(), origURL, r.Header)
 	}
 
-	return t.tr.RoundTrip(r)
+	return t.Underlying.RoundTrip(r)
 }
