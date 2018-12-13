@@ -8,7 +8,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"time"
 
 	moov "github.com/moov-io/go-client/client"
@@ -108,4 +110,30 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 		resp.Body.Close()
 	}
 	return token, err
+}
+
+// attemptFailedOAuth2Login will try with a OAuth2 access token to ensure failed credentials don't authenticate a request.
+func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient, requestId string) error {
+	token, _ := name()
+
+	resp, err := api.OAuth2Api.CheckOAuthClientCredentials(ctx, fmt.Sprintf("Bearer %s", token), &moov.CheckOAuthClientCredentialsOpts{
+		XRequestId: optional.NewString(requestId),
+	})
+
+	if resp != nil {
+		if resp.StatusCode != http.StatusForbidden {
+			return fmt.Errorf("got %s response code", resp.Status)
+		}
+		defer resp.Body.Close()
+	}
+
+	if err == nil {
+		bs, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return fmt.Errorf("%v: %v", string(bs), err)
+		}
+		return errors.New("expected error, but got nothing")
+	}
+
+	return nil
 }
