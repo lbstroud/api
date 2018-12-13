@@ -162,6 +162,12 @@ func main() {
 		log.Fatalf("FAILURE: %v", err)
 	}
 	log.Println("SUCCESS: invalid login credentials were rejected")
+
+	// Attempt a Failed OAuth2 auth check
+	if err := attemptFailedOAuth2Login(ctx, api, requestId); err != nil {
+		log.Fatalf("FAILURE: %v", err)
+	}
+	log.Println("SUCCESS: invalid OAuth2 access token was rejected")
 }
 
 // amount returns a random amount in string form accepted by the Moov API
