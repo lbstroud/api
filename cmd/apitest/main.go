@@ -73,7 +73,7 @@ func main() {
 	}
 	if *flagLocal {
 		tr := conf.HTTPClient.Transport
-		conf.HTTPClient.Transport = &localPathTransport{
+		conf.HTTPClient.Transport = &LocalTransport{
 			tr: tr,
 		}
 	}

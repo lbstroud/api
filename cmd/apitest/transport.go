@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-type localPathTransport struct {
+type LocalTransport struct {
 	tr http.RoundTripper
 }
 
@@ -22,7 +22,7 @@ type localPathTransport struct {
 //  - Dropping /v1/$app routing prefix
 //  - Changing the local port used (each app runs on its own port now)
 //    - Adjusting the scheme if needed.
-func (t *localPathTransport) RoundTrip(r *http.Request) (*http.Response, error) {
+func (t *LocalTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	origURL := r.URL.String()
 
 	// Each route looks like /v1/$app/... so we need to trim off the v1 and $app segments
