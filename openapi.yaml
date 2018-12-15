@@ -1741,7 +1741,7 @@ components:
           description: Timestamp of when user was created
           type: string
           format: date-time
-          example: 2018-10-03T22:35:06
+          example: 2006-01-02T15:04:05Z07:00
     UserProfile:
       properties:
         firstName:
@@ -1852,22 +1852,20 @@ components:
           description: The name of the ACH or receiving point for which that file is destined.
           maxLength: 23
           example: Federal Reserve Bank
-        fileCreationDate:
-          type: string
-          description: Expressed in a "YYMMDD" (Y=Year, M=Month, D=Day) format. The File Creation Date is the date on which the file is prepared by an ODFI
-          example: "102318"
-          minLength: 6
-          maxLength: 6
         fileCreationTime:
+          description: The File Creation Date is the date when the file was prepared by an ODFI.
           type: string
-          description: Expressed in "HHMM" (H=Hour, M=Minute, 24 hour clock) format.
-          example: "1601"
-          minLength: 4
-          maxLength: 4
+          format: date-time
+          example: 2006-01-02T15:04:05Z07:00
+        fileCreationDate:
+          description: The File Creation Time is the time when the file was prepared by an ODFI.
+          type: string
+          format: date-time
+          example: 2006-01-02T15:04:05Z07:00
         fileIDModifier:
           type: string
-          description: TODO
-          example: TODO
+          description: Incremented value for each file for RDFI's.
+          example: 0
       required:
         - immediateOrigin
         - immediateOriginName
@@ -1966,6 +1964,7 @@ components:
           description: Date on which the entries are to settle
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
         originatorStatusCode:
           type: integer
           description: |
@@ -2275,9 +2274,11 @@ components:
         created:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
         updated:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
     Originators:
       type: array
       items:
@@ -2329,9 +2330,11 @@ components:
         created:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
         updated:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
     Customers:
       type: array
       items:
@@ -2435,9 +2438,11 @@ components:
         created:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
         updated:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
       required:
       - holder
       - holderType
@@ -2564,6 +2569,7 @@ components:
         created:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
         WEBDetail:
           $ref: '#/components/schemas/WEBDetail'
       required:
@@ -2623,6 +2629,7 @@ components:
         created:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
       required:
         - id
         - origin
@@ -2662,6 +2669,7 @@ components:
         created:
           type: string
           format: date-time
+          example: 2006-01-02T15:04:05Z07:00
     Events:
       type: array
       items:
@@ -2732,6 +2740,7 @@ components:
       schema:
         type: string
         format: date-time
+        example: 2006-01-02T15:04:05Z07:00
     endDate:
       in: query
       name: endDate
@@ -2739,6 +2748,7 @@ components:
       schema:
         type: string
         format: date-time
+        example: 2006-01-02T15:04:05Z07:00
   securitySchemes:
     bearerAuth:
       type: oauth2
