@@ -77,6 +77,9 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 	if resp != nil {
 		defer resp.Body.Close()
 	}
+	if u.CreatedAt.IsZero() {
+		return nil, fmt.Errorf("got zero time: %#v", u)
+	}
 	return &user{
 		ID:     u.Id,
 		Name:   fmt.Sprintf("%s %s", u.FirstName, u.LastName),
