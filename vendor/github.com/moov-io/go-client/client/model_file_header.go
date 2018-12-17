@@ -10,6 +10,10 @@
 
 package openapi
 
+import (
+	"time"
+)
+
 type FileHeader struct {
 	// contains the Routing Number of the ACH Operator or sending point that is sending the file.
 	ImmediateOrigin string `json:"immediateOrigin"`
@@ -19,10 +23,10 @@ type FileHeader struct {
 	ImmediateDestination string `json:"immediateDestination"`
 	// The name of the ACH or receiving point for which that file is destined.
 	ImmediateDestinationName string `json:"immediateDestinationName"`
-	// Expressed in a \"YYMMDD\" (Y=Year, M=Month, D=Day) format. The File Creation Date is the date on which the file is prepared by an ODFI
-	FileCreationDate string `json:"fileCreationDate,omitempty"`
-	// Expressed in \"HHMM\" (H=Hour, M=Minute, 24 hour clock) format.
-	FileCreationTime string `json:"fileCreationTime,omitempty"`
-	// TODO
+	// The File Creation Date is the date when the file was prepared by an ODFI.
+	FileCreationTime time.Time `json:"fileCreationTime,omitempty"`
+	// The File Creation Time is the time when the file was prepared by an ODFI.
+	FileCreationDate time.Time `json:"fileCreationDate,omitempty"`
+	// Incremented value for each file for RDFI's.
 	FileIDModifier string `json:"fileIDModifier,omitempty"`
 }
