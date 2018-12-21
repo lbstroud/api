@@ -4,12 +4,12 @@ VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' inte
 
 build:
 # api.moov.io docker file
-	docker build -t moov/api:$(VERSION) -f Dockerfile .
+	docker build --pull -t moov/api:$(VERSION) -f Dockerfile .
 	docker tag moov/api:$(VERSION) moov/api:latest
 # apitest binary
 	go fmt ./...
 	CGO_ENABLED=0 go build -o bin/apitest ./cmd/apitest/
-	docker build -t moov/apitest:$(VERSION) -f Dockerfile-apitest .
+	docker build --pull -t moov/apitest:$(VERSION) -f Dockerfile-apitest .
 	docker tag moov/apitest:$(VERSION) moov/apitest:latest
 
 serve:
