@@ -1,12 +1,12 @@
 FROM node:8-jessie as builder
-RUN npm update -g && npm install -g --save mobx styled-components react react-dom redoc redoc-cli@0.7.0 speccy core-js rxjs typescript mobx
+RUN npm update -g && npm install -g --save call-me-maybe mobx styled-components react react-dom redoc redoc-cli speccy core-js rxjs typescript mobx
 
 COPY openapi.yaml openapi.yaml
 
 RUN speccy lint openapi.yaml
 RUN redoc-cli bundle openapi.yaml
 
-FROM nginx:1.15.6
+FROM nginx:1.15
 RUN chmod 777 -R /var/cache/nginx/
 COPY nginx/nginx.conf /opt/nginx/nginx.conf
 COPY nginx/default.conf /opt/nginx/conf.d/default.conf
