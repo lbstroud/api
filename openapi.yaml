@@ -2461,7 +2461,7 @@ components:
             - "push"
             - "pull"
           example: "push"
-          description: Type of transaction being actioned against the receiving institution. Expected values are pull (debits) or push (credits). Only one period used to signify decimal value will be included.
+          description: Type of transaction being actioned against the receiving institution. Expected values are pull (debits) or push (credits).
         amount:
           type: string
           format: currency
