@@ -123,12 +123,17 @@ func name() (string, string) {
 // phone generates a random phone number accepted by the Moov API in the form XXX.YYY.ZZZZ
 func phone() string {
 	tpl, out := "XXX.XXX.XXXX", ""
-	for _, c := range tpl {
+	for idx, c := range tpl {
 		if c == '.' {
 			out += "."
 			continue
 		}
-		out += string(numbers[randSource.Int63()%numbersLength])
+		next := string(numbers[randSource.Int63()%numbersLength])
+		if (idx == 0 || idx == 4) && next == "0" {
+			// 0xx.xxx.xxxx or xxx.0xx.xxxx are invalid phone numbers, so let's ignore those
+			next = "1"
+		}
+		out += next
 	}
 	return out
 }
