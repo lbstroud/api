@@ -32,9 +32,7 @@ type Depository struct {
 	// Defines the status of the Depository account
 	Status string `json:"status,omitempty"`
 	// Additional meta data to be used for display only
-	Metadata string `json:"metadata,omitempty"`
-	// The depository owner's valid Customer ID or Originator ID
-	Parent  string    `json:"parent,omitempty"`
-	Created time.Time `json:"created,omitempty"`
-	Updated time.Time `json:"updated,omitempty"`
+	Metadata string    `json:"metadata,omitempty"`
+	Created  time.Time `json:"created,omitempty"`
+	Updated  time.Time `json:"updated,omitempty"`
 }

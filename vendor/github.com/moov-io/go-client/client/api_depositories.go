@@ -28,7 +28,7 @@ var (
 type DepositoriesApiService service
 
 /*
-DepositoriesApiService Create a new depository account for a Customer ID or Originator ID defined in the Parent parameter
+DepositoriesApiService Create a new depository account for the authenticated user
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param createDepository
  * @param optional nil or *AddDepositoryOpts - Optional Parameters:

@@ -25,6 +25,4 @@ type CreateDepository struct {
 	AccountNumber string `json:"accountNumber"`
 	// Additional meta data to be used for display only
 	Metadata string `json:"metadata,omitempty"`
-	// The depository owner's valid Customer ID or Originator ID
-	Parent string `json:"parent"`
 }
