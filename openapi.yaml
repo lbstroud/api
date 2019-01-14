@@ -1853,15 +1853,13 @@ components:
           maxLength: 23
           example: Federal Reserve Bank
         fileCreationTime:
-          description: The File Creation Date is the date when the file was prepared by an ODFI.
+          description: 'The File Creation Date is the date when the file was prepared by an ODFI. (Format HHMM - H=Hour, M=Minute)'
           type: string
-          format: date-time
-          example: 2006-01-02T15:04:05Z07:00
+          example: 1504
         fileCreationDate:
-          description: The File Creation Time is the time when the file was prepared by an ODFI.
+          description: 'The File Creation Time is the time when the file was prepared by an ODFI. (Format YYMMDD - Y=Year, M=Month, D=Day)'
           type: string
-          format: date-time
-          example: 2006-01-02T15:04:05Z07:00
+          example: 190102
         fileIDModifier:
           type: string
           description: Incremented value for each file for RDFI's.
@@ -1961,10 +1959,9 @@ components:
           description: |
             The Originator establishes this field as the date it would like to see displayed to the receiver for descriptive purposes. This field is never used to control timing of any computer or manual operation. It is solely for descriptive purposes. The RDFI should not assume any specific format.
         effectiveEntryDate:
-          description: Date on which the entries are to settle
+          description: 'Date on which the entries are to settle. Format YYMMDD (Y=Year, M=Month, D=Day)'
           type: string
-          format: date-time
-          example: 2006-01-02T15:04:05Z07:00
+          example: 190102
         originatorStatusCode:
           type: integer
           description: |
