@@ -11,11 +11,17 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
+)
+
+var (
+	OAuthTokenStorageFilepath = filepath.Join(os.Getenv("HOME"), ".moov/api/oauth/access-token") // TODO(adam): windows, os.UserHomeDir in Go 1.12
 )
 
 // OAuthToken token holds various values from the OAuth2 Token generation.
@@ -102,6 +108,11 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 		return nil, errors.New("no OAuth2 access token created")
 	}
 
+	// Write OAuth access token to disk
+	if err := writeOAuthToken(accessToken, OAuthTokenStorageFilepath); err != nil {
+		return nil, err
+	}
+
 	// Verify OAuth access token works
 	resp, err = api.OAuth2Api.CheckOAuthClientCredentials(ctx, fmt.Sprintf("Bearer %s", accessToken), &moov.CheckOAuthClientCredentialsOpts{
 		XRequestId: optional.NewString(requestId),
@@ -136,4 +147,27 @@ func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient, requestI
 	}
 
 	return nil
+}
+
+func writeOAuthToken(accessToken string, path string) error {
+	path, err := filepath.Abs(path)
+	if err != nil {
+		return fmt.Errorf("writeOAuthToken: %v", err)
+	}
+	// Remove file if it already exists
+	if _, err := os.Stat(path); err == nil {
+		os.Remove(path)
+	}
+
+	// Create the parent dir if it doesn't exist
+	parent, _ := filepath.Split(path)
+	if _, err := os.Stat(parent); err != nil && os.IsNotExist(err) {
+		fmt.Println(parent)
+
+		if err := os.MkdirAll(parent, 0777); err != nil {
+			return fmt.Errorf("writeOAuthToken: mkdir %s got %v", parent, err)
+		}
+	}
+
+	return ioutil.WriteFile(path, []byte(accessToken), 0600)
 }
