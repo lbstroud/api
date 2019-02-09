@@ -104,6 +104,7 @@ func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, re
 	req := moov.CreateCustomer{
 		Email:             fmt.Sprintf("%s+apitest@moov.io", u.Name),
 		DefaultDepository: depId,
+		Metadata:          "Jane Doe",
 	}
 	cust, resp, err := api.CustomersApi.AddCustomers(ctx, req, &moov.AddCustomersOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
