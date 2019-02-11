@@ -15,13 +15,14 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/moov-io/api/pkg/moovoauth"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
 )
 
 var (
-	OAuthTokenStorageFilepath = filepath.Join(os.Getenv("HOME"), ".moov/api/oauth/access-token") // TODO(adam): windows, os.UserHomeDir in Go 1.12
+	OAuthTokenStorageFilepath string = moovoauth.TokenFilepath()
 )
 
 // OAuthToken token holds various values from the OAuth2 Token generation.
@@ -109,8 +110,10 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 	}
 
 	// Write OAuth access token to disk
-	if err := writeOAuthToken(accessToken, OAuthTokenStorageFilepath); err != nil {
-		return nil, err
+	if OAuthTokenStorageFilepath != "" {
+		if err := writeOAuthToken(accessToken, OAuthTokenStorageFilepath); err != nil {
+			return nil, err
+		}
 	}
 
 	// Verify OAuth access token works
