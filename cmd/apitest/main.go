@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -111,7 +112,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SUCCESS: Created OAuth access token, expires in %v", oauthToken.Expires())
+	if v := os.Getenv("TRAVIS_OS_NAME"); v != "" {
+		log.Printf("SUCCESS: Created OAuth access token, expires in %v", oauthToken.Expires())
+	} else {
+		log.Printf("SUCCESS: Created OAuth access token (%s), expires in %v", oauthToken.Access(), oauthToken.Expires())
+	}
 
 	if *flagOAuth {
 		log.Printf("Using OAuth for all requests now.")
