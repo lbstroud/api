@@ -2102,11 +2102,9 @@ components:
           description: |
             The receiver's bank account number you are crediting/debiting. It important to note that this is an alphanumeric field, so its space padded, no zero padded
           example: 181141847
-        amount: # TODO(adam): use "USD 12.53" format?
-          # type: string
+        amount:
           type: integer
           description: Number of cents you are debiting/crediting this account
-          # example: "USD 12.35"
           example: 1235
         identificationNumber:
           type: string
@@ -2342,6 +2340,7 @@ components:
           type: string
           description: The customers email address
           format: e-mail
+          example: user@example.com
         defaultDepository:
           type: string
           description: The depository account to be used by default per transfer. ID must be a valid Customer Depository account
