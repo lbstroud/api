@@ -1642,25 +1642,25 @@ paths:
   # ~1 escapes /
   # See: https://swagger.io/docs/specification/using-ref/#escape
   /v1/ofac/customers/{customerId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1{customerId}'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D'
   /v1/ofac/customers/{customerId}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1{customerId}~1watch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D~1watch'
   /v1/ofac/customers/{customerId}/watch/{watchId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1{customerId}~1watch~1{watchId}'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D~1watch~1%7BwatchId%7D'
   /v1/ofac/customers/watch:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch'
   /v1/ofac/customers/watch/{watchId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch~1{watchId}'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch~1%7BwatchId%7D'
   /v1/ofac/downloads:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1downloads'
   /v1/ofac/search:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1search'
   /v1/ofac/sdn/{sdnId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1{sdnId}'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D'
   /v1/ofac/sdn/{sdnId}/alts:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1{sdnId}~1alts'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D~1alts'
   /v1/ofac/sdn/{sdnId}/addresses:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1{sdnId}~1addresses'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D~1addresses'
 
 # WEBHOOK callback subscription
 # TODO implement webhooks https://swagger.io/docs/specification/callbacks/
