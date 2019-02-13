@@ -1696,6 +1696,15 @@ paths:
       responses:
         '200':
           description: Service is running properly
+  /v1/fed/ping:
+    get:
+      tags:
+        - Monitor
+      operationId: pingFED
+      summary: Check that moov-io/fed service is running
+      responses:
+        '200':
+          description: Service is running properly
   /v1/ofac/ping:
     get:
       tags:
@@ -2712,6 +2721,7 @@ components:
             - "single"
             - "reoccurring"
           example: single
+# ToDo: Add Schema
 # continuning 'components:'
   parameters:
     cookie:
