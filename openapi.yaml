@@ -1637,10 +1637,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  # OFAC endpoints
-  #
-  # ~1 escapes /
-  # See: https://swagger.io/docs/specification/using-ref/#escape
+# OFAC endpoints
+#
+# ~1 escapes /
+# See: https://swagger.io/docs/specification/using-ref/#escape
   /v1/ofac/customers/{customerId}:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D'
   /v1/ofac/customers/{customerId}/watch:
@@ -1661,6 +1661,14 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D~1alts'
   /v1/ofac/sdn/{sdnId}/addresses:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D~1addresses'
+# FED endpoints
+#
+# ~1 escapes /
+# See: https://swagger.io/docs/specification/using-ref/#escape
+  /v1/FEDACH/search/:
+    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1FEDACH~1search'
+  /v1/FEDWIRE/search/:
+    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1FEDWIRE~1search'
 
 # WEBHOOK callback subscription
 # TODO implement webhooks https://swagger.io/docs/specification/callbacks/
