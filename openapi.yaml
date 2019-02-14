@@ -1666,9 +1666,9 @@ paths:
 # ~1 escapes /
 # See: https://swagger.io/docs/specification/using-ref/#escape
   /v1/fed/ach/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1FEDACH~1search'
+    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1fed~1ach~1search'
   /v1/fed/wire/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1FEDWIRE~1search'
+    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1fed~1wire~1search'
 
 # WEBHOOK callback subscription
 # TODO implement webhooks https://swagger.io/docs/specification/callbacks/
