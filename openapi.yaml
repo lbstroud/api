@@ -2721,7 +2721,6 @@ components:
             - "single"
             - "reoccurring"
           example: single
-# ToDo: Add Schema
 # continuning 'components:'
   parameters:
     cookie:
