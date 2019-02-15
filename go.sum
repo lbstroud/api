@@ -7,6 +7,7 @@ github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5y
 github.com/moov-io/go-client v0.0.0-20181231212613-35adc30215fa h1:fJKbjySac89CWGvHarFRTXwyBLVTnAlgp1cL2AwSfgc=
 github.com/moov-io/go-client v0.0.0-20181231212613-35adc30215fa/go.mod h1:r+kLKgmBEOFomEg2u+kGS5JnITJpp6LgwGke+UDOs7c=
 github.com/moov-io/go-client v0.0.0-20190215202514-75d17d7f8c7b/go.mod h1:r+kLKgmBEOFomEg2u+kGS5JnITJpp6LgwGke+UDOs7c=
+github.com/moov-io/go-client v0.0.0-20190215214944-b9caf680d4e9/go.mod h1:r+kLKgmBEOFomEg2u+kGS5JnITJpp6LgwGke+UDOs7c=
 golang.org/x/net v0.0.0-20180724234803-3673e40ba225/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20181220203305-927f97764cc3 h1:eH6Eip3UpmR+yM/qI9Ijluzb1bNv/cAU/n+6l8tRSis=
 golang.org/x/net v0.0.0-20181220203305-927f97764cc3/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
