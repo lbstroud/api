@@ -86,6 +86,7 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId
 	req := moov.CreateOriginator{
 		DefaultDepository: depId,
 		Identification:    "123456789", // SSN
+		Metadata:          "Acme Corp",
 	}
 	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, req, &moov.AddOriginatorOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
