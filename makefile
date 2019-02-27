@@ -31,5 +31,3 @@ release: docker AUTHORS
 release-push:
 	docker push moov/api:$(VERSION)
 	docker push moov/apitest:$(VERSION)
-	git push origin master
-	git push --tags origin $(VERSION)
