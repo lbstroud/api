@@ -5,5 +5,4 @@ require (
 	github.com/docker/docker v1.13.1
 	github.com/moov-io/go-client v0.0.0-20190227185629-15b74a2ffae3
 	golang.org/x/sync v0.0.0-20190227185629-e225da77a7e6 // indirect
-	google.golang.org/appengine v1.4.0 // indirect
 )
