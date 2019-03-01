@@ -11,13 +11,13 @@ import (
 )
 
 func TestTransport(t *testing.T) {
-	r := httptest.NewRequest("GET", "https://api.moov.io/v1/ach/files/fileId", nil)
+	r := httptest.NewRequest("GET", "https://api.moov.io/v1/ach/transfers/foo", nil)
 	tr := &Transport{
 		Underlying: &http.Transport{},
 	}
 
 	svc := &http.Server{
-		Addr: ":8080",
+		Addr: ":8082",
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("pong"))
 		}),
@@ -30,10 +30,10 @@ func TestTransport(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if resp.Request.URL.Path != "/files/fileId" {
+	if resp.Request.URL.Path != "/transfers/foo" {
 		t.Errorf("got %s", resp.Request.URL.Path)
 	}
-	if resp.Request.URL.Host != "localhost:8080" {
+	if resp.Request.URL.Host != "localhost:8082" {
 		t.Errorf("got %s", resp.Request.URL.Host)
 	}
 	if resp.Request.URL.Scheme != "http" {
