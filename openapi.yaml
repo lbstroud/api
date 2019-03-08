@@ -100,6 +100,8 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1%7Buser_id%7D'
   /v1/oauth2/authorize:
     $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1authorize'
+  /v1/oauth2/clients:
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1clients'
   /v1/oauth2/client:
     $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1client'
   /v1/oauth2/token:
