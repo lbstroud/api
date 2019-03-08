@@ -93,17 +93,17 @@ tags:
 paths:
 # Auth routes
   /v1/users/create:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yml#/paths/~1users~1create'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1create'
   /v1/users/login:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yml#/paths/~1users~1login'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1login'
   /v1/users/{user_id}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yml#/paths/~1users~1%7Buser_id%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1%7Buser_id%7D'
   /v1/oauth2/authorize:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yml#/paths/~1oauth2~1authorize'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1authorize'
   /v1/oauth2/client:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yml#/paths/~1oauth2~1client'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1client'
   /v1/oauth2/token:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yml#/paths/~1oauth2~1token'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1token'
 
 # ACH Files
   /v1/ach/files:
