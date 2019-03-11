@@ -5,6 +5,7 @@
 package local
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -76,5 +77,8 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		log.Printf("%v %v request URL (Original: %v) (Headers: %v)", r.Method, r.URL.String(), origURL, r.Header)
 	}
 
+	if t.Underlying == nil {
+		return nil, errors.New("nil underlying Transport")
+	}
 	return t.Underlying.RoundTrip(r)
 }

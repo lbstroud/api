@@ -39,10 +39,17 @@ func main() {
 		},
 		Debug: *flagDebug,
 	}
-
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/ping" {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("pong"))
+			return
+		}
+		proxy.ServeHTTP(w, r)
+	})
 	server := &http.Server{
 		Addr:         *flagHttpAddr,
-		Handler:      proxy,
+		Handler:      handler,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  60 * time.Second,

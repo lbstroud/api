@@ -60,6 +60,8 @@ type APIClient struct {
 
 	OAuth2Api *OAuth2ApiService
 
+	OFACApi *OFACApiService
+
 	OriginatorsApi *OriginatorsApiService
 
 	TransfersApi *TransfersApiService
@@ -90,6 +92,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.GatewaysApi = (*GatewaysApiService)(&c.common)
 	c.MonitorApi = (*MonitorApiService)(&c.common)
 	c.OAuth2Api = (*OAuth2ApiService)(&c.common)
+	c.OFACApi = (*OFACApiService)(&c.common)
 	c.OriginatorsApi = (*OriginatorsApiService)(&c.common)
 	c.TransfersApi = (*TransfersApiService)(&c.common)
 	c.UserApi = (*UserApiService)(&c.common)

@@ -3,14 +3,18 @@ VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' inte
 .PHONY: build docker release
 
 build:
+	go fmt ./...
 # api.moov.io docker file
 	docker build --pull -t moov/api:$(VERSION) -f Dockerfile .
 	docker tag moov/api:$(VERSION) moov/api:latest
 # apitest binary
-	go fmt ./...
 	CGO_ENABLED=0 go build -o bin/apitest ./cmd/apitest/
-	docker build --pull -t moov/apitest:$(VERSION) -f Dockerfile-apitest .
+	docker build --pull -t moov/apitest:$(VERSION) -f Dockerfile-apitest ./
 	docker tag moov/apitest:$(VERSION) moov/apitest:latest
+# localdevproxy binary
+	CGO_ENABLED=0 go build -o bin/localdevproxy ./cmd/localdevproxy/
+	docker build --pull -t moov/localdevproxy:$(VERSION) -f Dockerfile-localdevproxy ./
+	docker tag moov/localdevproxy:$(VERSION) moov/localdevproxy:latest
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...

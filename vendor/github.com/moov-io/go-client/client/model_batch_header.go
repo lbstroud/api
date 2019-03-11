@@ -10,10 +10,6 @@
 
 package openapi
 
-import (
-	"time"
-)
-
 type BatchHeader struct {
 	// Batch Header ID
 	Id string `json:"id,omitempty"`
@@ -29,8 +25,8 @@ type BatchHeader struct {
 	CompanyEntryDescription string `json:"companyEntryDescription,omitempty"`
 	// The Originator establishes this field as the date it would like to see displayed to the receiver for descriptive purposes. This field is never used to control timing of any computer or manual operation. It is solely for descriptive purposes. The RDFI should not assume any specific format.
 	CompanyDescriptiveDate string `json:"companyDescriptiveDate,omitempty"`
-	// Date on which the entries are to settle
-	EffectiveEntryDate time.Time `json:"effectiveEntryDate,omitempty"`
+	// Date on which the entries are to settle. Format YYMMDD (Y=Year, M=Month, D=Day)
+	EffectiveEntryDate string `json:"effectiveEntryDate,omitempty"`
 	// ODFI initiating the Entry. 0 ADV File prepared by an ACH Operator. 1 This code identifies the Originator as a depository financial institution. 2 This code identifies the Originator as a Federal Government entity or agency.
 	OriginatorStatusCode int32 `json:"originatorStatusCode,omitempty"`
 	// First 8 digits of the originating DFI transit routing number
