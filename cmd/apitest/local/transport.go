@@ -15,6 +15,9 @@ import (
 
 // Transport intercepts HTTP requests and re-writes them according to bind.HTTP's local port binds.
 // This is done to provide an shared http.RoundTripper usable by clients wishing for local dev with Moov.
+//
+// The underlying http.RoundTripper is required to enforce timeouts and other config be non-default
+// and so we don't hack into http.DefaultClient (which has no timeouts).
 type Transport struct {
 	Underlying http.RoundTripper
 
