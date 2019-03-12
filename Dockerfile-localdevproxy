@@ -1,0 +1,18 @@
+FROM golang:1.12-alpine as builder
+RUN apk add -U make git
+RUN adduser -D -g '' --shell /bin/false moov
+
+# Clone go-client (rather than vendor)
+WORKDIR /go/src/github.com/moov-io/api
+COPY . .
+RUN CGO_ENABLED=0 go build -o bin/localdevproxy github.com/moov-io/api/cmd/localdevproxy
+USER moov
+
+FROM scratch
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=builder /go/src/github.com/moov-io/api/bin/localdevproxy /bin/localdevproxy
+COPY --from=builder /etc/passwd /etc/passwd
+USER moov
+EXPOSE 8080
+EXPOSE 9090
+ENTRYPOINT ["/bin/localdevproxy"]

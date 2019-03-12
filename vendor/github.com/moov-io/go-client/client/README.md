@@ -60,12 +60,24 @@ Class | Method | HTTP request | Description
 *FilesApi* | [**ValidateFile**](docs/FilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
-*MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
-*MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that the moov-io/auth service is running
+*MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that moov-io/ach service is running
+*MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that moov-io/auth service is running
+*MonitorApi* | [**PingOFAC**](docs/MonitorApi.md#pingofac) | **Get** /v1/ofac/ping | Check that moov-io/ofac service is running
 *MonitorApi* | [**PingPaygate**](docs/MonitorApi.md#pingpaygate) | **Get** /v1/paygate/ping | Check that the moov-io/paygate service is running
 *OAuth2Api* | [**CheckOAuthClientCredentials**](docs/OAuth2Api.md#checkoauthclientcredentials) | **Get** /v1/oauth2/authorize | Verify OAuth2 Bearer token
 *OAuth2Api* | [**CreateOAuth2Client**](docs/OAuth2Api.md#createoauth2client) | **Post** /v1/oauth2/client | Create OAuth2 client credentials
 *OAuth2Api* | [**CreateOAuth2Token**](docs/OAuth2Api.md#createoauth2token) | **Post** /v1/oauth2/token | Generate OAuth2 access token
+*OFACApi* | [**AddCustomerNameWatch**](docs/OFACApi.md#addcustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name
+*OFACApi* | [**AddCustomerWatch**](docs/OFACApi.md#addcustomerwatch) | **Post** /v1/ofac/customers/{customerId}/watch | Add OFAC watch on a Customer
+*OFACApi* | [**GetCustomer**](docs/OFACApi.md#getcustomer) | **Get** /v1/ofac/customers/{customerId} | Get information about a customer, addresses, alternate names, and their SDN metadata.
+*OFACApi* | [**GetLatestDownloads**](docs/OFACApi.md#getlatestdownloads) | **Get** /v1/ofac/downloads | Return list of recent re-downloads of OFAC data
+*OFACApi* | [**GetSDN**](docs/OFACApi.md#getsdn) | **Get** /v1/ofac/sdn/{sdnId} | Specially designated national
+*OFACApi* | [**GetSDNAddresses**](docs/OFACApi.md#getsdnaddresses) | **Get** /v1/ofac/sdn/{sdnId}/addresses | Get addresses for a given SDN
+*OFACApi* | [**GetSDNAltNames**](docs/OFACApi.md#getsdnaltnames) | **Get** /v1/ofac/sdn/{sdnId}/alts | Get alternate names for a given SDN
+*OFACApi* | [**RemoveCustomerNameWatch**](docs/OFACApi.md#removecustomernamewatch) | **Delete** /v1/ofac/customers/watch/{watchId} | Remove a Customer name watch
+*OFACApi* | [**RemoveCustomerWatch**](docs/OFACApi.md#removecustomerwatch) | **Delete** /v1/ofac/customers/{customerId}/watch/{watchId} | Remove customer watch
+*OFACApi* | [**SearchSDNs**](docs/OFACApi.md#searchsdns) | **Get** /v1/ofac/search | Search SDN names and metadata
+*OFACApi* | [**UpdateCustomerStatus**](docs/OFACApi.md#updatecustomerstatus) | **Put** /v1/ofac/customers/{customerId} | Update a Customer&#39;s status to add or remove a manual block.
 *OriginatorsApi* | [**AddOriginator**](docs/OriginatorsApi.md#addoriginator) | **Post** /v1/ach/originators | Create a new Originator object
 *OriginatorsApi* | [**DeleteOriginator**](docs/OriginatorsApi.md#deleteoriginator) | **Delete** /v1/ach/originators/{originatorId} | Permanently deletes an Originator and associated Customers, Depositories, and Transfers. It cannot be undone. Also immediately cancels any active Transfers for the Originator.
 *OriginatorsApi* | [**GetOriginatorByID**](docs/OriginatorsApi.md#getoriginatorbyid) | **Get** /v1/ach/originators/{originatorId} | Retrieves the details of an existing Originator. You need only supply the unique Originator identifier that was returned upon customer creation.
@@ -89,6 +101,8 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [Addendum](docs/Addendum.md)
+ - [Address](docs/Address.md)
+ - [Alt](docs/Alt.md)
  - [Amounts](docs/Amounts.md)
  - [Batch](docs/Batch.md)
  - [BatchControl](docs/BatchControl.md)
@@ -102,6 +116,7 @@ Class | Method | HTTP request | Description
  - [CreateUser](docs/CreateUser.md)
  - [Customer](docs/Customer.md)
  - [Depository](docs/Depository.md)
+ - [Download](docs/Download.md)
  - [EntryDetail](docs/EntryDetail.md)
  - [Error](docs/Error.md)
  - [Event](docs/Event.md)
@@ -113,10 +128,16 @@ Class | Method | HTTP request | Description
  - [IatBatchHeader](docs/IatBatchHeader.md)
  - [Login](docs/Login.md)
  - [OAuth2Client](docs/OAuth2Client.md)
+ - [OfacCustomer](docs/OfacCustomer.md)
  - [Originator](docs/Originator.md)
+ - [Sdn](docs/Sdn.md)
+ - [Search](docs/Search.md)
  - [Transfer](docs/Transfer.md)
+ - [UpdateCustomerStatus](docs/UpdateCustomerStatus.md)
  - [User](docs/User.md)
  - [UserProfile](docs/UserProfile.md)
+ - [Watch](docs/Watch.md)
+ - [WatchRequest](docs/WatchRequest.md)
  - [WebDetail](docs/WebDetail.md)
 
 

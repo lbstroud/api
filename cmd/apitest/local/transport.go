@@ -5,11 +5,16 @@
 package local
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/moov-io/base/http/bind"
 )
 
+// Transport intercepts HTTP requests and re-writes them according to bind.HTTP's local port binds.
+// This is done to provide an shared http.RoundTripper usable by clients wishing for local dev with Moov.
 type Transport struct {
 	Underlying http.RoundTripper
 
@@ -45,19 +50,24 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	case "ach":
 		switch strings.ToLower(parts[3]) {
 		case "customers", "depositories", "originators", "transfers":
-			r.URL.Host += ":8082" // paygate service
+			r.URL.Host += bind.HTTP("paygate")
 		default:
-			r.URL.Host += ":8080" // ACH service
+			r.URL.Host += bind.HTTP("ach")
 		}
 	case "auth":
-		r.URL.Host += ":8081" // auth service
+		r.URL.Host += bind.HTTP("auth")
+	case "fed":
+		r.URL.Host += bind.HTTP("fed")
+		r.URL.Path = "/fed/" // fed expects /fed/ as a prefix on routes
 	case "paygate":
-		r.URL.Host += ":8082" // paygate service
+		r.URL.Host += bind.HTTP("paygate")
 	case "oauth2":
-		r.URL.Host += ":8081"
+		r.URL.Host += bind.HTTP("auth")
 		r.URL.Path = "/oauth2/"
+	case "ofac":
+		r.URL.Host += bind.HTTP("ofac")
 	case "users":
-		r.URL.Host += ":8081" // auth service
+		r.URL.Host += bind.HTTP("auth")
 		r.URL.Path = "/users/"
 	}
 
@@ -67,5 +77,8 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		log.Printf("%v %v request URL (Original: %v) (Headers: %v)", r.Method, r.URL.String(), origURL, r.Header)
 	}
 
+	if t.Underlying == nil {
+		return nil, errors.New("nil underlying Transport")
+	}
 	return t.Underlying.RoundTrip(r)
 }
