@@ -47,6 +47,10 @@ $ docker run moov/apitest:v0.3.0
 2018/12/01 00:20:12.631427 main.go:140: Created USD 219.51 transfer (id=42b697aef4f48663cbe0ff6e6b11b8761e189fe2) for user
 ```
 
+`apitest -local` can be used when launching Moov's applications with `go run` commands on the same host.
+
+`apitest -dev` can be ran against our [local dev setup](https://github.com/moov-io/infra#local-development) in the [infra repository](https://github.com/moov-io/infra/tree/master/envs/dev).
+
 ## Getting Help
 
  channel | info
