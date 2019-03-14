@@ -83,6 +83,8 @@ info:
 servers:
   - url: https://api.moov.io
     description: Production server
+  - url: http://localhost:9000
+    description: Moov local development setup
   # - url: https://sbx.moov.io
   #   description: Development server
 
