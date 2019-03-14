@@ -7,6 +7,7 @@ github.com/docker/docker/pkg/random
 github.com/golang/protobuf/proto
 # github.com/moov-io/base v0.9.0
 github.com/moov-io/base/http/bind
+github.com/moov-io/base/k8s
 # github.com/moov-io/go-client v0.0.0-20190227185629-15b74a2ffae3
 github.com/moov-io/go-client/client
 # golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
