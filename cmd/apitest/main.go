@@ -36,7 +36,8 @@ var (
 
 	flagApiAddress = flag.String("address", defaultApiAddress, "Moov API address")
 	flagDebug      = flag.Bool("debug", false, "Enable Debug logging.")
-	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses")
+	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses (e.g. 'go run')")
+	flagLocalDev   = flag.Bool("dev", false, "Use tilt local HTTP address")
 
 	flagOAuth = flag.Bool("oauth", false, "Use OAuth instead of cookie auth")
 )
@@ -58,7 +59,11 @@ func main() {
 			conf.BasePath = "http://localhost"
 		}
 	} else {
-		conf.BasePath = *flagApiAddress
+		if *flagLocalDev {
+			conf.BasePath = "http://localhost:9000"
+		} else {
+			conf.BasePath = *flagApiAddress
+		}
 	}
 	log.Printf("Using %s as base API address", conf.BasePath)
 	conf.UserAgent = fmt.Sprintf("moov apitest/%s", version.Version)

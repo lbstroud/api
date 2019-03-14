@@ -48,7 +48,7 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	r.URL.Host = "localhost"
 	r.URL.Path = "/"
 
-	// This is the main routing table, see each case for more detail.
+	// Routing logic, should match Ingress routes and ./cmd/localdevproxy's logic
 	switch strings.ToLower(parts[2]) {
 	case "ach":
 		switch strings.ToLower(parts[3]) {
@@ -77,7 +77,7 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	r.URL.Path += strings.Join(parts[3:], "/") // everything after $app
 
 	if t.Debug {
-		log.Printf("%v %v request URL (Original: %v) (Headers: %v)", r.Method, r.URL.String(), origURL, r.Header)
+		log.Printf("%v %v request URL (Original: %v)", r.Method, r.URL.String(), origURL)
 	}
 
 	if t.Underlying == nil {
