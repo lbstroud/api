@@ -1,5 +1,7 @@
 FROM node:8-jessie as builder
-RUN npm update -g && npm install -g --save call-me-maybe mobx styled-components react react-dom redoc redoc-cli speccy core-js rxjs typescript mobx
+RUN npm update -g && npm install -g --save call-me-maybe mobx styled-components react react-dom \
+        redoc redoc-cli speccy core-js rxjs typescript mobx \
+        base64-js ieee754 isarray inherits readable-stream to-arraybuffer xtend builtin-status-codes
 
 COPY openapi.yaml openapi.yaml
 
