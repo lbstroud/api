@@ -23,8 +23,6 @@ type fiInfo struct {
 }
 
 func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *gl.Account, requestId string) (moov.Depository, error) {
-	fmt.Printf("account: %#v\n", account)
-
 	req := moov.CreateDepository{
 		BankName:      "Moov Bank",
 		AccountNumber: account.AccountNumber,

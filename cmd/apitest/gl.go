@@ -7,7 +7,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/moov-io/base/http/bind"
 	"github.com/moov-io/base/k8s"
