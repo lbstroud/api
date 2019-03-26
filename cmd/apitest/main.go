@@ -130,9 +130,18 @@ func main() {
 		setMoovOAuthToken(conf, oauthToken)
 	}
 
+	glClient := setupGLClient()
+
+	// Create Originator GL account
+	// This is only needed because our GL setup (for apitest's default environment) doesn't have
+	// accounts backing it. We create on in our GL service for each test run.
+	origAcct, err := createGLAccount(ctx, glClient, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
+	if err != nil {
+		log.Fatalf("FAILURE: %v", err)
+	}
+
 	// Create Originator Depository
-	origFI := &fiInfo{Name: "orig bank", AccountNumber: "132", RoutingNumber: "121042882"}
-	origDep, err := createDepository(ctx, api, user, origFI, requestId)
+	origDep, err := createDepository(ctx, api, user, origAcct, requestId)
 	if err != nil {
 		log.Fatalf("FAILURE: %v", err)
 	}
@@ -145,9 +154,14 @@ func main() {
 	}
 	log.Printf("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
+	// Create Customer GL account
+	custAcct, err := createGLAccount(ctx, glClient, user, "to account", requestId)
+	if err != nil {
+		log.Fatalf("FAILURE: %v", err)
+	}
+
 	// Create Customer Depository
-	custFI := &fiInfo{Name: "cust bank", AccountNumber: "5211", RoutingNumber: "231380104"}
-	custDep, err := createDepository(ctx, api, user, custFI, requestId)
+	custDep, err := createDepository(ctx, api, user, custAcct, requestId)
 	if err != nil {
 		log.Fatalf("FAILURE: %v", err)
 	}
