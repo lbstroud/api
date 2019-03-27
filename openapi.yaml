@@ -209,7 +209,7 @@ paths:
       tags:
       - Monitor
       operationId: pingACH
-      summary: Check that moov-io/ach service is running
+      summary: Check that the moov-io/ach service is running
       parameters:
         - $ref: '#/components/parameters/requestId'
       responses:
@@ -220,7 +220,7 @@ paths:
       tags:
       - Monitor
       operationId: pingAuth
-      summary: Check that moov-io/auth service is running
+      summary: Check that the moov-io/auth service is running
       parameters:
         - $ref: '#/components/parameters/requestId'
       responses:
@@ -231,7 +231,20 @@ paths:
       tags:
         - Monitor
       operationId: pingFED
-      summary: Check that moov-io/fed service is running
+      summary: Check that the moov-io/fed service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
+      responses:
+        '200':
+          description: Service is running properly
+  /v1/gl/ping:
+    get:
+      tags:
+        - Monitor
+      operationId: pingGL
+      summary: Check that the moov-io/gl service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Service is running properly
@@ -240,7 +253,9 @@ paths:
       tags:
         - Monitor
       operationId: pingOFAC
-      summary: Check that moov-io/ofac service is running
+      summary: Check that the moov-io/ofac service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
       responses:
         '200':
           description: Service is running properly
