@@ -27,8 +27,8 @@ github.com/mattn/go-sqlite3 v1.10.0/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsO
 github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5Ld7szi9bcBfOoFv/3dc6xSMkL2PC0=
 github.com/moov-io/base v0.9.0 h1:7bp5Jpola4EunGmOVVaw3WkWOqcSnyVZJEoOmYLKdhw=
 github.com/moov-io/base v0.9.0/go.mod h1:pPu/TAc9PkaaegbREVEeDHsGqyAlvji9vqTuARuAnd0=
-github.com/moov-io/gl v0.2.0 h1:FEbcjSJWwHNpqFQiO1Xu7NOaTSPMPTE80ZYUYqNNHJk=
-github.com/moov-io/gl v0.2.0/go.mod h1:FQpEJixQr7Sl7S+s0EJbDOTKS/NzHOt55Fx6+0LPZwU=
+github.com/moov-io/gl v0.2.1 h1:LyUS2zcWVSajmVgjAGleJIH6EF0Oj5PZer+X6SpwW84=
+github.com/moov-io/gl v0.2.1/go.mod h1:FQpEJixQr7Sl7S+s0EJbDOTKS/NzHOt55Fx6+0LPZwU=
 github.com/moov-io/go-client v0.0.0-20190227185629-15b74a2ffae3 h1:sOOWZS8/uSsPqYMDfSQrVlZweN3pXPbfQ0jHyJsa1sQ=
 github.com/moov-io/go-client v0.0.0-20190227185629-15b74a2ffae3/go.mod h1:fR/+ciB0GHpbIwxfoI84TNp/xWrFfxFHNI1ty916BZ4=
 github.com/moov-io/qledger-sdk-go v0.0.0-20190326214039-0a6a09453b62/go.mod h1:z/7rxS9IZjS2ijBMJEnwSrUHGVH0yyVH4YCjf6kI5qw=

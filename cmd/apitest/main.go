@@ -130,7 +130,7 @@ func main() {
 		setMoovOAuthToken(conf, oauthToken)
 	}
 
-	glClient := setupGLClient()
+	glClient := setupGLClient(user)
 
 	// Create Originator GL account
 	// This is only needed because our GL setup (for apitest's default environment) doesn't have
