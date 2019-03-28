@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 
+	gl "github.com/moov-io/gl/client"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -21,21 +22,21 @@ type fiInfo struct {
 	RoutingNumber string
 }
 
-func createDepository(ctx context.Context, api *moov.APIClient, u *user, fi *fiInfo, requestId string) (moov.Depository, error) {
+func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *gl.Account, requestId string) (moov.Depository, error) {
 	req := moov.CreateDepository{
-		BankName:      fi.Name,
-		AccountNumber: fi.AccountNumber,
-		RoutingNumber: fi.RoutingNumber,
+		BankName:      "Moov Bank",
+		AccountNumber: account.AccountNumber,
+		RoutingNumber: account.RoutingNumber,
 		Holder:        u.Name,
 		HolderType:    "Individual",
-		Type:          "Checking",
+		Type:          account.Type,
 	}
 	dep, resp, err := api.DepositoriesApi.AddDepository(ctx, req, &moov.AddDepositoryOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
 	if err != nil {
-		return dep, fmt.Errorf("problem creating depository (name: %s) for user (userId=%s): %v", fi.Name, u.ID, err)
+		return dep, fmt.Errorf("problem creating depository (name: %q) for user (userId=%s): %v", account.Name, u.ID, err)
 	}
 	if resp != nil {
 		resp.Body.Close()
@@ -43,7 +44,7 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, fi *fiI
 
 	// verify with (known, fixed values) micro-deposits
 	if err := verifyDepository(ctx, api, dep, requestId); err != nil {
-		return dep, fmt.Errorf("problem verifying depository (name: %s) for user (userId=%s): %v", fi.Name, u.ID, err)
+		return dep, fmt.Errorf("problem verifying depository (name: %q) for user (userId=%s): %v", account.Name, u.ID, err)
 	}
 
 	return dep, nil
