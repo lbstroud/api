@@ -7,7 +7,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	"github.com/moov-io/ach"
 	gl "github.com/moov-io/gl/client"
 	moov "github.com/moov-io/go-client/client"
 
@@ -21,6 +23,8 @@ type fiInfo struct {
 	AccountNumber string
 	RoutingNumber string
 }
+
+// TODO(adam): on -fake-data we need to randomize all data, but keep the existing values on single Transfer creations
 
 func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *gl.Account, requestId string) (moov.Depository, error) {
 	req := moov.CreateDepository{
@@ -142,17 +146,17 @@ func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer
 	if resp != nil {
 		resp.Body.Close()
 	}
-
-	// Delete the transfer (and underlying file)
-	resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.Id, &moov.DeleteTransferByIDOpts{
-		XRequestId: optional.NewString(requestId),
-	})
-	if err != nil {
-		return tx, fmt.Errorf("problem deleting transfer: %v", err)
+	if !*flagFakeData {
+		// Delete the transfer (and underlying file) since we're only making one Transfer
+		resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.Id, &moov.DeleteTransferByIDOpts{
+			XRequestId: optional.NewString(requestId),
+		})
+		if err != nil {
+			return tx, fmt.Errorf("problem deleting transfer: %v", err)
+		}
+		if resp != nil {
+			resp.Body.Close()
+		}
 	}
-	if resp != nil {
-		resp.Body.Close()
-	}
-
 	return tx, nil
 }
