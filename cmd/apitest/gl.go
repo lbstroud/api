@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/moov-io/base/http/bind"
 	"github.com/moov-io/base/k8s"
@@ -15,6 +16,8 @@ import (
 
 	"github.com/antihax/optional"
 )
+
+var glAddressOnce sync.Once
 
 // setupGLClient returns an API client for our GL service
 //
@@ -28,9 +31,9 @@ func setupGLClient(u *user) *gl.APIClient {
 	conf.AddDefaultHeader("Cookie", fmt.Sprintf("moov_auth=%s", u.Cookie.Value))
 	// conf.AddDefaultHeader("X-User-Id", u.ID) // api.GLApi.CreateAccount adds this // TODO(adam): remove once we can consolidate OpenAPI docs / generated client
 
-	defer func() {
+	glAddressOnce.Do(func() {
 		log.Printf("Using %s as base GL address", conf.BasePath)
-	}()
+	})
 
 	if *flagLocal {
 		conf.BasePath = "http://localhost" + bind.HTTP("gl")
