@@ -7,9 +7,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"strings"
 
-	"github.com/moov-io/ach"
 	gl "github.com/moov-io/gl/client"
 	moov "github.com/moov-io/go-client/client"
 
