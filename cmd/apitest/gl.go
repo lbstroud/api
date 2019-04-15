@@ -55,16 +55,14 @@ func createGLAccount(ctx context.Context, api *gl.APIClient, u *user, name, requ
 		Name: name,
 		Type: "Savings",
 	}, opts)
-
 	if *flagDebug {
 		log.Printf("GL create account request URL: %s (status=%s): %v\n", resp.Request.URL.String(), resp.Status, err)
 	}
-
-	if err != nil {
-		return nil, fmt.Errorf("problem creating GL account %s: %v", name, err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return nil, fmt.Errorf("problem creating GL account %s: %v", name, err)
 	}
 	return &account, nil
 }

@@ -62,7 +62,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		return nil, fmt.Errorf("problem creating user: %v", err)
 	}
 	if resp != nil {
-		defer resp.Body.Close()
+		resp.Body.Close()
 	}
 
 	// Now login
@@ -71,11 +71,11 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		XRequestId:      optional.NewString(requestId),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
+	if resp != nil {
+		resp.Body.Close()
+	}
 	if err != nil {
 		return nil, fmt.Errorf("problem logging in for user: %v", err)
-	}
-	if resp != nil {
-		defer resp.Body.Close()
 	}
 	if u.CreatedAt.IsZero() {
 		return nil, fmt.Errorf("got zero time: %#v", u)

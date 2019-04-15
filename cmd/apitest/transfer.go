@@ -37,11 +37,11 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, account
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
-	if err != nil {
-		return dep, fmt.Errorf("problem creating depository (name: %q) for user (userId=%s): %v", account.Name, u.ID, err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return dep, fmt.Errorf("problem creating depository (name: %q) for user (userId=%s): %v", account.Name, u.ID, err)
 	}
 
 	// verify with (known, fixed values) micro-deposits
@@ -64,11 +64,11 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
-	if err != nil {
-		return fmt.Errorf("problem starting micro deposits: %v", err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return fmt.Errorf("problem starting micro deposits: %v", err)
 	}
 
 	// confirm micro deposits
@@ -76,11 +76,11 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
-	if err != nil {
-		return fmt.Errorf("problem verifying micro deposits: %v", err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return fmt.Errorf("problem verifying micro deposits: %v", err)
 	}
 	return nil
 }
@@ -95,11 +95,11 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
-	if err != nil {
-		return orig, fmt.Errorf("problem creating originator: %v", err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return orig, fmt.Errorf("problem creating originator: %v", err)
 	}
 	return orig, nil
 }
@@ -114,11 +114,11 @@ func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, re
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
-	if err != nil {
-		return cust, fmt.Errorf("problem creating customer: %v", err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return cust, fmt.Errorf("problem creating customer: %v", err)
 	}
 	return cust, nil
 }
@@ -138,22 +138,22 @@ func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
-	if err != nil {
-		return tx, fmt.Errorf("problem creating transfer: %v", err)
-	}
 	if resp != nil {
 		resp.Body.Close()
+	}
+	if err != nil {
+		return tx, fmt.Errorf("problem creating transfer: %v", err)
 	}
 	if !*flagFakeData {
 		// Delete the transfer (and underlying file) since we're only making one Transfer
 		resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.Id, &moov.DeleteTransferByIDOpts{
 			XRequestId: optional.NewString(requestId),
 		})
-		if err != nil {
-			return tx, fmt.Errorf("problem deleting transfer: %v", err)
-		}
 		if resp != nil {
 			resp.Body.Close()
+		}
+		if err != nil {
+			return tx, fmt.Errorf("problem deleting transfer: %v", err)
 		}
 	}
 	return tx, nil
