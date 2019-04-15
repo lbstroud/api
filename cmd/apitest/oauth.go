@@ -65,11 +65,11 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 		XRequestId:      optional.NewString(requestId),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
+	if resp != nil {
+		resp.Body.Close()
+	}
 	if err != nil {
 		return nil, fmt.Errorf("problem creating user: %v", err)
-	}
-	if resp != nil {
-		defer resp.Body.Close()
 	}
 
 	if len(clients) == 0 {
@@ -85,11 +85,11 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 		ClientId:        optional.NewString(client.ClientId),
 		ClientSecret:    optional.NewString(client.ClientSecret),
 	})
+	if resp != nil {
+		resp.Body.Close()
+	}
 	if err != nil {
 		return nil, fmt.Errorf("problem creating user: %v", err)
-	}
-	if resp != nil {
-		defer resp.Body.Close()
 	}
 
 	if len(tk) == 0 {
@@ -119,14 +119,12 @@ func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient, requestI
 	resp, err := api.OAuth2Api.CheckOAuthClientCredentials(ctx, fmt.Sprintf("Bearer %s", token), &moov.CheckOAuthClientCredentialsOpts{
 		XRequestId: optional.NewString(requestId),
 	})
-
 	if resp != nil {
+		resp.Body.Close()
 		if resp.StatusCode != http.StatusForbidden {
 			return fmt.Errorf("got %s response code", resp.Status)
 		}
-		defer resp.Body.Close()
 	}
-
 	if err == nil {
 		bs, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
@@ -134,6 +132,5 @@ func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient, requestI
 		}
 		return errors.New("expected error, but got nothing")
 	}
-
 	return nil
 }

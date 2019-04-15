@@ -37,14 +37,14 @@ func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, 
 	resp, err := api.UserApi.CheckUserLogin(ctx, &moov.CheckUserLoginOpts{
 		XRequestId: optional.NewString(requestId),
 	})
+	if resp != nil {
+		resp.Body.Close()
+	}
 	if err != nil {
 		return fmt.Errorf("problem checking user (id=%s) login: %v", user.ID, err)
 	}
-	if resp != nil {
-		if resp.StatusCode != 200 {
-			return fmt.Errorf("on cookie check, got %s status", resp.Status)
-		}
-		return resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("on cookie check, got %s status", resp.Status)
 	}
 	return nil
 }
@@ -58,10 +58,10 @@ func attemptFailedLogin(ctx context.Context, api *moov.APIClient, requestId stri
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if resp != nil {
+		resp.Body.Close()
 		if resp.StatusCode != http.StatusForbidden {
 			return fmt.Errorf("got %s response code", resp.Status)
 		}
-		defer resp.Body.Close()
 	}
 	if err == nil {
 		bs, err := ioutil.ReadAll(resp.Body)
