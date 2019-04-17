@@ -167,7 +167,7 @@ func pingApps(ctx context.Context) error {
 
 type iteration struct {
 	user       *user
-	oauthToken OAuthToken
+	oauthToken moov.OAuth2Token
 
 	originator           moov.Originator
 	originatorAccount    *gl.Account
@@ -233,10 +233,12 @@ func iterate(ctx context.Context) *iteration {
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 	}
+	expiresIn, _ := time.ParseDuration(fmt.Sprintf("%fs", oauthToken.ExpiresIn))
 	if v := os.Getenv("TRAVIS_OS_NAME"); v != "" {
-		debugLogger("SUCCESS: Created OAuth access token, expires in %v", oauthToken.Expires())
+		// Hide our OAuth2 access_token from TravisCI logs...
+		debugLogger("SUCCESS: Created OAuth access token, expires in %v", expiresIn)
 	}
-	debugLogger("SUCCESS: Created OAuth access token (%s), expires in %v", oauthToken.Access(), oauthToken.Expires())
+	debugLogger("SUCCESS: Created OAuth access token (%s), expires in %v", oauthToken.AccessToken, expiresIn)
 
 	if *flagOAuth {
 		debugLogger("Using OAuth for all requests now.")
@@ -310,7 +312,7 @@ func iterate(ctx context.Context) *iteration {
 
 	return &iteration{
 		user:                 user,
-		oauthToken:           oauthToken,
+		oauthToken:           *oauthToken,
 		originator:           orig,
 		originatorAccount:    origAcct,
 		originatorDepository: origDep,

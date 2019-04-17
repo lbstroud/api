@@ -16,16 +16,16 @@ github.com/moov-io/base/k8s
 github.com/moov-io/base
 # github.com/moov-io/gl v0.2.1
 github.com/moov-io/gl/client
-# github.com/moov-io/go-client v0.0.0-20190227185629-15b74a2ffae3
+# github.com/moov-io/go-client v0.0.0-20190417212419-7efc60a9472c
 github.com/moov-io/go-client/client
 # github.com/rickar/cal v1.0.1
 github.com/rickar/cal
 # go4.org v0.0.0-20190313082347-94abd6928b1d
 go4.org/syncutil
-# golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
+# golang.org/x/net v0.0.0-20190304024830-16b79f2e4e95
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/context
-# golang.org/x/oauth2 v0.0.0-20190226205417-e64efc72b421
+# golang.org/x/oauth2 v0.0.0-20190227195853-e64efc72b421
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
 # google.golang.org/appengine v1.4.0

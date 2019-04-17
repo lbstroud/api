@@ -11,55 +11,21 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
 
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
 )
 
-// OAuthToken token holds various values from the OAuth2 Token generation.
-// These values include: access token, expires, refresh token, etc..
-type OAuthToken map[string]interface{}
-
-// Get returns a specific OAuth2 token or value by their given name.
-func (o OAuthToken) Get(name string) string {
-	v, ok := o[name].(string)
-	if !ok {
-		return ""
-	}
-	return v
-}
-
-// Access returns the OAuth access token value.
-//
-// Note: In order to use in a header you must prefix 'Bearer ' with this value.
-func (o OAuthToken) Access() string {
-	return o.Get("access_token")
-}
-
-// Expires returns a Duration for when the access/refresh tokens expire.
-func (o OAuthToken) Expires() time.Duration {
-	v, ok := o["expires_in"].(float64)
-	if !ok {
-		return time.Duration(0 * time.Second)
-	}
-	dur, err := time.ParseDuration(fmt.Sprintf("%fs", v))
-	if err != nil {
-		return time.Duration(0 * time.Second)
-	}
-	return dur
-}
-
-func setMoovOAuthToken(conf *moov.Configuration, oauthToken OAuthToken) {
-	if v := oauthToken.Access(); v != "" {
-		conf.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", v))
-	} else {
+func setMoovOAuthToken(conf *moov.Configuration, oauthToken *moov.OAuth2Token) {
+	if oauthToken == nil || oauthToken.AccessToken == "" {
 		log.Fatal("FAILURE: No OAuth token provided")
+	} else {
+		conf.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", oauthToken.AccessToken))
 	}
 }
 
-func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, requestId string) (OAuthToken, error) {
+func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, requestId string) (*moov.OAuth2Token, error) {
 	// Create OAuth client credentials
 	clients, resp, err := api.OAuth2Api.CreateOAuth2Client(ctx, &moov.CreateOAuth2ClientOpts{
 		XRequestId:      optional.NewString(requestId),
@@ -78,7 +44,7 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 	client := clients[0]
 
 	// Generate OAuth2 Token
-	tk, resp, err := api.OAuth2Api.CreateOAuth2Token(ctx, &moov.CreateOAuth2TokenOpts{
+	token, resp, err := api.OAuth2Api.CreateOAuth2Token(ctx, &moov.CreateOAuth2TokenOpts{
 		XRequestId:      optional.NewString(requestId),
 		XIdempotencyKey: optional.NewString(generateID()),
 		GrantType:       optional.NewString("client_credentials"),
@@ -91,25 +57,19 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 	if err != nil {
 		return nil, fmt.Errorf("problem creating user: %v", err)
 	}
-
-	if len(tk) == 0 {
-		return nil, errors.New("no OAuth2 token created")
-	}
-	token := OAuthToken(tk)
-
-	accessToken := token.Access()
-	if accessToken == "" {
+	if token.AccessToken == "" {
 		return nil, errors.New("no OAuth2 access token created")
 	}
 
 	// Verify OAuth access token works
-	resp, err = api.OAuth2Api.CheckOAuthClientCredentials(ctx, fmt.Sprintf("Bearer %s", accessToken), &moov.CheckOAuthClientCredentialsOpts{
+	accessToken := fmt.Sprintf("Bearer %s", token.AccessToken)
+	resp, err = api.OAuth2Api.CheckOAuthClientCredentials(ctx, accessToken, &moov.CheckOAuthClientCredentialsOpts{
 		XRequestId: optional.NewString(requestId),
 	})
 	if resp != nil {
 		resp.Body.Close()
 	}
-	return token, err
+	return &token, err
 }
 
 // attemptFailedOAuth2Login will try with a OAuth2 access token to ensure failed credentials don't authenticate a request.

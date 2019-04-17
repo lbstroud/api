@@ -1,6 +1,6 @@
 # Go API client for openapi
 
-_Note_: We're currently in pre-release of our API. We expect breaking changes before launching v1 so please join our [slack organization](http://moov-io.slack.com/) ([request an invite](https://join.slack.com/t/moov-io/shared_invite/enQtNDE5NzIwNTYxODEwLTRkYTcyZDI5ZTlkZWRjMzlhMWVhMGZlOTZiOTk4MmM3MmRhZDY4OTJiMDVjOTE2MGEyNWYzYzY1MGMyMThiZjg)) or [mailing list](https://groups.google.com/forum/#!forum/moov-users) for more updates and notices.  The Moov API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), allowing you to interact securely with our API from client-side web applications (never expose your secret API key in any public website's client-side code). [JSON](http://www.json.org/) is returned by all API responses, including errors, although you can generate client code via [OpenAPI](https://swagger.io/) code generation to convert responses to appropriate language-specific objects.  The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.  When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.  Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.  The following order of API operations is suggested to start developing against the Moov API:  1. [Create a Moov API user](#operation/createUser) with a unique email address 1. [Login with user/password credentials](#operation/userLogin) 1. [Create an OAuth2 client](#operation/createOAuth2Client) and [Generate an OAuth access token](#operation/createOAuth2Token) 1. Using the OAuth credentials create:    - [Originator](#operation/addOriginator) and [Originator Depository](#operation/addDepository) (requires micro deposit setup)    - [Customer](#operation/addCustomers) and [Customer Depository](#operation/addDepository) (requires micro deposit setup) 1. [Submit the Transfer](#operation/addTransfer)  After signup clients can [submit ACH files](#operation/addFile) (either in JSON or plaintext) for [validation](#operation/validateFile) and [tabulation](#operation/getFileContents).  The Moov API offers many services: - Automated Clearing House (ACH) origination and file management - Transfers and ACH Customer management. - X9 / Image Cash Ledger (ICL) specification support (image uplaod)  ACH is implemented a RESTful API enabling ACH transactions to be submitted and received without a deep understanding of a full NACHA file specification.  An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Customer. Originators and Customers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Customer with an amount and flow of funds. ``` Originator                 ->   Gateway   ->   Customer  - OriginatorDepository                         - CustomerDepository  - Type   (Push or Pull)  - Amount (USD 12.43)  - Status (Pending)  ```  If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io). 
+_Note_: We're currently in pre-release of our API. We expect breaking changes before launching v1 so please join our [slack organization](http://moov-io.slack.com/) ([request an invite](https://join.slack.com/t/moov-io/shared_invite/enQtNDE5NzIwNTYxODEwLTRkYTcyZDI5ZTlkZWRjMzlhMWVhMGZlOTZiOTk4MmM3MmRhZDY4OTJiMDVjOTE2MGEyNWYzYzY1MGMyMThiZjg)) or [mailing list](https://groups.google.com/forum/#!forum/moov-users) for more updates and notices.  The Moov API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), allowing you to interact securely with our API from client-side web applications (never expose your secret API key in any public website's client-side code). [JSON](http://www.json.org/) is returned by all API responses, including errors, although you can generate client code via [OpenAPI code generation](https://github.com/OpenAPITools/openapi-generator) or the [OpenAPI editor](https://editor.swagger.io/) to convert responses to appropriate language-specific objects.  The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.  When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.  Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.  The following order of API operations is suggested to start developing against the Moov API:  1. [Create a Moov API user](#operation/createUser) with a unique email address 1. [Login with user/password credentials](#operation/userLogin) 1. [Create an OAuth2 client](#operation/createOAuth2Client) and [Generate an OAuth access token](#operation/createOAuth2Token) 1. Using the OAuth credentials create:    - [Originator](#operation/addOriginator) and [Originator Depository](#operation/addDepository) (requires micro deposit setup)    - [Customer](#operation/addCustomers) and [Customer Depository](#operation/addDepository) (requires micro deposit setup) 1. [Submit the Transfer](#operation/addTransfer)  After signup clients can [submit ACH files](#operation/addFile) (either in JSON or plaintext) for [validation](#operation/validateFile) and [tabulation](#operation/getFileContents).  The Moov API offers many services: - Automated Clearing House (ACH) origination and file management - Transfers and ACH Customer management. - X9 / Image Cash Ledger (ICL) specification support (image uplaod)  ACH is implemented a RESTful API enabling ACH transactions to be submitted and received without a deep understanding of a full NACHA file specification.  An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Customer. Originators and Customers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Customer with an amount and flow of funds. ``` Originator                 ->   Gateway   ->   Customer  - OriginatorDepository                         - CustomerDepository  - Type   (Push or Pull)  - Amount (USD 12.43)  - Status (Pending)  ```  If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io). 
 
 ## Overview
 This API client was generated by the [OpenAPI Generator](https://openapi-generator.tech) project.  By using the [OpenAPI-spec](https://www.openapis.org/) from a remote server, you can easily generate an API client.
@@ -13,7 +13,8 @@ For more information, please visit [https://groups.google.com/forum/#!forum/moov
 ## Installation
 
 Install the following dependencies:
-```
+
+```shell
 go get github.com/stretchr/testify/assert
 go get golang.org/x/oauth2
 go get golang.org/x/net/context
@@ -21,6 +22,7 @@ go get github.com/antihax/optional
 ```
 
 Put the package under your project folder and add the following in import:
+
 ```golang
 import "./openapi"
 ```
@@ -47,6 +49,8 @@ Class | Method | HTTP request | Description
 *DepositoriesApi* | [**UpdateDepository**](docs/DepositoriesApi.md#updatedepository) | **Patch** /v1/ach/depositories/{depositoryId} | Updates the specified Depository by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
 *EventsApi* | [**GetEventByID**](docs/EventsApi.md#geteventbyid) | **Get** /v1/ach/events/{eventId} | Get a Event by ID
 *EventsApi* | [**GetEvents**](docs/EventsApi.md#getevents) | **Get** /v1/ach/events | Gets a list of Events
+*FEDApi* | [**SearchFEDACH**](docs/FEDApi.md#searchfedach) | **Get** /v1/fed/ach/search | Search FEDACH names and metadata
+*FEDApi* | [**SearchFEDWIRE**](docs/FEDApi.md#searchfedwire) | **Get** /v1/fed/wire/search | Search FEDWIRE names and metadata
 *FilesApi* | [**AddBatchToFile**](docs/FilesApi.md#addbatchtofile) | **Post** /v1/ach/files/{file_id}/batches | Add Batch to File
 *FilesApi* | [**CreateFile**](docs/FilesApi.md#createfile) | **Post** /v1/ach/files/create | Create a new File object
 *FilesApi* | [**DeleteACHFile**](docs/FilesApi.md#deleteachfile) | **Delete** /v1/ach/files/{file_id} | Permanently deletes a File and associated Batches. It cannot be undone.
@@ -58,26 +62,34 @@ Class | Method | HTTP request | Description
 *FilesApi* | [**GetFiles**](docs/FilesApi.md#getfiles) | **Get** /v1/ach/files | Gets a list of Files
 *FilesApi* | [**UpdateFile**](docs/FilesApi.md#updatefile) | **Post** /v1/ach/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
 *FilesApi* | [**ValidateFile**](docs/FilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
+*GLApi* | [**CreateAccount**](docs/GLApi.md#createaccount) | **Post** /v1/gl/customers/{customer_id}/accounts | Create a new account for a Customer
+*GLApi* | [**CreateCustomer**](docs/GLApi.md#createcustomer) | **Post** /v1/gl/customers | Create a new customer
+*GLApi* | [**GetAccountsByCustomerID**](docs/GLApi.md#getaccountsbycustomerid) | **Get** /v1/gl/customers/{customer_id}/accounts | Retrieves a list of accounts associated with the customer ID.
+*GLApi* | [**GetGLCustomer**](docs/GLApi.md#getglcustomer) | **Get** /v1/gl/customers/{customer_id} | Retrieves a Customer object associated with the customer ID.
+*GLApi* | [**SearchAccounts**](docs/GLApi.md#searchaccounts) | **Get** /v1/gl/accounts/search | Search for account which matches all query parameters
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
-*MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that moov-io/ach service is running
-*MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that moov-io/auth service is running
-*MonitorApi* | [**PingOFAC**](docs/MonitorApi.md#pingofac) | **Get** /v1/ofac/ping | Check that moov-io/ofac service is running
+*MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
+*MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that the moov-io/auth service is running
+*MonitorApi* | [**PingFED**](docs/MonitorApi.md#pingfed) | **Get** /v1/fed/ping | Check that the moov-io/fed service is running
+*MonitorApi* | [**PingGL**](docs/MonitorApi.md#pinggl) | **Get** /v1/gl/ping | Check that the moov-io/gl service is running
+*MonitorApi* | [**PingOFAC**](docs/MonitorApi.md#pingofac) | **Get** /v1/ofac/ping | Check that the moov-io/ofac service is running
 *MonitorApi* | [**PingPaygate**](docs/MonitorApi.md#pingpaygate) | **Get** /v1/paygate/ping | Check that the moov-io/paygate service is running
 *OAuth2Api* | [**CheckOAuthClientCredentials**](docs/OAuth2Api.md#checkoauthclientcredentials) | **Get** /v1/oauth2/authorize | Verify OAuth2 Bearer token
 *OAuth2Api* | [**CreateOAuth2Client**](docs/OAuth2Api.md#createoauth2client) | **Post** /v1/oauth2/client | Create OAuth2 client credentials
 *OAuth2Api* | [**CreateOAuth2Token**](docs/OAuth2Api.md#createoauth2token) | **Post** /v1/oauth2/token | Generate OAuth2 access token
+*OAuth2Api* | [**GetClientsForUserId**](docs/OAuth2Api.md#getclientsforuserid) | **Get** /v1/oauth2/clients | List OAuth2 clients for the authenticated user
 *OFACApi* | [**AddCustomerNameWatch**](docs/OFACApi.md#addcustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name
 *OFACApi* | [**AddCustomerWatch**](docs/OFACApi.md#addcustomerwatch) | **Post** /v1/ofac/customers/{customerId}/watch | Add OFAC watch on a Customer
 *OFACApi* | [**GetCustomer**](docs/OFACApi.md#getcustomer) | **Get** /v1/ofac/customers/{customerId} | Get information about a customer, addresses, alternate names, and their SDN metadata.
-*OFACApi* | [**GetLatestDownloads**](docs/OFACApi.md#getlatestdownloads) | **Get** /v1/ofac/downloads | Return list of recent re-downloads of OFAC data
+*OFACApi* | [**GetLatestDownloads**](docs/OFACApi.md#getlatestdownloads) | **Get** /v1/ofac/downloads | Return list of recent downloads of OFAC data
 *OFACApi* | [**GetSDN**](docs/OFACApi.md#getsdn) | **Get** /v1/ofac/sdn/{sdnId} | Specially designated national
 *OFACApi* | [**GetSDNAddresses**](docs/OFACApi.md#getsdnaddresses) | **Get** /v1/ofac/sdn/{sdnId}/addresses | Get addresses for a given SDN
 *OFACApi* | [**GetSDNAltNames**](docs/OFACApi.md#getsdnaltnames) | **Get** /v1/ofac/sdn/{sdnId}/alts | Get alternate names for a given SDN
 *OFACApi* | [**RemoveCustomerNameWatch**](docs/OFACApi.md#removecustomernamewatch) | **Delete** /v1/ofac/customers/watch/{watchId} | Remove a Customer name watch
 *OFACApi* | [**RemoveCustomerWatch**](docs/OFACApi.md#removecustomerwatch) | **Delete** /v1/ofac/customers/{customerId}/watch/{watchId} | Remove customer watch
 *OFACApi* | [**SearchSDNs**](docs/OFACApi.md#searchsdns) | **Get** /v1/ofac/search | Search SDN names and metadata
-*OFACApi* | [**UpdateCustomerStatus**](docs/OFACApi.md#updatecustomerstatus) | **Put** /v1/ofac/customers/{customerId} | Update a Customer&#39;s status to add or remove a manual block.
+*OFACApi* | [**UpdateCustomerStatus**](docs/OFACApi.md#updatecustomerstatus) | **Put** /v1/ofac/customers/{customerId} | Update a Customer&#39;s sanction status to always block or always allow transactions.
 *OriginatorsApi* | [**AddOriginator**](docs/OriginatorsApi.md#addoriginator) | **Post** /v1/ach/originators | Create a new Originator object
 *OriginatorsApi* | [**DeleteOriginator**](docs/OriginatorsApi.md#deleteoriginator) | **Delete** /v1/ach/originators/{originatorId} | Permanently deletes an Originator and associated Customers, Depositories, and Transfers. It cannot be undone. Also immediately cancels any active Transfers for the Originator.
 *OriginatorsApi* | [**GetOriginatorByID**](docs/OriginatorsApi.md#getoriginatorbyid) | **Get** /v1/ach/originators/{originatorId} | Retrieves the details of an existing Originator. You need only supply the unique Originator identifier that was returned upon customer creation.
@@ -100,25 +112,36 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [Account](docs/Account.md)
+ - [AchDictionary](docs/AchDictionary.md)
+ - [AchLocation](docs/AchLocation.md)
+ - [AchParticipant](docs/AchParticipant.md)
  - [Addendum](docs/Addendum.md)
  - [Address](docs/Address.md)
+ - [Address2](docs/Address2.md)
  - [Alt](docs/Alt.md)
  - [Amounts](docs/Amounts.md)
  - [Batch](docs/Batch.md)
  - [BatchControl](docs/BatchControl.md)
  - [BatchHeader](docs/BatchHeader.md)
+ - [CreateAccount](docs/CreateAccount.md)
+ - [CreateAddress](docs/CreateAddress.md)
  - [CreateCustomer](docs/CreateCustomer.md)
+ - [CreateCustomer2](docs/CreateCustomer2.md)
  - [CreateDepository](docs/CreateDepository.md)
  - [CreateFile](docs/CreateFile.md)
  - [CreateGateway](docs/CreateGateway.md)
  - [CreateOriginator](docs/CreateOriginator.md)
+ - [CreatePhone](docs/CreatePhone.md)
  - [CreateTransfer](docs/CreateTransfer.md)
  - [CreateUser](docs/CreateUser.md)
  - [Customer](docs/Customer.md)
+ - [Customer2](docs/Customer2.md)
  - [Depository](docs/Depository.md)
  - [Download](docs/Download.md)
  - [EntryDetail](docs/EntryDetail.md)
  - [Error](docs/Error.md)
+ - [Error2](docs/Error2.md)
  - [Event](docs/Event.md)
  - [File](docs/File.md)
  - [FileControl](docs/FileControl.md)
@@ -126,10 +149,14 @@ Class | Method | HTTP request | Description
  - [Gateway](docs/Gateway.md)
  - [IatBatch](docs/IatBatch.md)
  - [IatBatchHeader](docs/IatBatchHeader.md)
+ - [IatDetail](docs/IatDetail.md)
  - [Login](docs/Login.md)
  - [OAuth2Client](docs/OAuth2Client.md)
+ - [OAuth2Token](docs/OAuth2Token.md)
  - [OfacCustomer](docs/OfacCustomer.md)
+ - [OfacCustomerStatus](docs/OfacCustomerStatus.md)
  - [Originator](docs/Originator.md)
+ - [Phone](docs/Phone.md)
  - [Sdn](docs/Sdn.md)
  - [Search](docs/Search.md)
  - [Transfer](docs/Transfer.md)
@@ -139,23 +166,32 @@ Class | Method | HTTP request | Description
  - [Watch](docs/Watch.md)
  - [WatchRequest](docs/WatchRequest.md)
  - [WebDetail](docs/WebDetail.md)
+ - [WireDictionary](docs/WireDictionary.md)
+ - [WireLocation](docs/WireLocation.md)
+ - [WireParticipant](docs/WireParticipant.md)
 
 
 ## Documentation For Authorization
 
+
+
 ## bearerAuth
+
+
 - **Type**: OAuth
 - **Flow**: application
 - **Authorization URL**: 
 - **Scopes**: N/A
 
 Example
+
 ```golang
 auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
 r, err := client.Service.Operation(auth, args)
 ```
 
 Or via OAuth2 module to automatically refresh tokens and perform user authentication.
+
 ```golang
 import "golang.org/x/oauth2"
 
@@ -165,17 +201,22 @@ tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
 auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
+
+
 ## cookieAuth
-- **Type**: API key 
+
+- **Type**: API key
 
 Example
+
 ```golang
 auth := context.WithValue(context.Background(), sw.ContextAPIKey, sw.APIKey{
-	Key: "APIKEY",
-	Prefix: "Bearer", // Omit if not necessary.
+    Key: "APIKEY",
+    Prefix: "Bearer", // Omit if not necessary.
 })
 r, err := client.Service.Operation(auth, args)
 ```
+
 
 ## Author
 
