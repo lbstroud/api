@@ -16,12 +16,12 @@
 #  - https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#linkObject
 #
 # TODO Transfers objects now have an estimated ?posting? date
-# TODO add Documents allowing Customer ID(passport, drivers license, idCard) to be uploaded and verified
+# TODO add Documents allowing Receiver ID(passport, drivers license, idCard) to be uploaded and verified
 # TODO Webhooks have been documented for retrieving events
 # TODO add support for retrieving 1099-k for Originators
 #
 # Property names must conform to the following guidelines:
-# - Resources are plural nouns /customers/
+# - Resources are plural nouns (i.e. /receivers/)
 # - Property names should be meaningful names with defined semantics.
 # - Property names must be camel-cased, ASCII strings.
 # - The first character must be a letter, an underscore (_) or a dollar sign ($).
@@ -51,22 +51,22 @@ info:
     1. [Create an OAuth2 client](#operation/createOAuth2Client) and [Generate an OAuth access token](#operation/createOAuth2Token)
     1. Using the OAuth credentials create:
        - [Originator](#operation/addOriginator) and [Originator Depository](#operation/addDepository) (requires micro deposit setup)
-       - [Customer](#operation/addCustomers) and [Customer Depository](#operation/addDepository) (requires micro deposit setup)
+       - [Receiver](#operation/addReceivers) and [Receiver Depository](#operation/addDepository) (requires micro deposit setup)
     1. [Submit the Transfer](#operation/addTransfer)
 
     After signup clients can [submit ACH files](#operation/addFile) (either in JSON or plaintext) for [validation](#operation/validateFile) and [tabulation](#operation/getFileContents).
 
     The Moov API offers many services:
     - Automated Clearing House (ACH) origination and file management
-    - Transfers and ACH Customer management.
+    - Transfers and ACH Receiver management.
     - X9 / Image Cash Ledger (ICL) specification support (image uplaod)
 
     ACH is implemented a RESTful API enabling ACH transactions to be submitted and received without a deep understanding of a full NACHA file specification.
 
-    An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Customer. Originators and Customers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Customer with an amount and flow of funds.
+    An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Receiver. Originators and Receivers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Receiver with an amount and flow of funds.
     ```
-    Originator                 ->   Gateway   ->   Customer
-     - OriginatorDepository                         - CustomerDepository
+    Originator                 ->   Gateway   ->   Receiver
+     - OriginatorDepository                         - ReceiverDepository
      - Type   (Push or Pull)
      - Amount (USD 12.43)
      - Status (Pending)
@@ -130,14 +130,14 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1originators'
   /v1/ach/originators/{originatorId}:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1originators~1%7BoriginatorId%7D'
-  /v1/ach/customers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1customers'
-  /v1/ach/customers/{customerId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D'
-  /v1/ach/customers/{customerId}/depositories:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D~1depositories'
-  /v1/ach/customers/{customerId}/depositories/{depositoryId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D~1depositories~1%7BdepositoryId%7D'
+  /v1/ach/receivers:
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers'
+  /v1/ach/receivers/{receiverId}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverId%7D'
+  /v1/ach/receivers/{receiverId}/depositories:
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverId%7D~1depositories'
+  /v1/ach/receivers/{receiverId}/depositories/{depositoryId}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverId%7D~1depositories~1%7BdepositoryId%7D'
   /v1/ach/depositories:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories'
   /v1/ach/depositories/{depositoryId}:
