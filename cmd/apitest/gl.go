@@ -8,54 +8,22 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"sync"
 
-	"github.com/moov-io/base/http/bind"
-	"github.com/moov-io/base/k8s"
-	gl "github.com/moov-io/gl/client"
+	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
 )
 
-var glAddressOnce sync.Once
-
-// setupGLClient returns an API client for our GL service
-//
-// TODO(adam): remove this extra client init and fold createGLAccount into our main moov.APIClient
-// We can't do this right now because of an OpenAPITools issue (https://github.com/OpenAPITools/openapi-generator/issues/2008)
-// which is preventing us from generating a client with remote $ref's
-func setupGLClient(u *user) *gl.APIClient {
-	conf := gl.NewConfiguration()
-
-	// logic copied from login.go
-	conf.AddDefaultHeader("Cookie", fmt.Sprintf("moov_auth=%s", u.Cookie.Value))
-	// conf.AddDefaultHeader("X-User-Id", u.ID) // api.GLApi.CreateAccount adds this // TODO(adam): remove once we can consolidate OpenAPI docs / generated client
-
-	glAddressOnce.Do(func() {
-		log.Printf("Using %s as base GL address", conf.BasePath)
-	})
-
-	if *flagLocal {
-		conf.BasePath = "http://localhost" + bind.HTTP("gl")
-		return gl.NewAPIClient(conf)
-	}
-	if k8s.Inside() {
-		conf.BasePath = "http://gl.apps.svc.cluster.local:8080"
-		return gl.NewAPIClient(conf)
-	}
-	conf.BasePath = "https://api.moov.io/v1/gl"
-	return gl.NewAPIClient(conf)
-}
-
-func createGLAccount(ctx context.Context, api *gl.APIClient, u *user, name, requestId string) (*gl.Account, error) {
-	opts := &gl.CreateAccountOpts{
-		XRequestId: optional.NewString(requestId),
-	}
-	account, resp, err := api.GLApi.CreateAccount(ctx, u.ID, u.ID, gl.CreateAccount{
+func createGLAccount(ctx context.Context, api *moov.APIClient, u *user, name, requestId string) (*moov.Account, error) {
+	req := moov.CreateAccount{
 		Name: name,
 		Type: "Savings",
-	}, opts)
-	if *flagDebug {
+	}
+	opts := &moov.CreateAccountOpts{
+		XRequestId: optional.NewString(requestId),
+	}
+	account, resp, err := api.GLApi.CreateAccount(ctx, u.ID, u.ID, req, opts)
+	if *flagDebug && resp != nil {
 		log.Printf("GL create account request URL: %s (status=%s): %v\n", resp.Request.URL.String(), resp.Status, err)
 	}
 	if resp != nil {

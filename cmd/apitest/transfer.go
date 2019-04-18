@@ -8,7 +8,6 @@ import (
 	"context"
 	"fmt"
 
-	gl "github.com/moov-io/gl/client"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -24,7 +23,7 @@ type fiInfo struct {
 
 // TODO(adam): on -fake-data we need to randomize all data, but keep the existing values on single Transfer creations
 
-func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *gl.Account, requestId string) (moov.Depository, error) {
+func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *moov.Account, requestId string) (moov.Depository, error) {
 	req := moov.CreateDepository{
 		BankName:      "Moov Bank",
 		AccountNumber: account.AccountNumber,

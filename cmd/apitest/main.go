@@ -27,7 +27,6 @@ import (
 
 	"github.com/moov-io/api/cmd/apitest/local"
 	"github.com/moov-io/api/internal/version"
-	gl "github.com/moov-io/gl/client"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -170,11 +169,11 @@ type iteration struct {
 	oauthToken moov.OAuth2Token
 
 	originator           moov.Originator
-	originatorAccount    *gl.Account
+	originatorAccount    *moov.Account
 	originatorDepository moov.Depository
 
 	customer           moov.Customer
-	customerAccount    *gl.Account
+	customerAccount    *moov.Account
 	customerDepository moov.Depository
 
 	transfer moov.Transfer
@@ -247,12 +246,10 @@ func iterate(ctx context.Context) *iteration {
 		setMoovOAuthToken(conf, oauthToken)
 	}
 
-	glClient := setupGLClient(user)
-
 	// Create Originator GL account
 	// This is only needed because our GL setup (for apitest's default environment) doesn't have
 	// accounts backing it. We create on in our GL service for each test run.
-	origAcct, err := createGLAccount(ctx, glClient, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
+	origAcct, err := createGLAccount(ctx, api, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 	}
@@ -272,7 +269,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
 	// Create Customer GL account
-	custAcct, err := createGLAccount(ctx, glClient, user, "to account", requestId)
+	custAcct, err := createGLAccount(ctx, api, user, "to account", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 	}
