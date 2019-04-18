@@ -14,8 +14,6 @@ github.com/moov-io/ach/internal/usabbrev
 github.com/moov-io/base/http/bind
 github.com/moov-io/base/k8s
 github.com/moov-io/base
-# github.com/moov-io/gl v0.2.1
-github.com/moov-io/gl/client
 # github.com/moov-io/go-client v0.0.0-20190417212419-7efc60a9472c
 github.com/moov-io/go-client/client
 # github.com/rickar/cal v1.0.1
