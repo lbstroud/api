@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/moov-io/ach"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -124,14 +125,24 @@ func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, re
 
 func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
 	req := moov.CreateTransfer{
-		TransferType:           "Push",
-		Amount:                 amount,
-		Originator:             orig.Id,
-		OriginatorDepository:   orig.DefaultDepository,
-		Customer:               cust.Id,
-		CustomerDepository:     cust.DefaultDepository,
-		Description:            "apitest transfer",
-		StandardEntryClassCode: "PPD",
+		TransferType:         "Push",
+		Amount:               amount,
+		Originator:           orig.Id,
+		OriginatorDepository: orig.DefaultDepository,
+		Customer:             cust.Id,
+		CustomerDepository:   cust.DefaultDepository,
+		Description:          "apitest transfer",
+	}
+	switch *flagACHType {
+	case ach.IAT:
+		req.StandardEntryClassCode = "IAT"
+		req.IATDetail = createIATDetail(cust, orig)
+	case ach.PPD:
+		req.StandardEntryClassCode = "PPD"
+	case ach.WEB:
+		req.StandardEntryClassCode = "WEB"
+		req.WEBDetail = createWEBDetail()
+
 	}
 	tx, resp, err := api.TransfersApi.AddTransfer(ctx, req, &moov.AddTransferOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
@@ -156,4 +167,40 @@ func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer
 		}
 	}
 	return tx, nil
+}
+
+func createIATDetail(cust moov.Customer, orig moov.Originator) moov.IatDetail {
+	return moov.IatDetail{
+		OriginatorName:               orig.Metadata,
+		OriginatorAddress:            "123 1st st",
+		OriginatorCity:               "anytown",
+		OriginatorState:              "PA",
+		OriginatorPostalCode:         "12345",
+		OriginatorCountryCode:        "US",
+		ODFIName:                     "my bank",
+		ODFIIDNumberQualifier:        "01",
+		ODFIIdentification:           "2",
+		ODFIBranchCurrencyCode:       "USD",
+		ReceiverName:                 cust.Metadata,
+		ReceiverAddress:              "321 2nd st",
+		ReceiverCity:                 "othertown",
+		ReceiverState:                "GB",
+		ReceiverPostalCode:           "54321",
+		ReceiverCountryCode:          "GB",
+		RDFIName:                     "their bank",
+		RDFIIDNumberQualifier:        "01",
+		RDFIIdentification:           "4",
+		RDFIBranchCurrencyCode:       "GBP",
+		ForeignCorrespondentBankName: "their bank",
+		ForeignCorrespondentBankIDNumberQualifier: "5",
+		ForeignCorrespondentBankIDNumber:          "6",
+		ForeignCorrespondentBankBranchCountryCode: "GB",
+	}
+}
+
+func createWEBDetail() moov.WebDetail {
+	return moov.WebDetail{
+		PaymentInformation: "apitest payment",
+		PaymentType:        "single",
+	}
 }
