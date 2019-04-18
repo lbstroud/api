@@ -233,7 +233,7 @@ func iterate(ctx context.Context) *iteration {
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 	}
-	expiresIn, _ := time.ParseDuration(fmt.Sprintf("%fs", oauthToken.ExpiresIn))
+	expiresIn, _ := time.ParseDuration(fmt.Sprintf("%ds", oauthToken.ExpiresIn))
 	if v := os.Getenv("TRAVIS_OS_NAME"); v != "" {
 		// Hide our OAuth2 access_token from TravisCI logs...
 		debugLogger("SUCCESS: Created OAuth access token, expires in %v", expiresIn)
