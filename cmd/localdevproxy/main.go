@@ -99,7 +99,7 @@ func kubernetesReverseProxy() *httputil.ReverseProxy {
 			switch strings.ToLower(parts[2]) {
 			case "ach":
 				switch strings.ToLower(parts[3]) {
-				case "customers", "depositories", "originators", "transfers":
+				case "depositories", "originators", "receivers", "transfers":
 					r.URL.Host = "paygate.apps.svc.cluster.local:8080"
 				default:
 					r.URL.Host = "ach.apps.svc.cluster.local:8080"

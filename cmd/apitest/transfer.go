@@ -104,13 +104,13 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId
 	return orig, nil
 }
 
-func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, requestId string) (moov.Customer, error) {
-	req := moov.CreateCustomer{
+func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, requestId string) (moov.Receiver, error) {
+	req := moov.CreateReceiver{
 		Email:             fmt.Sprintf("%s+apitest@moov.io", u.Name),
 		DefaultDepository: depId,
 		Metadata:          "Jane Doe",
 	}
-	cust, resp, err := api.CustomersApi.AddCustomers(ctx, req, &moov.AddCustomersOpts{
+	cust, resp, err := api.ReceiversApi.AddReceivers(ctx, req, &moov.AddReceiversOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
@@ -118,19 +118,19 @@ func createCustomer(ctx context.Context, api *moov.APIClient, u *user, depId, re
 		resp.Body.Close()
 	}
 	if err != nil {
-		return cust, fmt.Errorf("problem creating customer: %v", err)
+		return cust, fmt.Errorf("problem creating receiver: %v", err)
 	}
 	return cust, nil
 }
 
-func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
+func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Receiver, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
 	req := moov.CreateTransfer{
 		TransferType:         "Push",
 		Amount:               amount,
 		Originator:           orig.Id,
 		OriginatorDepository: orig.DefaultDepository,
-		Customer:             cust.Id,
-		CustomerDepository:   cust.DefaultDepository,
+		Receiver:             cust.Id,
+		ReceiverDepository:   cust.DefaultDepository,
 		Description:          "apitest transfer",
 	}
 	switch *flagACHType {
@@ -169,7 +169,7 @@ func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Customer
 	return tx, nil
 }
 
-func createIATDetail(cust moov.Customer, orig moov.Originator) moov.IatDetail {
+func createIATDetail(cust moov.Receiver, orig moov.Originator) moov.IatDetail {
 	return moov.IatDetail{
 		OriginatorName:               orig.Metadata,
 		OriginatorAddress:            "123 1st st",

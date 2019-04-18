@@ -45,7 +45,7 @@ var (
 	flagACHType = flag.String("ach.type", "PPD", "ACH Service Class Code (SEC) to use. Options: PPD, IAT")
 	flagOAuth   = flag.Bool("oauth", false, "Use OAuth instead of cookie auth")
 
-	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, customers, and originators")
+	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
@@ -198,9 +198,9 @@ type iteration struct {
 	originatorAccount    *moov.Account
 	originatorDepository moov.Depository
 
-	customer           moov.Customer
-	customerAccount    *moov.Account
-	customerDepository moov.Depository
+	receiver           moov.Receiver
+	receiverAccount    *moov.Account
+	receiverDepository moov.Depository
 
 	transfer moov.Transfer
 }
@@ -300,28 +300,28 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
-	// Create Customer GL account
+	// Create Receiver GL account
 	custAcct, err := createGLAccount(ctx, api, user, "to account", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 
-	// Create Customer Depository
+	// Create Receiver Depository
 	custDep, err := createDepository(ctx, api, user, custAcct, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Customer Depository (id=%s) for user", custDep.Id)
+	debugLogger("SUCCESS: Created Receiver Depository (id=%s) for user", custDep.Id)
 
-	// Create Customer
-	cust, err := createCustomer(ctx, api, user, custDep.Id, requestId)
+	// Create Receiver
+	cust, err := createReceiver(ctx, api, user, custDep.Id, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Customer (id=%s) for user", cust.Id)
+	debugLogger("SUCCESS: Created Receiver (id=%s) for user", cust.Id)
 
 	// Create Transfer
 	tx, err := createTransfer(ctx, api, cust, orig, amount(), requestId)
@@ -351,9 +351,9 @@ func iterate(ctx context.Context) *iteration {
 		originator:           orig,
 		originatorAccount:    origAcct,
 		originatorDepository: origDep,
-		customer:             cust,
-		customerAccount:      custAcct,
-		customerDepository:   custDep,
+		receiver:             cust,
+		receiverAccount:      custAcct,
+		receiverDepository:   custDep,
 		transfer:             tx,
 	}
 }
