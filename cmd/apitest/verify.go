@@ -59,7 +59,7 @@ func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
 			if file.Header.ImmediateOrigin != iterations[i].originatorDepository.RoutingNumber {
 				continue
 			}
-			if file.Header.ImmediateDestination != iterations[i].customerDepository.RoutingNumber {
+			if file.Header.ImmediateDestination != iterations[i].receiverDepository.RoutingNumber {
 				continue
 			}
 			// Check file's batches

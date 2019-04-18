@@ -42,8 +42,8 @@ $ docker run moov/apitest:v0.3.0
 2018/12/01 00:20:09.592519 main.go:103: Cookie works for user a84042e7a35a1cf0609da9a0bd6693938fe21b02
 2018/12/01 00:20:10.625706 main.go:111: Created Originator Depository (id=db7a52b71efe9798a0edfcbf8dff78fb056814a5) for user
 2018/12/01 00:20:10.989580 main.go:118: Created Originator (id=63cb96ca09ca0b8413959f8bd46b1851151e9427) for user
-2018/12/01 00:20:11.990902 main.go:126: Created Customer Depository (id=0f0d3b4e092fc15e46f6696400b130382c5f7134) for user
-2018/12/01 00:20:12.271781 main.go:133: Created Customer (id=2277c6362e87965847c8ec66d0743f348f1121f2) for user
+2018/12/01 00:20:11.990902 main.go:126: Created Receiver Depository (id=0f0d3b4e092fc15e46f6696400b130382c5f7134) for user
+2018/12/01 00:20:12.271781 main.go:133: Created Receiver (id=2277c6362e87965847c8ec66d0743f348f1121f2) for user
 2018/12/01 00:20:12.631427 main.go:140: Created USD 219.51 transfer (id=42b697aef4f48663cbe0ff6e6b11b8761e189fe2) for user
 ```
 

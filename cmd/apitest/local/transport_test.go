@@ -30,8 +30,8 @@ func TestTransport(t *testing.T) {
 			"http://localhost:8081/oauth2/clients",
 		},
 		{
-			"https://api.moov.io/v1/ach/customers/foo", // paygate
-			"http://localhost:8082/customers/foo",
+			"https://api.moov.io/v1/ach/receivers/foo", // paygate
+			"http://localhost:8082/receivers/foo",
 		},
 		{
 			"https://api.moov.io/v1/ach/depositories/foo", // paygate
