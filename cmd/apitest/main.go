@@ -47,6 +47,9 @@ var (
 
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, customers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
+
+	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
+	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
 )
 
 func main() {
@@ -62,6 +65,14 @@ func main() {
 		log.Fatalf("FAILURE: %v", err)
 	}
 
+	// If we're going to verify we need the directory to be empty beforehand
+	if *flagVerifyTransfers != "" && !verifyDirIsEmpty(*flagVerifyTransfers) {
+		log.Fatalf("FAILURE: verify directory %s is not empty", *flagVerifyTransfers)
+	}
+
+	var mu sync.Mutex
+	var iterations []*iteration
+
 	// Run either one or many iterations
 	if *flagFakeData {
 		fmt.Println("") // add buffer space in output
@@ -72,14 +83,29 @@ func main() {
 			wg.Add(1)
 			gate.Start()
 			go func() {
-				iterate(ctx)
+				if iter := iterate(ctx); iter != nil {
+					mu.Lock()
+					iterations = append(iterations, iter)
+					mu.Unlock()
+				}
 				gate.Done()
 				wg.Done()
 			}()
 		}
 		wg.Wait()
 	} else {
-		iterate(ctx) // just one user and transfer
+		if iter := iterate(ctx); iter != nil {
+			iterations = append(iterations, iter) // just one user and transfer
+		}
+	}
+
+	// Verify every transfer we made exists
+	if *flagVerifyTransfers != "" {
+		log.Printf("Sleeping for %v to let paygate collect and merge transfers", flagVerifyInitialSleep)
+		time.Sleep(*flagVerifyInitialSleep)
+		if err := verifyTransfersWereMerged(*flagVerifyTransfers, iterations); err != nil {
+			log.Fatalf("FAILURE: %v", err)
+		}
 	}
 }
 
@@ -216,6 +242,7 @@ func iterate(ctx context.Context) *iteration {
 	user, err := createUser(ctx, api, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Created user %s (email: %s)", user.ID, user.Email)
 
@@ -225,12 +252,14 @@ func iterate(ctx context.Context) *iteration {
 	// Verify Cookie works
 	if err := verifyUserIsLoggedIn(ctx, api, user, requestId); err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Cookie works for user %s", user.ID)
 
 	oauthToken, err := createOAuthToken(ctx, api, user, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	expiresIn, _ := time.ParseDuration(fmt.Sprintf("%ds", oauthToken.ExpiresIn))
 	if v := os.Getenv("TRAVIS_OS_NAME"); v != "" {
@@ -252,12 +281,14 @@ func iterate(ctx context.Context) *iteration {
 	origAcct, err := createGLAccount(ctx, api, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 
 	// Create Originator Depository
 	origDep, err := createDepository(ctx, api, user, origAcct, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Created Originator Depository (id=%s) for user", origDep.Id)
 
@@ -265,6 +296,7 @@ func iterate(ctx context.Context) *iteration {
 	orig, err := createOriginator(ctx, api, origDep.Id, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
@@ -272,12 +304,14 @@ func iterate(ctx context.Context) *iteration {
 	custAcct, err := createGLAccount(ctx, api, user, "to account", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 
 	// Create Customer Depository
 	custDep, err := createDepository(ctx, api, user, custAcct, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Created Customer Depository (id=%s) for user", custDep.Id)
 
@@ -285,6 +319,7 @@ func iterate(ctx context.Context) *iteration {
 	cust, err := createCustomer(ctx, api, user, custDep.Id, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Created Customer (id=%s) for user", cust.Id)
 
@@ -292,18 +327,21 @@ func iterate(ctx context.Context) *iteration {
 	tx, err := createTransfer(ctx, api, cust, orig, amount(), requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
 
 	// Attempt a Failed login
 	if err := attemptFailedLogin(ctx, api, requestId); err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: invalid login credentials were rejected")
 
 	// Attempt a Failed OAuth2 auth check
 	if err := attemptFailedOAuth2Login(ctx, api, requestId); err != nil {
 		errLogger("FAILURE: %v", err)
+		return nil
 	}
 	debugLogger("SUCCESS: invalid OAuth2 access token was rejected")
 
