@@ -14,14 +14,6 @@ import (
 	"github.com/antihax/optional"
 )
 
-type fiInfo struct {
-	// Name is a human readable name for the financial institution
-	Name string
-
-	AccountNumber string
-	RoutingNumber string
-}
-
 // TODO(adam): on -fake-data we need to randomize all data, but keep the existing values on single Transfer creations
 
 func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *moov.Account, requestId string) (moov.Depository, error) {
