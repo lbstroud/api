@@ -101,7 +101,7 @@ func main() {
 
 	// Verify every transfer we made exists
 	if *flagVerifyTransfers != "" {
-		log.Printf("Sleeping for %v to let paygate collect and merge transfers", flagVerifyInitialSleep)
+		log.Printf("Sleeping for %v to let paygate collect and merge %d transfers", flagVerifyInitialSleep, len(iterations))
 		time.Sleep(*flagVerifyInitialSleep)
 		if err := verifyTransfersWereMerged(*flagVerifyTransfers, iterations); err != nil {
 			log.Fatalf("FAILURE: %v", err)

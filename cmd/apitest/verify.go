@@ -62,12 +62,20 @@ func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
 			if file.Header.ImmediateDestination != iterations[i].receiverDepository.RoutingNumber {
 				continue
 			}
+			if *flagDebug {
+				log.Printf("origin: %s vs %s destination: %s vs %s\n",
+					file.Header.ImmediateOrigin, iterations[i].originatorDepository.RoutingNumber,
+					file.Header.ImmediateDestination, iterations[i].receiverDepository.RoutingNumber)
+			}
 			// Check file's batches
 			for j := range file.Batches {
 				entries := file.Batches[j].GetEntries()
 				for k := range entries {
-					// TODO(adam): Once/If we move paygate's Amount into a shared lib we can do a better comparison here
-					if iterations[i].transfer.Amount == fmt.Sprintf("USD %.2f", float64(entries[k].Amount)/100.0) {
+					amount := fmt.Sprintf("USD %.2f", float64(entries[k].Amount)/100.0) // TODO(adam): use paygate's shared Amount type
+					if *flagDebug {
+						log.Printf("DEBUG: amounts %s vs %s\n", iterations[i].transfer.Amount, amount)
+					}
+					if iterations[i].transfer.Amount == amount {
 						log.Printf("INFO: Matched transfer %s for %s", iterations[i].transfer.Id, iterations[i].transfer.Amount)
 						// found a match // TODO(adam): compare more fields?
 						iterations = append(iterations[:i], iterations[i+1:]...) // remove iteration
