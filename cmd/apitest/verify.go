@@ -38,6 +38,7 @@ func verifyDirIsEmpty(dir string) bool {
 // verify all transfers exist in the merged ACH files in dir. This is done to help ensure paygate handles
 // and uploads all the given transfers to the FED / receiving FI.
 func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
+	iterationsBeforeMatching, mergedFilesProcessed := len(iterations), 0
 	if len(iterations) == 0 {
 		return fmt.Errorf("no iterations (transfers) found")
 	}
@@ -51,6 +52,7 @@ func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
 			return fmt.Errorf("error reading %s: %v", path, err)
 		}
 		i := -1
+		mergedFilesProcessed++
 		for {
 			i++
 			if i >= len(iterations) {
@@ -97,7 +99,10 @@ func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
 		for i := range iterations {
 			transferLine = append(transferLine, fmt.Sprintf("%s (amount: %s)", iterations[i].transfer.Id, iterations[i].transfer.Amount))
 		}
-		return fmt.Errorf("transfers not matched!!\n%s", strings.Join(transferLine, "\n"))
+		if iterationsBeforeMatching == len(iterations) || mergedFilesProcessed == 0 {
+			log.Printf("0/%d transfers matched, did paygate create any merged files? (%d files processed)", iterationsBeforeMatching, mergedFilesProcessed)
+		}
+		return fmt.Errorf(fmt.Sprintf("transfers not matched!!\n%s", strings.Join(transferLine, "\n")))
 	} else {
 		log.Printf("SUCCESS: all transfers matched in merged file(s)")
 	}
