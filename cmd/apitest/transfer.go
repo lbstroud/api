@@ -14,8 +14,6 @@ import (
 	"github.com/antihax/optional"
 )
 
-// TODO(adam): on -fake-data we need to randomize all data, but keep the existing values on single Transfer creations
-
 func createDepository(ctx context.Context, api *moov.APIClient, u *user, account *moov.Account, requestId string) (moov.Depository, error) {
 	req := moov.CreateDepository{
 		BankName:      "Moov Bank",
@@ -78,10 +76,11 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 }
 
 func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId string) (moov.Originator, error) {
+	first, _ := name()
 	req := moov.CreateOriginator{
 		DefaultDepository: depId,
-		Identification:    "123456789", // SSN
-		Metadata:          "Acme Corp",
+		Identification:    "123456789",
+		Metadata:          fmt.Sprintf("%s Corp", first),
 	}
 	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, req, &moov.AddOriginatorOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
@@ -100,9 +99,9 @@ func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, re
 	req := moov.CreateReceiver{
 		Email:             fmt.Sprintf("%s+apitest@moov.io", u.Name),
 		DefaultDepository: depId,
-		Metadata:          "Jane Doe",
+		Metadata:          u.Name,
 	}
-	cust, resp, err := api.ReceiversApi.AddReceivers(ctx, req, &moov.AddReceiversOpts{
+	receiver, resp, err := api.ReceiversApi.AddReceivers(ctx, req, &moov.AddReceiversOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})
@@ -110,25 +109,25 @@ func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, re
 		resp.Body.Close()
 	}
 	if err != nil {
-		return cust, fmt.Errorf("problem creating receiver: %v", err)
+		return receiver, fmt.Errorf("problem creating receiver: %v", err)
 	}
-	return cust, nil
+	return receiver, nil
 }
 
-func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Receiver, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
+func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Receiver, orig moov.Originator, amount string, requestId string) (moov.Transfer, error) {
 	req := moov.CreateTransfer{
 		TransferType:         "Push",
 		Amount:               amount,
 		Originator:           orig.Id,
 		OriginatorDepository: orig.DefaultDepository,
-		Receiver:             cust.Id,
-		ReceiverDepository:   cust.DefaultDepository,
-		Description:          "apitest transfer",
+		Receiver:             receiver.Id,
+		ReceiverDepository:   receiver.DefaultDepository,
+		Description:          fmt.Sprintf("apitest transfer to %s", receiver.Metadata),
 	}
 	switch *flagACHType {
 	case ach.IAT:
 		req.StandardEntryClassCode = "IAT"
-		req.IATDetail = createIATDetail(cust, orig)
+		req.IATDetail = createIATDetail(receiver, orig)
 	case ach.PPD:
 		req.StandardEntryClassCode = "PPD"
 	case ach.WEB:
@@ -161,7 +160,7 @@ func createTransfer(ctx context.Context, api *moov.APIClient, cust moov.Receiver
 	return tx, nil
 }
 
-func createIATDetail(cust moov.Receiver, orig moov.Originator) moov.IatDetail {
+func createIATDetail(receiver moov.Receiver, orig moov.Originator) moov.IatDetail {
 	return moov.IatDetail{
 		OriginatorName:               orig.Metadata,
 		OriginatorAddress:            "123 1st st",
@@ -173,7 +172,7 @@ func createIATDetail(cust moov.Receiver, orig moov.Originator) moov.IatDetail {
 		ODFIIDNumberQualifier:        "01",
 		ODFIIdentification:           "2",
 		ODFIBranchCurrencyCode:       "USD",
-		ReceiverName:                 cust.Metadata,
+		ReceiverName:                 receiver.Metadata,
 		ReceiverAddress:              "321 2nd st",
 		ReceiverCity:                 "othertown",
 		ReceiverState:                "GB",
