@@ -301,35 +301,46 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
 	// Create Receiver GL account
-	custAcct, err := createGLAccount(ctx, api, user, "to account", requestId)
+	receiverAcct, err := createGLAccount(ctx, api, user, "to account", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 
 	// Create Receiver Depository
-	custDep, err := createDepository(ctx, api, user, custAcct, requestId)
+	receiverDep, err := createDepository(ctx, api, user, receiverAcct, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Receiver Depository (id=%s) for user", custDep.Id)
+	debugLogger("SUCCESS: Created Receiver Depository (id=%s) for user", receiverDep.Id)
 
 	// Create Receiver
-	cust, err := createReceiver(ctx, api, user, custDep.Id, requestId)
+	receiver, err := createReceiver(ctx, api, user, receiverDep.Id, requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Receiver (id=%s) for user", cust.Id)
+	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.Id)
 
 	// Create Transfer
-	tx, err := createTransfer(ctx, api, cust, orig, amount(), requestId)
+	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
+
+	// Verify the Transaction was posted
+	if err := checkTransactions(ctx, api, origAcct.AccountId, user, tx.Amount, requestId); err != nil {
+		errLogger("FAILURE: %v", err)
+		return nil
+	}
+	if err := checkTransactions(ctx, api, receiverAcct.AccountId, user, tx.Amount, requestId); err != nil {
+		errLogger("FAILURE: %v", err)
+		return nil
+	}
+	debugLogger("SUCCESS: Matched transactions on accounts")
 
 	// Attempt a Failed login
 	if err := attemptFailedLogin(ctx, api, requestId); err != nil {
@@ -351,9 +362,9 @@ func iterate(ctx context.Context) *iteration {
 		originator:           orig,
 		originatorAccount:    origAcct,
 		originatorDepository: origDep,
-		receiver:             cust,
-		receiverAccount:      custAcct,
-		receiverDepository:   custDep,
+		receiver:             receiver,
+		receiverAccount:      receiverAcct,
+		receiverDepository:   receiverDep,
 		transfer:             tx,
 	}
 }

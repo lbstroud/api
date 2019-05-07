@@ -5,6 +5,6 @@ require (
 	github.com/docker/docker v1.13.1
 	github.com/moov-io/ach v0.6.0-rc7.0.20190418171132-43af2828a543
 	github.com/moov-io/base v0.9.0
-	github.com/moov-io/go-client v0.1.1-0.20190506225429-413f6e4e7718
+	github.com/moov-io/go-client v0.1.1-0.20190507021023-82d8283dc151
 	go4.org v0.0.0-20190313082347-94abd6928b1d
 )

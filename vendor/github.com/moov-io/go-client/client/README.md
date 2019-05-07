@@ -57,6 +57,8 @@ Class | Method | HTTP request | Description
 *FilesApi* | [**ValidateFile**](docs/FilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *GLApi* | [**CreateAccount**](docs/GLApi.md#createaccount) | **Post** /v1/gl/customers/{customer_id}/accounts | Create a new account for a Customer
 *GLApi* | [**CreateCustomer**](docs/GLApi.md#createcustomer) | **Post** /v1/gl/customers | Create a new customer
+*GLApi* | [**CreateTransaction**](docs/GLApi.md#createtransaction) | **Post** /v1/gl/accounts/transactions | Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
+*GLApi* | [**GetAccountTransactions**](docs/GLApi.md#getaccounttransactions) | **Get** /v1/gl/accounts/{account_id}/transactions | Get transactions for an account. Ordered descending from their posted date.
 *GLApi* | [**GetAccountsByCustomerID**](docs/GLApi.md#getaccountsbycustomerid) | **Get** /v1/gl/customers/{customer_id}/accounts | Retrieves a list of accounts associated with the customer ID.
 *GLApi* | [**GetGLCustomer**](docs/GLApi.md#getglcustomer) | **Get** /v1/gl/customers/{customer_id} | Retrieves a Customer object associated with the customer ID.
 *GLApi* | [**SearchAccounts**](docs/GLApi.md#searchaccounts) | **Get** /v1/gl/accounts/search | Search for account which matches all query parameters
@@ -139,6 +141,7 @@ Class | Method | HTTP request | Description
  - [CreateOriginator](docs/CreateOriginator.md)
  - [CreatePhone](docs/CreatePhone.md)
  - [CreateReceiver](docs/CreateReceiver.md)
+ - [CreateTransaction](docs/CreateTransaction.md)
  - [CreateTransfer](docs/CreateTransfer.md)
  - [CreateUser](docs/CreateUser.md)
  - [Customer](docs/Customer.md)
@@ -167,6 +170,8 @@ Class | Method | HTTP request | Description
  - [Receiver](docs/Receiver.md)
  - [Sdn](docs/Sdn.md)
  - [Search](docs/Search.md)
+ - [Transaction](docs/Transaction.md)
+ - [TransactionLine](docs/TransactionLine.md)
  - [Transfer](docs/Transfer.md)
  - [UpdateCompanyStatus](docs/UpdateCompanyStatus.md)
  - [UpdateCustomerStatus](docs/UpdateCustomerStatus.md)
