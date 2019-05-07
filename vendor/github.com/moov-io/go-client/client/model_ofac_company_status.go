@@ -10,11 +10,17 @@
 
 package openapi
 
-type CreateAccount struct {
-	// Initial balance of account in USD cents. This amount is to be deposited from an account at another Financial Institution or in-person (i.e. cash) on account creation.
-	Balance int32 `json:"balance"`
-	// Caller defined label for this account.
-	Name string `json:"name"`
-	// Product type of the account
-	Type string `json:"type"`
+import (
+	"time"
+)
+
+// Status properties of an OFAC Company
+type OfacCompanyStatus struct {
+	// User ID provided when updating status
+	UserId string `json:"userId,omitempty"`
+	// Optional note from updating status
+	Note string `json:"note,omitempty"`
+	// Manually applied status for OFAC Company
+	Status    string    `json:"status,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }

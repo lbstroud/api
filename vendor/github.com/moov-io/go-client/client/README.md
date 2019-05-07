@@ -72,16 +72,22 @@ Class | Method | HTTP request | Description
 *OAuth2Api* | [**CreateOAuth2Client**](docs/OAuth2Api.md#createoauth2client) | **Post** /v1/oauth2/client | Create OAuth2 client credentials
 *OAuth2Api* | [**CreateOAuth2Token**](docs/OAuth2Api.md#createoauth2token) | **Post** /v1/oauth2/token | Generate OAuth2 access token
 *OAuth2Api* | [**GetClientsForUserId**](docs/OAuth2Api.md#getclientsforuserid) | **Get** /v1/oauth2/clients | List OAuth2 clients for the authenticated user
-*OFACApi* | [**AddCustomerNameWatch**](docs/OFACApi.md#addcustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name
+*OFACApi* | [**AddCompanyNameWatch**](docs/OFACApi.md#addcompanynamewatch) | **Post** /v1/ofac/companies/watch | Add company watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
+*OFACApi* | [**AddCompanyWatch**](docs/OFACApi.md#addcompanywatch) | **Post** /v1/ofac/companies/{companyId}/watch | Add OFAC watch on a Company
+*OFACApi* | [**AddCustomerNameWatch**](docs/OFACApi.md#addcustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
 *OFACApi* | [**AddCustomerWatch**](docs/OFACApi.md#addcustomerwatch) | **Post** /v1/ofac/customers/{customerId}/watch | Add OFAC watch on a Customer
+*OFACApi* | [**GetCompany**](docs/OFACApi.md#getcompany) | **Get** /v1/ofac/companies/{companyId} | Get information about a company, trust or organization such as addresses, alternate names, and remarks.
 *OFACApi* | [**GetCustomer**](docs/OFACApi.md#getcustomer) | **Get** /v1/ofac/customers/{customerId} | Get information about a customer, addresses, alternate names, and their SDN metadata.
 *OFACApi* | [**GetLatestDownloads**](docs/OFACApi.md#getlatestdownloads) | **Get** /v1/ofac/downloads | Return list of recent downloads of OFAC data
 *OFACApi* | [**GetSDN**](docs/OFACApi.md#getsdn) | **Get** /v1/ofac/sdn/{sdnId} | Specially designated national
 *OFACApi* | [**GetSDNAddresses**](docs/OFACApi.md#getsdnaddresses) | **Get** /v1/ofac/sdn/{sdnId}/addresses | Get addresses for a given SDN
 *OFACApi* | [**GetSDNAltNames**](docs/OFACApi.md#getsdnaltnames) | **Get** /v1/ofac/sdn/{sdnId}/alts | Get alternate names for a given SDN
+*OFACApi* | [**RemoveCompanyNameWatch**](docs/OFACApi.md#removecompanynamewatch) | **Delete** /v1/ofac/companies/watch/{watchId} | Remove a Company name watch
+*OFACApi* | [**RemoveCompanyWatch**](docs/OFACApi.md#removecompanywatch) | **Delete** /v1/ofac/companies/{companyId}/watch/{watchId} | Remove company watch
 *OFACApi* | [**RemoveCustomerNameWatch**](docs/OFACApi.md#removecustomernamewatch) | **Delete** /v1/ofac/customers/watch/{watchId} | Remove a Customer name watch
 *OFACApi* | [**RemoveCustomerWatch**](docs/OFACApi.md#removecustomerwatch) | **Delete** /v1/ofac/customers/{customerId}/watch/{watchId} | Remove customer watch
-*OFACApi* | [**SearchSDNs**](docs/OFACApi.md#searchsdns) | **Get** /v1/ofac/search | Search SDN names and metadata
+*OFACApi* | [**Search**](docs/OFACApi.md#search) | **Get** /v1/ofac/search | Search SDN names and metadata
+*OFACApi* | [**UpdateCompanyStatus**](docs/OFACApi.md#updatecompanystatus) | **Put** /v1/ofac/companies/{companyId} | Update a Companies sanction status to always block or always allow transactions.
 *OFACApi* | [**UpdateCustomerStatus**](docs/OFACApi.md#updatecustomerstatus) | **Put** /v1/ofac/customers/{customerId} | Update a Customer&#39;s sanction status to always block or always allow transactions.
 *OriginatorsApi* | [**AddOriginator**](docs/OriginatorsApi.md#addoriginator) | **Post** /v1/ach/originators | Create a new Originator object
 *OriginatorsApi* | [**DeleteOriginator**](docs/OriginatorsApi.md#deleteoriginator) | **Delete** /v1/ach/originators/{originatorId} | Permanently deletes an Originator and associated Receivers, Depositories, and Transfers. It cannot be undone. Also immediately cancels any active Transfers for the Originator.
@@ -152,6 +158,8 @@ Class | Method | HTTP request | Description
  - [Login](docs/Login.md)
  - [OAuth2Client](docs/OAuth2Client.md)
  - [OAuth2Token](docs/OAuth2Token.md)
+ - [OfacCompany](docs/OfacCompany.md)
+ - [OfacCompanyStatus](docs/OfacCompanyStatus.md)
  - [OfacCustomer](docs/OfacCustomer.md)
  - [OfacCustomerStatus](docs/OfacCustomerStatus.md)
  - [Originator](docs/Originator.md)
@@ -160,6 +168,7 @@ Class | Method | HTTP request | Description
  - [Sdn](docs/Sdn.md)
  - [Search](docs/Search.md)
  - [Transfer](docs/Transfer.md)
+ - [UpdateCompanyStatus](docs/UpdateCompanyStatus.md)
  - [UpdateCustomerStatus](docs/UpdateCustomerStatus.md)
  - [User](docs/User.md)
  - [UserProfile](docs/UserProfile.md)

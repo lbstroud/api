@@ -16,8 +16,8 @@ import (
 
 func createGLAccount(ctx context.Context, api *moov.APIClient, u *user, name, requestId string) (*moov.Account, error) {
 	req := moov.CreateAccount{
-		Name: name,
-		Type: "Savings",
+		Name:    name,
+		Type:    "Savings",
 		Balance: 10000, // $100
 	}
 	opts := &moov.CreateAccountOpts{
