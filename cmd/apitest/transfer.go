@@ -143,7 +143,7 @@ func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Rece
 		resp.Body.Close()
 	}
 	if err != nil {
-		return tx, fmt.Errorf("problem creating transfer: %v", err)
+		return tx, fmt.Errorf("problem creating %s transfer: %v", amount, err)
 	}
 	if !*flagFakeData {
 		// Delete the transfer (and underlying file) since we're only making one Transfer
