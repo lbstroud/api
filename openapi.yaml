@@ -205,19 +205,25 @@ paths:
   /v1/fed/wire/search:
     $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1fed~1wire~1search'
 
-# GL Endpoints
-  /v1/gl/accounts/transactions:
-    $ref: 'https://raw.githubusercontent.com/moov-io/gl/master/openapi.yaml#/paths/~1accounts~1transactions'
-  /v1/gl/accounts/{account_id}/transactions:
-    $ref: 'https://raw.githubusercontent.com/moov-io/gl/master/openapi.yaml#/paths/~1accounts~1%7Baccount_id%7D~1transactions'
-  /v1/gl/accounts/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/gl/master/openapi.yaml#/paths/~1accounts~1search'
-  /v1/gl/customers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/gl/master/openapi.yaml#/paths/~1customers'
-  /v1/gl/customers/{customer_id}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/gl/master/openapi.yaml#/paths/~1customers~1%7Bcustomer_id%7D'
-  /v1/gl/customers/{customer_id}/accounts:
-    $ref: 'https://raw.githubusercontent.com/moov-io/gl/master/openapi.yaml#/paths/~1customers~1%7Bcustomer_id%7D~1accounts'
+# Accounts Endpoints
+  /v1/accounts/search:
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts~1search'
+  /v1/accounts/transactions:
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts~1transactions'
+  /v1/accounts/{account_id}/transactions:
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts~1%7Baccount_id%7D~1transactions'
+  /v1/customers/{customer_id}/accounts:
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1customers~1%7Bcustomer_id%7D~1accounts'
+
+# Customer endpoint
+  /v1/customers:
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers'
+  /v1/customers/{customer_id}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers~1%7Bcustomer_id%7D'
+  /v1/customers/{customer_id}/documents:
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers~1%7Bcustomer_id%7D~1documents'
+  /v1/customers/{customer_id}/documents/{document_id}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers~1%7Bcustomer_id%7D~1documents~1%7Bdocument_id%7D'
 
 # Ping Routes (Used to ensure app is running, but apps likely support /ready and /live as well)
   /v1/ach/ping:
