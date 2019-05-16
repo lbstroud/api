@@ -259,12 +259,23 @@ paths:
       responses:
         '200':
           description: Service is running properly
-  /v1/gl/ping:
+  /v1/accounts/ping:
     get:
       tags:
         - Monitor
-      operationId: pingGL
-      summary: Check that the moov-io/gl service is running
+      operationId: pingAccounts
+      summary: Check that the moov-io/accounts service is running
+      parameters:
+        - $ref: '#/components/parameters/requestId'
+      responses:
+        '200':
+          description: Service is running properly
+  /v1/customers/ping:
+    get:
+      tags:
+        - Monitor
+      operationId: pingCustomers
+      summary: Check that the moov-io/customers service is running
       parameters:
         - $ref: '#/components/parameters/requestId'
       responses:

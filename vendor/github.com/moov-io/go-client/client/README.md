@@ -33,6 +33,16 @@ All URIs are relative to *https://api.moov.io*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*AccountsApi* | [**CreateAccount**](docs/AccountsApi.md#createaccount) | **Post** /v1/customers/{customer_id}/accounts | Create a new account for a Customer
+*AccountsApi* | [**CreateTransaction**](docs/AccountsApi.md#createtransaction) | **Post** /v1/accounts/transactions | Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
+*AccountsApi* | [**GetAccountTransactions**](docs/AccountsApi.md#getaccounttransactions) | **Get** /v1/accounts/{account_id}/transactions | Get transactions for an account. Ordered descending from their posted date.
+*AccountsApi* | [**GetAccountsByCustomerID**](docs/AccountsApi.md#getaccountsbycustomerid) | **Get** /v1/customers/{customer_id}/accounts | Retrieves a list of accounts associated with the customer ID.
+*AccountsApi* | [**SearchAccounts**](docs/AccountsApi.md#searchaccounts) | **Get** /v1/accounts/search | Search for account which matches all query parameters
+*CustomersApi* | [**CreateCustomer**](docs/CustomersApi.md#createcustomer) | **Post** /v1/customers | Create a new customer
+*CustomersApi* | [**GetCustomer**](docs/CustomersApi.md#getcustomer) | **Get** /v1/customers/{customer_id} | Retrieves a Customer object associated with the customer ID.
+*CustomersApi* | [**GetCustomerDocumentContents**](docs/CustomersApi.md#getcustomerdocumentcontents) | **Get** /v1/customers/{customer_id}/documents/{document_id} | Retrieve the referenced document
+*CustomersApi* | [**GetCustomerDocuments**](docs/CustomersApi.md#getcustomerdocuments) | **Get** /v1/customers/{customer_id}/documents | Get documents for a customer
+*CustomersApi* | [**UploadCustomerDocument**](docs/CustomersApi.md#uploadcustomerdocument) | **Post** /v1/customers/{customer_id}/documents | Upload a document for the given customer.
 *DepositoriesApi* | [**AddDepository**](docs/DepositoriesApi.md#adddepository) | **Post** /v1/ach/depositories | Create a new depository account for the authenticated user
 *DepositoriesApi* | [**ConfirmMicroDeposits**](docs/DepositoriesApi.md#confirmmicrodeposits) | **Post** /v1/ach/depositories/{depositoryId}/micro-deposits/confirm | Confirm micro deposit amounts after they have been posted to the depository account
 *DepositoriesApi* | [**DeleteDepository**](docs/DepositoriesApi.md#deletedepository) | **Delete** /v1/ach/depositories/{depositoryId} | Permanently deletes a depository and associated transfers. It cannot be undone. Immediately cancels any active Transfers for the depository.
@@ -55,13 +65,6 @@ Class | Method | HTTP request | Description
 *FilesApi* | [**GetFiles**](docs/FilesApi.md#getfiles) | **Get** /v1/ach/files | Gets a list of Files
 *FilesApi* | [**UpdateFile**](docs/FilesApi.md#updatefile) | **Post** /v1/ach/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
 *FilesApi* | [**ValidateFile**](docs/FilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
-*GLApi* | [**CreateAccount**](docs/GLApi.md#createaccount) | **Post** /v1/gl/customers/{customer_id}/accounts | Create a new account for a Customer
-*GLApi* | [**CreateCustomer**](docs/GLApi.md#createcustomer) | **Post** /v1/gl/customers | Create a new customer
-*GLApi* | [**CreateTransaction**](docs/GLApi.md#createtransaction) | **Post** /v1/gl/accounts/transactions | Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
-*GLApi* | [**GetAccountTransactions**](docs/GLApi.md#getaccounttransactions) | **Get** /v1/gl/accounts/{account_id}/transactions | Get transactions for an account. Ordered descending from their posted date.
-*GLApi* | [**GetAccountsByCustomerID**](docs/GLApi.md#getaccountsbycustomerid) | **Get** /v1/gl/customers/{customer_id}/accounts | Retrieves a list of accounts associated with the customer ID.
-*GLApi* | [**GetGLCustomer**](docs/GLApi.md#getglcustomer) | **Get** /v1/gl/customers/{customer_id} | Retrieves a Customer object associated with the customer ID.
-*GLApi* | [**SearchAccounts**](docs/GLApi.md#searchaccounts) | **Get** /v1/gl/accounts/search | Search for account which matches all query parameters
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
 *MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
@@ -74,23 +77,23 @@ Class | Method | HTTP request | Description
 *OAuth2Api* | [**CreateOAuth2Client**](docs/OAuth2Api.md#createoauth2client) | **Post** /v1/oauth2/client | Create OAuth2 client credentials
 *OAuth2Api* | [**CreateOAuth2Token**](docs/OAuth2Api.md#createoauth2token) | **Post** /v1/oauth2/token | Generate OAuth2 access token
 *OAuth2Api* | [**GetClientsForUserId**](docs/OAuth2Api.md#getclientsforuserid) | **Get** /v1/oauth2/clients | List OAuth2 clients for the authenticated user
-*OFACApi* | [**AddCompanyNameWatch**](docs/OFACApi.md#addcompanynamewatch) | **Post** /v1/ofac/companies/watch | Add company watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
-*OFACApi* | [**AddCompanyWatch**](docs/OFACApi.md#addcompanywatch) | **Post** /v1/ofac/companies/{companyId}/watch | Add OFAC watch on a Company
-*OFACApi* | [**AddCustomerNameWatch**](docs/OFACApi.md#addcustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
-*OFACApi* | [**AddCustomerWatch**](docs/OFACApi.md#addcustomerwatch) | **Post** /v1/ofac/customers/{customerId}/watch | Add OFAC watch on a Customer
-*OFACApi* | [**GetCompany**](docs/OFACApi.md#getcompany) | **Get** /v1/ofac/companies/{companyId} | Get information about a company, trust or organization such as addresses, alternate names, and remarks.
-*OFACApi* | [**GetCustomer**](docs/OFACApi.md#getcustomer) | **Get** /v1/ofac/customers/{customerId} | Get information about a customer, addresses, alternate names, and their SDN metadata.
+*OFACApi* | [**AddOFACCompanyNameWatch**](docs/OFACApi.md#addofaccompanynamewatch) | **Post** /v1/ofac/companies/watch | Add company watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
+*OFACApi* | [**AddOFACCompanyWatch**](docs/OFACApi.md#addofaccompanywatch) | **Post** /v1/ofac/companies/{companyId}/watch | Add OFAC watch on a Company
+*OFACApi* | [**AddOFACCustomerNameWatch**](docs/OFACApi.md#addofaccustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
+*OFACApi* | [**AddOFACCustomerWatch**](docs/OFACApi.md#addofaccustomerwatch) | **Post** /v1/ofac/customers/{customerId}/watch | Add OFAC watch on a Customer
 *OFACApi* | [**GetLatestDownloads**](docs/OFACApi.md#getlatestdownloads) | **Get** /v1/ofac/downloads | Return list of recent downloads of OFAC data
+*OFACApi* | [**GetOFACCompany**](docs/OFACApi.md#getofaccompany) | **Get** /v1/ofac/companies/{companyId} | Get information about a company, trust or organization such as addresses, alternate names, and remarks.
+*OFACApi* | [**GetOFACCustomer**](docs/OFACApi.md#getofaccustomer) | **Get** /v1/ofac/customers/{customerId} | Get information about a customer, addresses, alternate names, and their SDN metadata.
 *OFACApi* | [**GetSDN**](docs/OFACApi.md#getsdn) | **Get** /v1/ofac/sdn/{sdnId} | Specially designated national
 *OFACApi* | [**GetSDNAddresses**](docs/OFACApi.md#getsdnaddresses) | **Get** /v1/ofac/sdn/{sdnId}/addresses | Get addresses for a given SDN
 *OFACApi* | [**GetSDNAltNames**](docs/OFACApi.md#getsdnaltnames) | **Get** /v1/ofac/sdn/{sdnId}/alts | Get alternate names for a given SDN
-*OFACApi* | [**RemoveCompanyNameWatch**](docs/OFACApi.md#removecompanynamewatch) | **Delete** /v1/ofac/companies/watch/{watchId} | Remove a Company name watch
-*OFACApi* | [**RemoveCompanyWatch**](docs/OFACApi.md#removecompanywatch) | **Delete** /v1/ofac/companies/{companyId}/watch/{watchId} | Remove company watch
-*OFACApi* | [**RemoveCustomerNameWatch**](docs/OFACApi.md#removecustomernamewatch) | **Delete** /v1/ofac/customers/watch/{watchId} | Remove a Customer name watch
-*OFACApi* | [**RemoveCustomerWatch**](docs/OFACApi.md#removecustomerwatch) | **Delete** /v1/ofac/customers/{customerId}/watch/{watchId} | Remove customer watch
+*OFACApi* | [**RemoveOFACCompanyNameWatch**](docs/OFACApi.md#removeofaccompanynamewatch) | **Delete** /v1/ofac/companies/watch/{watchId} | Remove a Company name watch
+*OFACApi* | [**RemoveOFACCompanyWatch**](docs/OFACApi.md#removeofaccompanywatch) | **Delete** /v1/ofac/companies/{companyId}/watch/{watchId} | Remove company watch
+*OFACApi* | [**RemoveOFACCustomerNameWatch**](docs/OFACApi.md#removeofaccustomernamewatch) | **Delete** /v1/ofac/customers/watch/{watchId} | Remove a Customer name watch
+*OFACApi* | [**RemoveOFACCustomerWatch**](docs/OFACApi.md#removeofaccustomerwatch) | **Delete** /v1/ofac/customers/{customerId}/watch/{watchId} | Remove customer watch
 *OFACApi* | [**Search**](docs/OFACApi.md#search) | **Get** /v1/ofac/search | Search SDN names and metadata
-*OFACApi* | [**UpdateCompanyStatus**](docs/OFACApi.md#updatecompanystatus) | **Put** /v1/ofac/companies/{companyId} | Update a Companies sanction status to always block or always allow transactions.
-*OFACApi* | [**UpdateCustomerStatus**](docs/OFACApi.md#updatecustomerstatus) | **Put** /v1/ofac/customers/{customerId} | Update a Customer&#39;s sanction status to always block or always allow transactions.
+*OFACApi* | [**UpdateOFACCompanyStatus**](docs/OFACApi.md#updateofaccompanystatus) | **Put** /v1/ofac/companies/{companyId} | Update a Companies sanction status to always block or always allow transactions.
+*OFACApi* | [**UpdateOFACCustomerStatus**](docs/OFACApi.md#updateofaccustomerstatus) | **Put** /v1/ofac/customers/{customerId} | Update a Customer&#39;s sanction status to always block or always allow transactions.
 *OriginatorsApi* | [**AddOriginator**](docs/OriginatorsApi.md#addoriginator) | **Post** /v1/ach/originators | Create a new Originator object
 *OriginatorsApi* | [**DeleteOriginator**](docs/OriginatorsApi.md#deleteoriginator) | **Delete** /v1/ach/originators/{originatorId} | Permanently deletes an Originator and associated Receivers, Depositories, and Transfers. It cannot be undone. Also immediately cancels any active Transfers for the Originator.
 *OriginatorsApi* | [**GetOriginatorByID**](docs/OriginatorsApi.md#getoriginatorbyid) | **Get** /v1/ach/originators/{originatorId} | Retrieves the details of an existing Originator. You need only supply the unique Originator identifier that was returned upon receiver creation.
@@ -146,6 +149,7 @@ Class | Method | HTTP request | Description
  - [CreateUser](docs/CreateUser.md)
  - [Customer](docs/Customer.md)
  - [Depository](docs/Depository.md)
+ - [Document](docs/Document.md)
  - [Download](docs/Download.md)
  - [EntryDetail](docs/EntryDetail.md)
  - [Error](docs/Error.md)
@@ -158,6 +162,7 @@ Class | Method | HTTP request | Description
  - [IatBatch](docs/IatBatch.md)
  - [IatBatchHeader](docs/IatBatchHeader.md)
  - [IatDetail](docs/IatDetail.md)
+ - [InlineObject](docs/InlineObject.md)
  - [Login](docs/Login.md)
  - [OAuth2Client](docs/OAuth2Client.md)
  - [OAuth2Token](docs/OAuth2Token.md)

@@ -15,7 +15,7 @@ import (
 	"github.com/antihax/optional"
 )
 
-func createGLAccount(ctx context.Context, api *moov.APIClient, u *user, name, requestId string) (*moov.Account, error) {
+func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, requestId string) (*moov.Account, error) {
 	req := moov.CreateAccount{
 		Name:    name,
 		Type:    "Savings",
@@ -24,15 +24,15 @@ func createGLAccount(ctx context.Context, api *moov.APIClient, u *user, name, re
 	opts := &moov.CreateAccountOpts{
 		XRequestId: optional.NewString(requestId),
 	}
-	account, resp, err := api.GLApi.CreateAccount(ctx, u.ID, u.ID, req, opts)
+	account, resp, err := api.AccountsApi.CreateAccount(ctx, u.ID, u.ID, req, opts)
 	if *flagDebug && resp != nil {
-		log.Printf("GL create account request URL: %s (status=%s): %v\n", resp.Request.URL.String(), resp.Status, err)
+		log.Printf("problem creating account request URL: %s (status=%s): %v\n", resp.Request.URL.String(), resp.Status, err)
 	}
 	if resp != nil {
 		resp.Body.Close()
 	}
 	if err != nil {
-		return nil, fmt.Errorf("problem creating GL account %s: %v", name, err)
+		return nil, fmt.Errorf("problem creating account %q: %v", name, err)
 	}
 	return &account, nil
 }
@@ -43,12 +43,12 @@ func checkTransactions(ctx context.Context, api *moov.APIClient, accountId strin
 		Limit:      optional.NewFloat32(25),
 		XRequestId: optional.NewString(requestId),
 	}
-	transactions, resp, err := api.GLApi.GetAccountTransactions(ctx, accountId, u.ID, opts)
+	transactions, resp, err := api.AccountsApi.GetAccountTransactions(ctx, accountId, u.ID, opts)
 	if resp != nil && resp.Body != nil {
 		resp.Body.Close()
 	}
 	if err != nil {
-		return fmt.Errorf("GL: GetAccountTransactions: %v", err)
+		return fmt.Errorf("accounts: GetAccountTransactions: %v", err)
 	}
 	for i := range transactions {
 		for j := range transactions[i].Lines {
@@ -67,5 +67,5 @@ func checkTransactions(ctx context.Context, api *moov.APIClient, accountId strin
 			}
 		}
 	}
-	return fmt.Errorf("GL: unable to find %q transaction for account=%s", amount, accountId)
+	return fmt.Errorf("accounts: unable to find %q transaction for account=%s", amount, accountId)
 }

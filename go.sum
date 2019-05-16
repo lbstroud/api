@@ -27,12 +27,10 @@ github.com/moov-io/ach v0.6.0-rc7.0.20190418171132-43af2828a543 h1:OQbIjHe1JyZRe
 github.com/moov-io/ach v0.6.0-rc7.0.20190418171132-43af2828a543/go.mod h1:0p0ysida2mL7pK35a5c6Z7NQzJQcAcX7cU0dboY0HnM=
 github.com/moov-io/base v0.9.0 h1:7bp5Jpola4EunGmOVVaw3WkWOqcSnyVZJEoOmYLKdhw=
 github.com/moov-io/base v0.9.0/go.mod h1:pPu/TAc9PkaaegbREVEeDHsGqyAlvji9vqTuARuAnd0=
-github.com/moov-io/go-client v0.1.0 h1:dpTPToTmBNPXY5JyEs+6oi83i0MuwJhdW+gdA+cUoqk=
-github.com/moov-io/go-client v0.1.0/go.mod h1:S65FDXacFOB42tsmYwn+Zz/tGYPLFYSbkAST6Qlxb80=
-github.com/moov-io/go-client v0.1.1-0.20190506225429-413f6e4e7718 h1:xJ9MWUSGm4yB96w5S0PuBROL5+GFEpQMLdUWOYChvHo=
-github.com/moov-io/go-client v0.1.1-0.20190506225429-413f6e4e7718/go.mod h1:S65FDXacFOB42tsmYwn+Zz/tGYPLFYSbkAST6Qlxb80=
-github.com/moov-io/go-client v0.1.1-0.20190507021023-82d8283dc151 h1:l2mtKQcBin+ZvOJozWzVlv/FRtaIhzhQQqS/O+orxdY=
-github.com/moov-io/go-client v0.1.1-0.20190507021023-82d8283dc151/go.mod h1:S65FDXacFOB42tsmYwn+Zz/tGYPLFYSbkAST6Qlxb80=
+github.com/moov-io/base v0.10.0-rc1 h1:WqF8tOACi8FSfaZ6ggsVUPCeh9BihCshAy4EdMN+TwU=
+github.com/moov-io/base v0.10.0-rc1/go.mod h1:pPu/TAc9PkaaegbREVEeDHsGqyAlvji9vqTuARuAnd0=
+github.com/moov-io/go-client v0.1.1-0.20190516190050-50dcc07382b5 h1:bbne1Q0I6X0XUrNnJOGkYzfd8TpedOhPfNKVPuZR3nM=
+github.com/moov-io/go-client v0.1.1-0.20190516190050-50dcc07382b5/go.mod h1:S65FDXacFOB42tsmYwn+Zz/tGYPLFYSbkAST6Qlxb80=
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

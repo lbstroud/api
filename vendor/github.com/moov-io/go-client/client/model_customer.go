@@ -16,7 +16,7 @@ import (
 
 type Customer struct {
 	// The unique identifier for the customer who owns the account
-	CustomerId string `json:"customerId,omitempty"`
+	Id string `json:"id,omitempty"`
 	// Given Name or First Name
 	FirstName string `json:"firstName,omitempty"`
 	// Middle Name
@@ -29,9 +29,6 @@ type Customer struct {
 	Suffix string `json:"suffix,omitempty"`
 	// Legal date of birth
 	BirthDate time.Time `json:"birthDate,omitempty"`
-	Gender    string    `json:"gender,omitempty"`
-	// Used for localization of documents
-	Culture string `json:"culture,omitempty"`
 	// State of the customer
 	Status string `json:"status,omitempty"`
 	// Primary email address of customer name@domain.com

@@ -275,10 +275,10 @@ func iterate(ctx context.Context) *iteration {
 		setMoovOAuthToken(conf, oauthToken)
 	}
 
-	// Create Originator GL account
+	// Create Originator Account
 	// This is only needed because our GL setup (for apitest's default environment) doesn't have
 	// accounts backing it. We create on in our GL service for each test run.
-	origAcct, err := createGLAccount(ctx, api, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
+	origAcct, err := createAccount(ctx, api, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -300,8 +300,8 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
-	// Create Receiver GL account
-	receiverAcct, err := createGLAccount(ctx, api, user, "to account", requestId)
+	// Create Receiver Account
+	receiverAcct, err := createAccount(ctx, api, user, "to account", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -332,11 +332,11 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
 
 	// Verify the Transaction was posted
-	if err := checkTransactions(ctx, api, origAcct.AccountId, user, tx.Amount, requestId); err != nil {
+	if err := checkTransactions(ctx, api, origAcct.Id, user, tx.Amount, requestId); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	if err := checkTransactions(ctx, api, receiverAcct.AccountId, user, tx.Amount, requestId); err != nil {
+	if err := checkTransactions(ctx, api, receiverAcct.Id, user, tx.Amount, requestId); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}

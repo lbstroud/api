@@ -62,8 +62,16 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	case "fed":
 		r.URL.Host += bind.HTTP("fed")
 		r.URL.Path = "/fed/" // fed expects /fed/ as a prefix on routes
-	case "gl":
-		r.URL.Host += bind.HTTP("gl")
+	case "accounts", "gl":
+		r.URL.Host += bind.HTTP("accounts")
+		r.URL.Path = "/accounts/"
+	case "customers":
+		if len(parts) >= 5 && strings.EqualFold(parts[4], "accounts") {
+			r.URL.Host += bind.HTTP("accounts")
+		} else {
+			r.URL.Host += bind.HTTP("customers")
+		}
+		r.URL.Path = "/customers/"
 	case "paygate":
 		r.URL.Host += bind.HTTP("paygate")
 	case "oauth2":

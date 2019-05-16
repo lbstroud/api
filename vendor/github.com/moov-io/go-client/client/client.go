@@ -46,6 +46,10 @@ type APIClient struct {
 
 	// API Services
 
+	AccountsApi *AccountsApiService
+
+	CustomersApi *CustomersApiService
+
 	DepositoriesApi *DepositoriesApiService
 
 	EventsApi *EventsApiService
@@ -53,8 +57,6 @@ type APIClient struct {
 	FEDApi *FEDApiService
 
 	FilesApi *FilesApiService
-
-	GLApi *GLApiService
 
 	GatewaysApi *GatewaysApiService
 
@@ -89,11 +91,12 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.AccountsApi = (*AccountsApiService)(&c.common)
+	c.CustomersApi = (*CustomersApiService)(&c.common)
 	c.DepositoriesApi = (*DepositoriesApiService)(&c.common)
 	c.EventsApi = (*EventsApiService)(&c.common)
 	c.FEDApi = (*FEDApiService)(&c.common)
 	c.FilesApi = (*FilesApiService)(&c.common)
-	c.GLApi = (*GLApiService)(&c.common)
 	c.GatewaysApi = (*GatewaysApiService)(&c.common)
 	c.MonitorApi = (*MonitorApiService)(&c.common)
 	c.OAuth2Api = (*OAuth2ApiService)(&c.common)
@@ -251,9 +254,10 @@ func (c *APIClient) prepareRequest(
 			if err != nil {
 				return nil, err
 			}
-			// Set the Boundary in the Content-Type
-			headerParams["Content-Type"] = w.FormDataContentType()
 		}
+
+		// Set the Boundary in the Content-Type
+		headerParams["Content-Type"] = w.FormDataContentType()
 
 		// Set Content-Length
 		headerParams["Content-Length"] = fmt.Sprintf("%d", body.Len())

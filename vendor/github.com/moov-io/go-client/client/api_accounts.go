@@ -25,10 +25,10 @@ var (
 	_ context.Context
 )
 
-type GLApiService service
+type AccountsApiService service
 
 /*
-GLApiService Create a new account for a Customer
+AccountsApiService Create a new account for a Customer
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param customerId Customer Id
  * @param xUserId Moov User ID header, required in all requests
@@ -42,7 +42,7 @@ type CreateAccountOpts struct {
 	XRequestId optional.String
 }
 
-func (a *GLApiService) CreateAccount(ctx context.Context, customerId string, xUserId string, createAccount CreateAccount, localVarOptionals *CreateAccountOpts) (Account, *http.Response, error) {
+func (a *AccountsApiService) CreateAccount(ctx context.Context, customerId string, xUserId string, createAccount CreateAccount, localVarOptionals *CreateAccountOpts) (Account, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -53,7 +53,7 @@ func (a *GLApiService) CreateAccount(ctx context.Context, customerId string, xUs
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/customers/{customer_id}/accounts"
+	localVarPath := a.client.cfg.BasePath + "/v1/customers/{customer_id}/accounts"
 	localVarPath = strings.Replace(localVarPath, "{"+"customer_id"+"}", fmt.Sprintf("%v", customerId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -140,114 +140,7 @@ func (a *GLApiService) CreateAccount(ctx context.Context, customerId string, xUs
 }
 
 /*
-GLApiService Create a new customer
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param xUserId Moov User ID header, required in all requests
- * @param optional nil or *CreateCustomerOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return CreateCustomer
-*/
-
-type CreateCustomerOpts struct {
-	XRequestId optional.String
-}
-
-func (a *GLApiService) CreateCustomer(ctx context.Context, xUserId string, localVarOptionals *CreateCustomerOpts) (CreateCustomer, *http.Response, error) {
-	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  CreateCustomer
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/customers"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
-	}
-
-	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
-	if localVarHttpHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
-	}
-	localVarHeaderParams["X-User-Id"] = parameterToString(xUserId, "")
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHttpResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHttpResponse == nil {
-		return localVarReturnValue, localVarHttpResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
-	localVarHttpResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHttpResponse, err
-	}
-
-	if localVarHttpResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHttpResponse.Status,
-		}
-		if localVarHttpResponse.StatusCode == 200 {
-			var v CreateCustomer
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
-			var v Error2
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHttpResponse, nil
-}
-
-/*
-GLApiService Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
+AccountsApiService Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param xUserId Moov User ID header, required in all requests
  * @param createTransaction
@@ -260,7 +153,7 @@ type CreateTransactionOpts struct {
 	XRequestId optional.String
 }
 
-func (a *GLApiService) CreateTransaction(ctx context.Context, xUserId string, createTransaction CreateTransaction, localVarOptionals *CreateTransactionOpts) (Transaction, *http.Response, error) {
+func (a *AccountsApiService) CreateTransaction(ctx context.Context, xUserId string, createTransaction CreateTransaction, localVarOptionals *CreateTransactionOpts) (Transaction, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -271,7 +164,7 @@ func (a *GLApiService) CreateTransaction(ctx context.Context, xUserId string, cr
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/accounts/transactions"
+	localVarPath := a.client.cfg.BasePath + "/v1/accounts/transactions"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -357,7 +250,7 @@ func (a *GLApiService) CreateTransaction(ctx context.Context, xUserId string, cr
 }
 
 /*
-GLApiService Get transactions for an account. Ordered descending from their posted date.
+AccountsApiService Get transactions for an account. Ordered descending from their posted date.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountId Account ID
  * @param xUserId Moov User ID header, required in all requests
@@ -372,7 +265,7 @@ type GetAccountTransactionsOpts struct {
 	XRequestId optional.String
 }
 
-func (a *GLApiService) GetAccountTransactions(ctx context.Context, accountId string, xUserId string, localVarOptionals *GetAccountTransactionsOpts) ([]Transaction, *http.Response, error) {
+func (a *AccountsApiService) GetAccountTransactions(ctx context.Context, accountId string, xUserId string, localVarOptionals *GetAccountTransactionsOpts) ([]Transaction, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -383,7 +276,7 @@ func (a *GLApiService) GetAccountTransactions(ctx context.Context, accountId str
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/accounts/{account_id}/transactions"
+	localVarPath := a.client.cfg.BasePath + "/v1/accounts/{account_id}/transactions"
 	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", fmt.Sprintf("%v", accountId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -461,7 +354,7 @@ func (a *GLApiService) GetAccountTransactions(ctx context.Context, accountId str
 }
 
 /*
-GLApiService Retrieves a list of accounts associated with the customer ID.
+AccountsApiService Retrieves a list of accounts associated with the customer ID.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param customerId Customer Id
  * @param xUserId Moov User ID header, required in all requests
@@ -474,7 +367,7 @@ type GetAccountsByCustomerIDOpts struct {
 	XRequestId optional.String
 }
 
-func (a *GLApiService) GetAccountsByCustomerID(ctx context.Context, customerId string, xUserId string, localVarOptionals *GetAccountsByCustomerIDOpts) ([]Account, *http.Response, error) {
+func (a *AccountsApiService) GetAccountsByCustomerID(ctx context.Context, customerId string, xUserId string, localVarOptionals *GetAccountsByCustomerIDOpts) ([]Account, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -485,7 +378,7 @@ func (a *GLApiService) GetAccountsByCustomerID(ctx context.Context, customerId s
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/customers/{customer_id}/accounts"
+	localVarPath := a.client.cfg.BasePath + "/v1/customers/{customer_id}/accounts"
 	localVarPath = strings.Replace(localVarPath, "{"+"customer_id"+"}", fmt.Sprintf("%v", customerId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -560,106 +453,7 @@ func (a *GLApiService) GetAccountsByCustomerID(ctx context.Context, customerId s
 }
 
 /*
-GLApiService Retrieves a Customer object associated with the customer ID.
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param customerId Customer Id
- * @param xUserId Moov User ID header, required in all requests
- * @param optional nil or *GetGLCustomerOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
-@return Customer
-*/
-
-type GetGLCustomerOpts struct {
-	XRequestId optional.String
-}
-
-func (a *GLApiService) GetGLCustomer(ctx context.Context, customerId string, xUserId string, localVarOptionals *GetGLCustomerOpts) (Customer, *http.Response, error) {
-	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  Customer
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/customers/{customer_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"customer_id"+"}", fmt.Sprintf("%v", customerId), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
-	}
-
-	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
-	if localVarHttpHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
-	}
-	localVarHeaderParams["X-User-Id"] = parameterToString(xUserId, "")
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHttpResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHttpResponse == nil {
-		return localVarReturnValue, localVarHttpResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
-	localVarHttpResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHttpResponse, err
-	}
-
-	if localVarHttpResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHttpResponse.Status,
-		}
-		if localVarHttpResponse.StatusCode == 200 {
-			var v Customer
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHttpResponse, nil
-}
-
-/*
-GLApiService Search for account which matches all query parameters
+AccountsApiService Search for account which matches all query parameters
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param number Account number
  * @param routingNumber ABA routing number for the Financial Institution
@@ -674,7 +468,7 @@ type SearchAccountsOpts struct {
 	XRequestId optional.String
 }
 
-func (a *GLApiService) SearchAccounts(ctx context.Context, number string, routingNumber string, type_ string, xUserId string, localVarOptionals *SearchAccountsOpts) (Account, *http.Response, error) {
+func (a *AccountsApiService) SearchAccounts(ctx context.Context, number string, routingNumber string, type_ string, xUserId string, localVarOptionals *SearchAccountsOpts) (Account, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -685,7 +479,7 @@ func (a *GLApiService) SearchAccounts(ctx context.Context, number string, routin
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/gl/accounts/search"
+	localVarPath := a.client.cfg.BasePath + "/v1/accounts/search"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

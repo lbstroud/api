@@ -11,34 +11,10 @@
 package openapi
 
 import (
-	"time"
+	"os"
 )
 
-type Account struct {
-	// The unique identifier for an account
-	Id string `json:"id,omitempty"`
-	// The unique identifier for the customer who owns the account
-	CustomerId string `json:"customerId,omitempty"`
-	// Caller defined label for this account.
-	Name string `json:"name,omitempty"`
-	// A unique Account number at the bank.
-	AccountNumber string `json:"accountNumber,omitempty"`
-	// Last four digits of an account number
-	AccountNumberMasked string `json:"accountNumberMasked,omitempty"`
-	// Routing Transit Number is a nine-digit number assigned by the ABA
-	RoutingNumber string `json:"routingNumber,omitempty"`
-	// Status of the account being created.
-	Status string `json:"status,omitempty"`
-	// Product type of the account
-	Type      string    `json:"type,omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	ClosedAt  time.Time `json:"closedAt,omitempty"`
-	// Last time the object was modified except balances
-	LastModified time.Time `json:"lastModified,omitempty"`
-	// Total balance of account in USD cents.
-	Balance int32 `json:"balance,omitempty"`
-	// Balance available in USD cents to be drawn
-	BalanceAvailable int32 `json:"balanceAvailable,omitempty"`
-	// Balance of pending transactions in USD cents
-	BalancePending int32 `json:"balancePending,omitempty"`
+type InlineObject struct {
+	// Document to be uploaded
+	File *os.File `json:"file"`
 }
