@@ -276,9 +276,8 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Create Originator Account
-	// This is only needed because our GL setup (for apitest's default environment) doesn't have
-	// accounts backing it. We create on in our GL service for each test run.
-	origAcct, err := createAccount(ctx, api, user, "from account", requestId) // TODO(adam): need to add balance, paygate will check
+	// We create these accounts because they won't exist in the Accounts service already. (We're using fake data/accounts.)
+	origAcct, err := createAccount(ctx, api, user, "from account", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
