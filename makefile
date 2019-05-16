@@ -7,6 +7,9 @@ build:
 # api.moov.io docker file
 	docker build --pull -t moov/api:$(VERSION) -f Dockerfile .
 	docker tag moov/api:$(VERSION) moov/api:latest
+# api.moov.io/apps/ docker file
+	docker build --pull -t moov/api-apps:$(VERSION) -f Dockerfile-apps .
+	docker tag moov/api-apps:$(VERSION) moov/api-apps:latest
 # apitest binary
 	CGO_ENABLED=0 go build -o bin/apitest ./cmd/apitest/
 	docker build --pull -t moov/apitest:$(VERSION) -f Dockerfile-apitest ./
@@ -19,6 +22,10 @@ build:
 serve:
 	@echo Load http://localhost:8000 in a web browser...
 	@docker run -p '8000:8080' -it moov/api:latest
+
+serve-apps:
+	@echo Load http://localhost:8000 in a web browser...
+	@docker run -p '8000:8080' -it moov/api-apps:latest
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS
@@ -34,6 +41,7 @@ release: docker AUTHORS
 
 release-push:
 	docker push moov/api:$(VERSION)
+	docker push moov/api-apps:$(VERSION)
 	docker push moov/apitest:$(VERSION)
 	docker push moov/localdevproxy:$(VERSION)
 	docker push moov/localdevproxy:latest
