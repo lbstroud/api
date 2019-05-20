@@ -14,19 +14,19 @@ github.com/moov-io/ach/internal/usabbrev
 github.com/moov-io/base/http/bind
 github.com/moov-io/base/k8s
 github.com/moov-io/base
-# github.com/moov-io/go-client v0.1.1-0.20190516190050-50dcc07382b5
+# github.com/moov-io/go-client v0.1.1-0.20190520183833-2ed13a54a21f
 github.com/moov-io/go-client/client
 # github.com/rickar/cal v1.0.1
 github.com/rickar/cal
 # go4.org v0.0.0-20190313082347-94abd6928b1d
 go4.org/syncutil
-# golang.org/x/net v0.0.0-20190304024830-16b79f2e4e95
+# golang.org/x/net v0.0.0-20190517184700-3ec191127204
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/context
-# golang.org/x/oauth2 v0.0.0-20190227195853-e64efc72b421
+# golang.org/x/oauth2 v0.0.0-20190517184700-950ef44c6e07
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
-# google.golang.org/appengine v1.4.0
+# google.golang.org/appengine v1.6.0
 google.golang.org/appengine/urlfetch
 google.golang.org/appengine/internal
 google.golang.org/appengine/internal/urlfetch

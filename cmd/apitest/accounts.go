@@ -17,14 +17,15 @@ import (
 
 func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, requestId string) (*moov.Account, error) {
 	req := moov.CreateAccount{
-		Name:    name,
-		Type:    "Savings",
-		Balance: 1000 * 100, // $1,000
+		CustomerId: u.ID,
+		Name:       name,
+		Type:       "Savings",
+		Balance:    1000 * 100, // $1,000
 	}
 	opts := &moov.CreateAccountOpts{
 		XRequestId: optional.NewString(requestId),
 	}
-	account, resp, err := api.AccountsApi.CreateAccount(ctx, u.ID, u.ID, req, opts)
+	account, resp, err := api.AccountsApi.CreateAccount(ctx, u.ID, req, opts)
 	if *flagDebug && resp != nil {
 		log.Printf("problem creating account request URL: %s (status=%s): %v\n", resp.Request.URL.String(), resp.Status, err)
 	}
