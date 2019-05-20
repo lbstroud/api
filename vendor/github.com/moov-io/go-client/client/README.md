@@ -33,10 +33,9 @@ All URIs are relative to *https://api.moov.io*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AccountsApi* | [**CreateAccount**](docs/AccountsApi.md#createaccount) | **Post** /v1/customers/{customer_id}/accounts | Create a new account for a Customer
+*AccountsApi* | [**CreateAccount**](docs/AccountsApi.md#createaccount) | **Post** /v1/accounts | Create a new account for a Customer
 *AccountsApi* | [**CreateTransaction**](docs/AccountsApi.md#createtransaction) | **Post** /v1/accounts/transactions | Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
 *AccountsApi* | [**GetAccountTransactions**](docs/AccountsApi.md#getaccounttransactions) | **Get** /v1/accounts/{account_id}/transactions | Get transactions for an account. Ordered descending from their posted date.
-*AccountsApi* | [**GetAccountsByCustomerID**](docs/AccountsApi.md#getaccountsbycustomerid) | **Get** /v1/customers/{customer_id}/accounts | Retrieves a list of accounts associated with the customer ID.
 *AccountsApi* | [**SearchAccounts**](docs/AccountsApi.md#searchaccounts) | **Get** /v1/accounts/search | Search for account which matches all query parameters
 *CustomersApi* | [**CreateCustomer**](docs/CustomersApi.md#createcustomer) | **Post** /v1/customers | Create a new customer
 *CustomersApi* | [**GetCustomer**](docs/CustomersApi.md#getcustomer) | **Get** /v1/customers/{customer_id} | Retrieves a Customer object associated with the customer ID.
@@ -68,9 +67,10 @@ Class | Method | HTTP request | Description
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
 *MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
+*MonitorApi* | [**PingAccounts**](docs/MonitorApi.md#pingaccounts) | **Get** /v1/accounts/ping | Check that the moov-io/accounts service is running
 *MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that the moov-io/auth service is running
+*MonitorApi* | [**PingCustomers**](docs/MonitorApi.md#pingcustomers) | **Get** /v1/customers/ping | Check that the moov-io/customers service is running
 *MonitorApi* | [**PingFED**](docs/MonitorApi.md#pingfed) | **Get** /v1/fed/ping | Check that the moov-io/fed service is running
-*MonitorApi* | [**PingGL**](docs/MonitorApi.md#pinggl) | **Get** /v1/gl/ping | Check that the moov-io/gl service is running
 *MonitorApi* | [**PingOFAC**](docs/MonitorApi.md#pingofac) | **Get** /v1/ofac/ping | Check that the moov-io/ofac service is running
 *MonitorApi* | [**PingPaygate**](docs/MonitorApi.md#pingpaygate) | **Get** /v1/paygate/ping | Check that the moov-io/paygate service is running
 *OAuth2Api* | [**CheckOAuthClientCredentials**](docs/OAuth2Api.md#checkoauthclientcredentials) | **Get** /v1/oauth2/authorize | Verify OAuth2 Bearer token
