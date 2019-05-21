@@ -19,6 +19,8 @@ deploy:
   provider: releases
   api_key:
     secure: qqO3w/v5vcYPUwN7Gk7yqhrXzjTIWKQ/t57UTCVO+gsIFjeJicjU1Vs2VT3nSAcZpxN/JfLeCbHzJAHwtJpvvHo/7ixesOmJSbv5+e7gGkVGpdIM5iCxbVVmzEcrNk/z41lM2cjhxMqZL7aFt1qL+9Zd/qYHE5bBWR0lRdyTf4Zz+KEj1DShx5B1eHv21xGHtd3tkk5MYNNCic2uTZ2NPsDxtrHp/er3OHzvqyqA03oFhkoPoG2+BsQr/HoFqZyydhUzWjXaVRWD+2Q/2Ao4VBtymuE6WwXj8LDbMZtl4Qs/g+jMHQODfPW78P+fbDbtOaOPYDVR2m10DNLqObX5C/pITVEPlyBBjrhe0iRpSYTo0Ik0io8FdGUsh0vVRHTwbn2e4GAZ2cg/BxsXYsh6UHtQJ0khjV3ZFOsgthTcVLBnEIH0SUKDa3Oku6tEQEqqhnpeutTLlv28Y7upXFdoa9pZ5suS4Uq+r6EWYAAS3tkSx5R0UCyTox+be0g2XK9/k3ZbkIMYg+wDF+A70mzCrZsji+VDDXWsY/dF6GrSWVekn9V/bXNWPi8Yt0aVqdikHluQEeEf63u6KTHV6aOLUT6kidbCi+ogqroe9UXj9gRVRK/73ChZyV+Q65bnSE6iCvhiHEkxEQP8wmVLsIiGx6+X0Fm5SyPEQ6tyBsGQk3c=
+  file:
+    - bin/apitest
   on:
     repo: moov-io/api
     tags: true
