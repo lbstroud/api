@@ -7,7 +7,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
 
 	moov "github.com/moov-io/go-client/client"
@@ -26,9 +25,6 @@ func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, requ
 		XRequestId: optional.NewString(requestId),
 	}
 	account, resp, err := api.AccountsApi.CreateAccount(ctx, u.ID, req, opts)
-	if *flagDebug && resp != nil {
-		log.Printf("problem creating account request URL: %s (status=%s): %v\n", resp.Request.URL.String(), resp.Status, err)
-	}
 	if resp != nil {
 		resp.Body.Close()
 	}
