@@ -1,3 +1,4 @@
+PLATFORM=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' internal/version/version.go)
 
 .PHONY: build docker release
@@ -26,6 +27,13 @@ serve:
 serve-apps:
 	@echo Load http://localhost:8000 in a web browser...
 	@docker run -p '8000:8080' -it moov/api-apps:latest
+
+dist: build
+ifeq ($(OS),Windows_NT)
+	CGO_ENABLED=1 GOOS=windows go build -o bin/apitest-windows-amd64.exe github.com/moov-io/api/cmd/apitest
+else
+	CGO_ENABLED=1 GOOS=$(PLATFORM) go build -o bin/apitest-$(PLATFORM)-amd64 github.com/moov-io/api/cmd/apitest
+endif
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS
