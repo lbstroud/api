@@ -6,15 +6,14 @@ services:
   - docker
 os:
   - linux
-  # - osx # TravisCI on OSX doesn't support docker yet
+  - osx
 osx_image: xcode9.1
 before_script:
   - go get -u github.com/moov-io/go-client/client
 script:
   - go test ./...
   - make dist
-  - docker run moov/apitest:latest
-  - docker run moov/apitest:latest -oauth
+  - make test
 deploy:
   provider: releases
   api_key:

@@ -1,10 +1,11 @@
 PLATFORM=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' internal/version/version.go)
 
-.PHONY: build docker release
+.PHONY: build docker release dist test
 
 build:
 	go fmt ./...
+ifneq ($(TRAVIS_OS_NAME),osx)
 # api.moov.io docker file
 	docker build --pull -t moov/api:$(VERSION) -f Dockerfile .
 	docker tag moov/api:$(VERSION) moov/api:latest
@@ -19,6 +20,9 @@ build:
 	CGO_ENABLED=0 go build -o bin/localdevproxy ./cmd/localdevproxy/
 	docker build --pull -t moov/localdevproxy:$(VERSION) -f Dockerfile-localdevproxy ./
 	docker tag moov/localdevproxy:$(VERSION) moov/localdevproxy:latest
+else
+	@echo "Skipping Docker builds on TravisCI"
+endif
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...
@@ -33,6 +37,14 @@ ifeq ($(OS),Windows_NT)
 	CGO_ENABLED=1 GOOS=windows go build -o bin/apitest-windows-amd64.exe github.com/moov-io/api/cmd/apitest
 else
 	CGO_ENABLED=1 GOOS=$(PLATFORM) go build -o bin/apitest-$(PLATFORM)-amd64 github.com/moov-io/api/cmd/apitest
+endif
+
+test:
+ifeq ($(OS),Linux)
+	docker run moov/apitest:latest
+	docker run moov/apitest:latest -oauth
+else
+	@echo "No tests to run"
 endif
 
 # From https://github.com/genuinetools/img
