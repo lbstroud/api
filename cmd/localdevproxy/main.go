@@ -104,10 +104,21 @@ func kubernetesReverseProxy() *httputil.ReverseProxy {
 				default:
 					r.URL.Host = "ach.apps.svc.cluster.local:8080"
 				}
-			case "accounts", "customers", "oauth2", "users":
+			case "accounts", "customers":
+				// Append the above path segments back onto the URL
+				r.URL.Host = fmt.Sprintf("%s.apps.svc.cluster.local:8080", strings.ToLower(parts[2]))
+				r.URL.Path = fmt.Sprintf("/%s", parts[2])
+				if len(parts) > 3 {
+					r.URL.Path += "/" + strings.Join(parts[3:], "/")
+				}
+				return // early exit since we already modify .Path
+			case "oauth2", "users":
 				// Append the above path segments back onto the URL
 				r.URL.Host = "auth.apps.svc.cluster.local:8080"
-				r.URL.Path = fmt.Sprintf("/%s/", parts[2]) + strings.Join(parts[3:], "/")
+				r.URL.Path = fmt.Sprintf("/%s", parts[2])
+				if len(parts) > 3 {
+					r.URL.Path += "/" + strings.Join(parts[3:], "/")
+				}
 				return // early exit since we already modify .Path
 			default:
 				r.URL.Host = fmt.Sprintf("%s.apps.svc.cluster.local:8080", strings.ToLower(parts[2]))
