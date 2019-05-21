@@ -12,7 +12,7 @@ before_script:
   - go get -u github.com/moov-io/go-client/client
 script:
   - go test ./...
-  - make build
+  - make dist
   - docker run moov/apitest:latest
   - docker run moov/apitest:latest -oauth
 deploy:
