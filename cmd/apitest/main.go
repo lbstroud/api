@@ -50,6 +50,8 @@ var (
 
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
 	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
+
+	flagVerifyAccounts = flag.Bool("verify.accounts", true, "Verify account balances and posted transactions, see ACCOUNTS_CALLS_DISABLED in paygate")
 )
 
 func main() {
@@ -331,15 +333,17 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
 
 	// Verify the Transaction was posted
-	if err := checkTransactions(ctx, api, origAcct.Id, user, tx.Amount, requestId); err != nil {
-		errLogger("FAILURE: %v", err)
-		return nil
+	if *flagVerifyAccounts {
+		if err := checkTransactions(ctx, api, origAcct.Id, user, tx.Amount, requestId); err != nil {
+			errLogger("FAILURE: %v", err)
+			return nil
+		}
+		if err := checkTransactions(ctx, api, receiverAcct.Id, user, tx.Amount, requestId); err != nil {
+			errLogger("FAILURE: %v", err)
+			return nil
+		}
+		debugLogger("SUCCESS: Matched transactions on accounts")
 	}
-	if err := checkTransactions(ctx, api, receiverAcct.Id, user, tx.Amount, requestId); err != nil {
-		errLogger("FAILURE: %v", err)
-		return nil
-	}
-	debugLogger("SUCCESS: Matched transactions on accounts")
 
 	// Attempt a Failed login
 	if err := attemptFailedLogin(ctx, api, requestId); err != nil {
