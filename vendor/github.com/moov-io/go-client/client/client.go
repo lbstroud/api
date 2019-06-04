@@ -46,6 +46,8 @@ type APIClient struct {
 
 	// API Services
 
+	ACHFilesApi *ACHFilesApiService
+
 	AccountsApi *AccountsApiService
 
 	CustomersApi *CustomersApiService
@@ -55,8 +57,6 @@ type APIClient struct {
 	EventsApi *EventsApiService
 
 	FEDApi *FEDApiService
-
-	FilesApi *FilesApiService
 
 	GatewaysApi *GatewaysApiService
 
@@ -91,12 +91,12 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.ACHFilesApi = (*ACHFilesApiService)(&c.common)
 	c.AccountsApi = (*AccountsApiService)(&c.common)
 	c.CustomersApi = (*CustomersApiService)(&c.common)
 	c.DepositoriesApi = (*DepositoriesApiService)(&c.common)
 	c.EventsApi = (*EventsApiService)(&c.common)
 	c.FEDApi = (*FEDApiService)(&c.common)
-	c.FilesApi = (*FilesApiService)(&c.common)
 	c.GatewaysApi = (*GatewaysApiService)(&c.common)
 	c.MonitorApi = (*MonitorApiService)(&c.common)
 	c.OAuth2Api = (*OAuth2ApiService)(&c.common)
@@ -412,7 +412,7 @@ func setBody(body interface{}, contentType string) (bodyBuf *bytes.Buffer, err e
 	} else if jsonCheck.MatchString(contentType) {
 		err = json.NewEncoder(bodyBuf).Encode(body)
 	} else if xmlCheck.MatchString(contentType) {
-		xml.NewEncoder(bodyBuf).Encode(body)
+		err = xml.NewEncoder(bodyBuf).Encode(body)
 	}
 
 	if err != nil {

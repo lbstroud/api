@@ -25,10 +25,10 @@ var (
 	_ context.Context
 )
 
-type FilesApiService service
+type ACHFilesApiService service
 
 /*
-FilesApiService Add Batch to File
+ACHFilesApiService Add Batch to File
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param batch
@@ -42,7 +42,7 @@ type AddBatchToFileOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *FilesApiService) AddBatchToFile(ctx context.Context, fileId string, batch Batch, localVarOptionals *AddBatchToFileOpts) (*http.Response, error) {
+func (a *ACHFilesApiService) AddBatchToFile(ctx context.Context, fileId string, batch Batch, localVarOptionals *AddBatchToFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -124,7 +124,7 @@ func (a *FilesApiService) AddBatchToFile(ctx context.Context, fileId string, bat
 }
 
 /*
-FilesApiService Create a new File object
+ACHFilesApiService Create a new File object
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param createFile Content of the ACH file (in json or raw text)
  * @param optional nil or *CreateFileOpts - Optional Parameters:
@@ -138,7 +138,7 @@ type CreateFileOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *FilesApiService) CreateFile(ctx context.Context, createFile CreateFile, localVarOptionals *CreateFileOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) CreateFile(ctx context.Context, createFile CreateFile, localVarOptionals *CreateFileOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -249,7 +249,7 @@ func (a *FilesApiService) CreateFile(ctx context.Context, createFile CreateFile,
 }
 
 /*
-FilesApiService Permanently deletes a File and associated Batches. It cannot be undone.
+ACHFilesApiService Permanently deletes a File and associated Batches. It cannot be undone.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param optional nil or *DeleteACHFileOpts - Optional Parameters:
@@ -260,7 +260,7 @@ type DeleteACHFileOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) DeleteACHFile(ctx context.Context, fileId string, localVarOptionals *DeleteACHFileOpts) (*http.Response, error) {
+func (a *ACHFilesApiService) DeleteACHFile(ctx context.Context, fileId string, localVarOptionals *DeleteACHFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Delete")
 		localVarPostBody     interface{}
@@ -337,7 +337,7 @@ func (a *FilesApiService) DeleteACHFile(ctx context.Context, fileId string, loca
 }
 
 /*
-FilesApiService Delete a Batch from a File
+ACHFilesApiService Delete a Batch from a File
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param batchId Batch ID
@@ -349,7 +349,7 @@ type DeleteFileBatchOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) DeleteFileBatch(ctx context.Context, fileId string, batchId string, localVarOptionals *DeleteFileBatchOpts) (*http.Response, error) {
+func (a *ACHFilesApiService) DeleteFileBatch(ctx context.Context, fileId string, batchId string, localVarOptionals *DeleteFileBatchOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Delete")
 		localVarPostBody     interface{}
@@ -427,7 +427,7 @@ func (a *FilesApiService) DeleteFileBatch(ctx context.Context, fileId string, ba
 }
 
 /*
-FilesApiService Get a specific Batch on a FIle
+ACHFilesApiService Get a specific Batch on a FIle
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param batchId Batch ID
@@ -440,7 +440,7 @@ type GetFileBatchOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) GetFileBatch(ctx context.Context, fileId string, batchId string, localVarOptionals *GetFileBatchOpts) (Batch, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileBatch(ctx context.Context, fileId string, batchId string, localVarOptionals *GetFileBatchOpts) (Batch, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -538,7 +538,7 @@ func (a *FilesApiService) GetFileBatch(ctx context.Context, fileId string, batch
 }
 
 /*
-FilesApiService Get the batches on a File.
+ACHFilesApiService Get the batches on a File.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param optional nil or *GetFileBatchesOpts - Optional Parameters:
@@ -550,7 +550,7 @@ type GetFileBatchesOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) GetFileBatches(ctx context.Context, fileId string, localVarOptionals *GetFileBatchesOpts) ([]Batch, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileBatches(ctx context.Context, fileId string, localVarOptionals *GetFileBatchesOpts) ([]Batch, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -647,7 +647,7 @@ func (a *FilesApiService) GetFileBatches(ctx context.Context, fileId string, loc
 }
 
 /*
-FilesApiService Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+ACHFilesApiService Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param optional nil or *GetFileByIDOpts - Optional Parameters:
@@ -659,7 +659,7 @@ type GetFileByIDOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) GetFileByID(ctx context.Context, fileId string, localVarOptionals *GetFileByIDOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileByID(ctx context.Context, fileId string, localVarOptionals *GetFileByIDOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -756,7 +756,7 @@ func (a *FilesApiService) GetFileByID(ctx context.Context, fileId string, localV
 }
 
 /*
-FilesApiService Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
+ACHFilesApiService Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param optional nil or *GetFileContentsOpts - Optional Parameters:
@@ -768,7 +768,7 @@ type GetFileContentsOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) GetFileContents(ctx context.Context, fileId string, localVarOptionals *GetFileContentsOpts) (string, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileContents(ctx context.Context, fileId string, localVarOptionals *GetFileContentsOpts) (string, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -865,7 +865,7 @@ func (a *FilesApiService) GetFileContents(ctx context.Context, fileId string, lo
 }
 
 /*
-FilesApiService Gets a list of Files
+ACHFilesApiService Gets a list of Files
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *GetFilesOpts - Optional Parameters:
  * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -876,7 +876,7 @@ type GetFilesOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) GetFiles(ctx context.Context, localVarOptionals *GetFilesOpts) ([]File, *http.Response, error) {
+func (a *ACHFilesApiService) GetFiles(ctx context.Context, localVarOptionals *GetFilesOpts) ([]File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
@@ -972,7 +972,7 @@ func (a *FilesApiService) GetFiles(ctx context.Context, localVarOptionals *GetFi
 }
 
 /*
-FilesApiService Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+ACHFilesApiService Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param createFile
@@ -987,7 +987,7 @@ type UpdateFileOpts struct {
 	XIdempotencyKey optional.String
 }
 
-func (a *FilesApiService) UpdateFile(ctx context.Context, fileId string, createFile CreateFile, localVarOptionals *UpdateFileOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) UpdateFile(ctx context.Context, fileId string, createFile CreateFile, localVarOptionals *UpdateFileOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -1099,7 +1099,7 @@ func (a *FilesApiService) UpdateFile(ctx context.Context, fileId string, createF
 }
 
 /*
-FilesApiService Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
+ACHFilesApiService Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param fileId File ID
  * @param optional nil or *ValidateFileOpts - Optional Parameters:
@@ -1111,7 +1111,7 @@ type ValidateFileOpts struct {
 	XRequestId optional.String
 }
 
-func (a *FilesApiService) ValidateFile(ctx context.Context, fileId string, localVarOptionals *ValidateFileOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) ValidateFile(ctx context.Context, fileId string, localVarOptionals *ValidateFileOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}

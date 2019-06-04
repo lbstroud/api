@@ -33,6 +33,17 @@ All URIs are relative to *https://api.moov.io*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*ACHFilesApi* | [**AddBatchToFile**](docs/ACHFilesApi.md#addbatchtofile) | **Post** /v1/ach/files/{file_id}/batches | Add Batch to File
+*ACHFilesApi* | [**CreateFile**](docs/ACHFilesApi.md#createfile) | **Post** /v1/ach/files/create | Create a new File object
+*ACHFilesApi* | [**DeleteACHFile**](docs/ACHFilesApi.md#deleteachfile) | **Delete** /v1/ach/files/{file_id} | Permanently deletes a File and associated Batches. It cannot be undone.
+*ACHFilesApi* | [**DeleteFileBatch**](docs/ACHFilesApi.md#deletefilebatch) | **Delete** /v1/ach/files/{file_id}/batches/{batch_id} | Delete a Batch from a File
+*ACHFilesApi* | [**GetFileBatch**](docs/ACHFilesApi.md#getfilebatch) | **Get** /v1/ach/files/{file_id}/batches/{batch_id} | Get a specific Batch on a FIle
+*ACHFilesApi* | [**GetFileBatches**](docs/ACHFilesApi.md#getfilebatches) | **Get** /v1/ach/files/{file_id}/batches | Get the batches on a File.
+*ACHFilesApi* | [**GetFileByID**](docs/ACHFilesApi.md#getfilebyid) | **Get** /v1/ach/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+*ACHFilesApi* | [**GetFileContents**](docs/ACHFilesApi.md#getfilecontents) | **Get** /v1/ach/files/{file_id}/contents | Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
+*ACHFilesApi* | [**GetFiles**](docs/ACHFilesApi.md#getfiles) | **Get** /v1/ach/files | Gets a list of Files
+*ACHFilesApi* | [**UpdateFile**](docs/ACHFilesApi.md#updatefile) | **Post** /v1/ach/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+*ACHFilesApi* | [**ValidateFile**](docs/ACHFilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *AccountsApi* | [**CreateAccount**](docs/AccountsApi.md#createaccount) | **Post** /v1/accounts | Create a new account for a Customer
 *AccountsApi* | [**CreateTransaction**](docs/AccountsApi.md#createtransaction) | **Post** /v1/accounts/transactions | Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
 *AccountsApi* | [**GetAccountTransactions**](docs/AccountsApi.md#getaccounttransactions) | **Get** /v1/accounts/{account_id}/transactions | Get transactions for an account. Ordered descending from their posted date.
@@ -53,17 +64,6 @@ Class | Method | HTTP request | Description
 *EventsApi* | [**GetEvents**](docs/EventsApi.md#getevents) | **Get** /v1/ach/events | Gets a list of Events
 *FEDApi* | [**SearchFEDACH**](docs/FEDApi.md#searchfedach) | **Get** /v1/fed/ach/search | Search FEDACH names and metadata
 *FEDApi* | [**SearchFEDWIRE**](docs/FEDApi.md#searchfedwire) | **Get** /v1/fed/wire/search | Search FEDWIRE names and metadata
-*FilesApi* | [**AddBatchToFile**](docs/FilesApi.md#addbatchtofile) | **Post** /v1/ach/files/{file_id}/batches | Add Batch to File
-*FilesApi* | [**CreateFile**](docs/FilesApi.md#createfile) | **Post** /v1/ach/files/create | Create a new File object
-*FilesApi* | [**DeleteACHFile**](docs/FilesApi.md#deleteachfile) | **Delete** /v1/ach/files/{file_id} | Permanently deletes a File and associated Batches. It cannot be undone.
-*FilesApi* | [**DeleteFileBatch**](docs/FilesApi.md#deletefilebatch) | **Delete** /v1/ach/files/{file_id}/batches/{batch_id} | Delete a Batch from a File
-*FilesApi* | [**GetFileBatch**](docs/FilesApi.md#getfilebatch) | **Get** /v1/ach/files/{file_id}/batches/{batch_id} | Get a specific Batch on a FIle
-*FilesApi* | [**GetFileBatches**](docs/FilesApi.md#getfilebatches) | **Get** /v1/ach/files/{file_id}/batches | Get the batches on a File.
-*FilesApi* | [**GetFileByID**](docs/FilesApi.md#getfilebyid) | **Get** /v1/ach/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
-*FilesApi* | [**GetFileContents**](docs/FilesApi.md#getfilecontents) | **Get** /v1/ach/files/{file_id}/contents | Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
-*FilesApi* | [**GetFiles**](docs/FilesApi.md#getfiles) | **Get** /v1/ach/files | Gets a list of Files
-*FilesApi* | [**UpdateFile**](docs/FilesApi.md#updatefile) | **Post** /v1/ach/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
-*FilesApi* | [**ValidateFile**](docs/FilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
 *MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
@@ -135,6 +135,7 @@ Class | Method | HTTP request | Description
  - [Batch](docs/Batch.md)
  - [BatchControl](docs/BatchControl.md)
  - [BatchHeader](docs/BatchHeader.md)
+ - [CcdDetail](docs/CcdDetail.md)
  - [CreateAccount](docs/CreateAccount.md)
  - [CreateAddress](docs/CreateAddress.md)
  - [CreateCustomer](docs/CreateCustomer.md)
@@ -175,6 +176,7 @@ Class | Method | HTTP request | Description
  - [Receiver](docs/Receiver.md)
  - [Sdn](docs/Sdn.md)
  - [Search](docs/Search.md)
+ - [TelDetail](docs/TelDetail.md)
  - [Transaction](docs/Transaction.md)
  - [TransactionLine](docs/TransactionLine.md)
  - [Transfer](docs/Transfer.md)

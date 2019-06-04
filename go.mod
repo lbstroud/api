@@ -16,7 +16,7 @@ require (
 	github.com/moov-io/accounts v0.3.0-rc6 // indirect
 	github.com/moov-io/ach v0.6.0-rc7.0.20190418171132-43af2828a543
 	github.com/moov-io/base v0.10.0-rc1
-	github.com/moov-io/go-client v0.1.1-0.20190520183833-2ed13a54a21f
+	github.com/moov-io/go-client v0.2.0
 	github.com/prometheus/client_golang v0.9.3 // indirect
 	github.com/prometheus/procfs v0.0.0-20190519111021-9935e8e0588d // indirect
 	github.com/prometheus/tsdb v0.8.0 // indirect

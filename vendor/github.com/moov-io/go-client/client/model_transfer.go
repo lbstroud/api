@@ -38,6 +38,8 @@ type Transfer struct {
 	// When set to true this indicates the transfer should be processed the same day if possible.
 	SameDay   bool      `json:"sameDay,omitempty"`
 	Created   time.Time `json:"created,omitempty"`
-	WEBDetail WebDetail `json:"WEBDetail,omitempty"`
+	CCDDetail CcdDetail `json:"CCDDetail,omitempty"`
 	IATDetail IatDetail `json:"IATDetail,omitempty"`
+	TELDetail TelDetail `json:"TELDetail,omitempty"`
+	WEBDetail WebDetail `json:"WEBDetail,omitempty"`
 }
