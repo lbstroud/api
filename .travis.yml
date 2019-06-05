@@ -5,10 +5,10 @@ go:
 services:
   - docker
 os:
- # - linux
+  - linux
   - osx
   - os: windows
-  go: 1.12.x
+    go: 1.12.x
 osx_image: xcode9.1
 before_script:
   - go get -u github.com/moov-io/go-client/client
