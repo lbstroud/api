@@ -227,7 +227,7 @@ paths:
 
 ## ImageCashLetter endpoints
   /v1/imagecashletter/files:
-    $ref: 'https://github.com/moov-io/imagecashletter/blob/master/openapi.yaml#/paths/~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yml#/paths/~1files'
 #  /v1/imagecashletter/files/create:
 #    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yml#/paths/~1files~1create'
 #  /v1/imagecashletter/files/{file_id}:
