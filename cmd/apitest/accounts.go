@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -65,4 +66,34 @@ func checkTransactions(ctx context.Context, api *moov.APIClient, accountId strin
 		}
 	}
 	return fmt.Errorf("accounts: unable to find %q transaction for account=%s", amount, accountId)
+}
+
+func getMicroDepositsTransaction(ctx context.Context, api *moov.APIClient, accountId string, u *user, requestId string) (*moov.Transaction, error) {
+	opts := &moov.GetAccountTransactionsOpts{
+		Limit:      optional.NewFloat32(25),
+		XRequestId: optional.NewString(requestId),
+	}
+	transactions, resp, err := api.AccountsApi.GetAccountTransactions(ctx, accountId, u.ID, opts)
+	if resp != nil && resp.Body != nil {
+		resp.Body.Close()
+	}
+	if err != nil {
+		return nil, fmt.Errorf("accounts: getMicroDeposits: %v", err)
+	}
+	for i := range transactions {
+		sum := sumLines(transactions[i].Lines)
+		if len(transactions[i].Lines) != 3 || sum != 0 {
+			continue
+		}
+		return &transactions[i], nil
+	}
+	return nil, errors.New("unable to find micro-deposit transaction")
+}
+
+func sumLines(lines []moov.TransactionLine) int {
+	sum := 0
+	for i := range lines {
+		sum += int(lines[i].Amount)
+	}
+	return sum
 }
