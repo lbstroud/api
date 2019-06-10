@@ -103,6 +103,9 @@ func main() {
 
 	// Verify every transfer we made exists
 	if *flagVerifyTransfers != "" {
+		if len(iterations) == 0 {
+			log.Fatalf("FAILURE: unable to create any transfers, see above output logs for errors")
+		}
 		log.Printf("Sleeping for %v to let paygate collect and merge %d transfers", flagVerifyInitialSleep, len(iterations))
 		time.Sleep(*flagVerifyInitialSleep)
 		if err := verifyTransfersWereMerged(*flagVerifyTransfers, iterations); err != nil {
