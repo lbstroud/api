@@ -30,5 +30,4 @@ type Batcher interface {
 	// Category defines if a Forward or Return
 	Category() string
 	Error(string, error, ...interface{}) error
-	Equal(other Batcher) bool
 }

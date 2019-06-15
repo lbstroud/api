@@ -30,10 +30,10 @@ type FileHeader struct {
 
 	// ImmediateOrigin contains the Routing Number of the ACH Operator or sending
 	// point that is sending the file. The ach file format specifies a 10 character field
-	// which can begin with a blank space, 0 or 1 in the first position, followed by the four digit
+	// which begins with a blank space in the first position, followed by the four digit
 	// Federal Reserve Routing Symbol, the four digit ABA Institution Identifier, and the Check
-	// Digit (bTTTTAAAAC).  ImmediateOriginField() will prepend a 0 to the routing number to match
-	// the field size.
+	// Digit (bTTTTAAAAC).  ImmediateOriginField() will append the blank space to the routing
+	// number.
 	ImmediateOrigin string `json:"immediateOrigin"`
 
 	// FileCreationDate is the date on which the file is prepared by an ODFI (ACH input files)
@@ -113,7 +113,7 @@ func (fh *FileHeader) Parse(record string) {
 	// (4-13) A blank space followed by your ODFI's routing number. For example: " 121140399"
 	fh.ImmediateDestination = fh.parseStringField(record[3:13])
 	// (14-23) A 10-digit number assigned to you by the ODFI once they approve you to originate ACH files through them
-	fh.ImmediateOrigin = trimImmediateOriginLeadingZero(fh.parseStringField(record[13:23]))
+	fh.ImmediateOrigin = fh.parseStringField(record[13:23])
 	// 24-29 Today's date in YYMMDD format
 	// must be after today's date.
 	fh.FileCreationDate = fh.validateSimpleDate(record[23:29])
@@ -133,14 +133,6 @@ func (fh *FileHeader) Parse(record string) {
 	fh.ImmediateOriginName = strings.TrimSpace(record[63:86])
 	//97-94 Optional field that may be used to describe the ACH file for internal accounting purposes
 	fh.ReferenceCode = strings.TrimSpace(record[86:94])
-}
-
-func trimImmediateOriginLeadingZero(s string) string {
-	if utf8.RuneCountInString(s) == 10 && s[0] == '0' && s != "0000000000" {
-		// trim off a leading 0 as ImmediateOriginField() will pad it back
-		return s[1:]
-	}
-	return s
 }
 
 // String writes the FileHeader struct to a 94 character string.
@@ -190,7 +182,7 @@ func (fh *FileHeader) Validate() error {
 	if err := fh.isAlphanumeric(fh.ImmediateDestinationName); err != nil {
 		return fieldError("ImmediateDestinationName", err, fh.ImmediateDestinationName)
 	}
-	if fh.ImmediateOrigin == "0000000000" {
+	if fh.ImmediateOrigin == "000000000" {
 		return fieldError("ImmediateOrigin", ErrConstructor, fh.ImmediateOrigin)
 	}
 	if fh.ImmediateDestination == "000000000" {
@@ -249,7 +241,7 @@ func (fh *FileHeader) ImmediateDestinationField() string {
 
 // ImmediateOriginField gets the immediate origin number with 0 padding
 func (fh *FileHeader) ImmediateOriginField() string {
-	return fh.stringField(fh.ImmediateOrigin, 10)
+	return " " + fh.stringField(fh.ImmediateOrigin, 9)
 }
 
 // FileCreationDateField gets the file creation date in YYMMDD format
