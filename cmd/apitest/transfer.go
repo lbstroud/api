@@ -97,7 +97,7 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestId
 
 func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, requestId string) (moov.Receiver, error) {
 	req := moov.CreateReceiver{
-		Email:             fmt.Sprintf("%s+apitest@moov.io", u.Name),
+		Email:             email(name()), // new random email address
 		DefaultDepository: depId,
 		Metadata:          u.Name,
 	}
