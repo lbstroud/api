@@ -241,6 +241,20 @@ paths:
   /v1/imagecashletter/files/{file_id}/cashLetters/{cashLetter_id}:
     $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1cashLetters~1%7BcashLetter_id%7D'
 
+  # wire endpoints
+  /v1/wire/files:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files'
+  /v1/wire/files/create:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1create'
+  /v1/wire/files/{file_id}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D'
+  /v1/wire/files/{file_id}/contents:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1contents'
+  /v1/wire/files/{file_id}/validate:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1validate'
+  /v1/wire/files/{file_id}/FEDWireMessage/{FEDWireMessage_id}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1FEDWireMessage~1%7BFEDWireMessage_id%7D'
+
 # Ping Routes (Used to ensure app is running, but apps likely support /ready and /live as well)
   /v1/ach/ping:
     get:
