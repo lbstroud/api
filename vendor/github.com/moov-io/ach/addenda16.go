@@ -24,11 +24,11 @@ type Addenda16 struct {
 	// Receiver City & State / Province
 	// Data elements City and State / Province  should be separated with an asterisk (*) as a delimiter
 	// and the field should end with a backslash (\).
-	// For example: San Francisco*CA\
+	// For example: San FranciscoCA.
 	ReceiverCityStateProvince string `json:"receiverCityStateProvince"`
 	// Receiver Country & Postal Code
 	// Data elements must be separated by an asterisk (*) and must end with a backslash (\)
-	// For example: US*10036\
+	// For example: US10036\
 	ReceiverCountryPostalCode string `json:"receiverCountryPostalCode"`
 	// reserved - Leave blank
 	reserved string
