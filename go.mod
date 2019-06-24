@@ -23,13 +23,13 @@ require (
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
 	go4.org v0.0.0-20190313082347-94abd6928b1d
-	golang.org/x/crypto v0.0.0-20190621164218-ea8f1a30c443 // indirect
+	golang.org/x/crypto v0.0.0-20190624155447-cc06ce4a13d4 // indirect
 	golang.org/x/exp v0.0.0-20190510132918-efd6b22b2522 // indirect
-	golang.org/x/image v0.0.0-20190621164218-92942e4437e2 // indirect
+	golang.org/x/image v0.0.0-20190624155447-7e034cad6442 // indirect
 	golang.org/x/mobile v0.0.0-20190621164218-6fa95d984e88 // indirect
-	golang.org/x/sys v0.0.0-20190621164218-943d5127bdb0 // indirect
+	golang.org/x/sys v0.0.0-20190624155447-c5567b49c5d0 // indirect
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
-	golang.org/x/tools v0.0.0-20190621164218-1fa568393b23 // indirect
+	golang.org/x/tools v0.0.0-20190624155447-8ea4f8e3e5bf // indirect
 	google.golang.org/appengine v1.6.1 // indirect
 	google.golang.org/genproto v0.0.0-20190621164218-6af8c5fc6601 // indirect
 	google.golang.org/grpc v1.21.1 // indirect
