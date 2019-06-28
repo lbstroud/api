@@ -252,8 +252,8 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1contents'
   /v1/wire/files/{file_id}/validate:
     $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1validate'
-  /v1/wire/files/{file_id}/FEDWireMessage/{FEDWireMessage_id}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1FEDWireMessage~1%7BFEDWireMessage_id%7D'
+  /v1/wire/files/{file_id}/FEDWireMessage:
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7Bfile_id%7D~1FEDWireMessage'
 
 # Ping Routes (Used to ensure app is running, but apps likely support /ready and /live as well)
   /v1/ach/ping:
