@@ -120,6 +120,8 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7Bfile_id%7D~1contents'
   /v1/ach/files/{file_id}/validate:
     $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7Bfile_id%7D~1validate'
+  /v1/ach/files/{filed_id}/segment:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7Bfile_id%7D~1segment'
   /v1/ach/files/{file_id}/batches:
     $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7Bfile_id%7D~1batches'
   /v1/ach/files/{file_id}/batches/{batch_id}:
