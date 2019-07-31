@@ -57,13 +57,13 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountId string
 		return fmt.Errorf("problem starting micro deposits: %v", err)
 	}
 
-	microDepositTx, err := getMicroDepositsTransaction(ctx, api, accountId, u, requestId)
+	microDepositTransactions, err := getMicroDepositsTransactions(ctx, api, accountId, u, requestId)
 	if err != nil {
 		return fmt.Errorf("problem getting micro-deposit transaction: %v", err)
 	}
 	var microDeposits moov.Amounts
-	for i := range microDepositTx.Lines {
-		microDeposits.Amounts = append(microDeposits.Amounts, fmt.Sprintf("USD %.2f", microDepositTx.Lines[i].Amount/100))
+	for i := range microDepositTransactions {
+		microDeposits.Amounts = append(microDeposits.Amounts, fmt.Sprintf("USD %.2f", microDepositTransactions[i].Lines[0].Amount/100))
 	}
 	if *flagDebug {
 		log.Printf("verifying Depository with micro-deposit amounts: %s", strings.Join(microDeposits.Amounts, ", "))
