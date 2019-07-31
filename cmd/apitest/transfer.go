@@ -7,6 +7,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"strings"
 
 	"github.com/moov-io/ach"
 	moov "github.com/moov-io/go-client/client"
@@ -35,20 +37,14 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, account
 	}
 
 	// verify with (known, fixed values) micro-deposits
-	if err := verifyDepository(ctx, api, dep, requestId); err != nil {
+	if err := verifyDepository(ctx, api, account.Id, dep, u, requestId); err != nil {
 		return dep, fmt.Errorf("problem verifying depository (name: %q) for user (userId=%s): %v", account.Name, u.ID, err)
 	}
 
 	return dep, nil
 }
 
-var (
-	knownDepositAmounts = moov.Amounts{
-		Amounts: []string{"USD 0.01", "USD 0.03"}, // from paygate, microDeposits.go
-	}
-)
-
-func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Depository, requestId string) error {
+func verifyDepository(ctx context.Context, api *moov.APIClient, accountId string, dep moov.Depository, u *user, requestId string) error {
 	// start micro deposits
 	resp, err := api.DepositoriesApi.InitiateMicroDeposits(ctx, dep.Id, &moov.InitiateMicroDepositsOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
@@ -61,8 +57,20 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, dep moov.Deposit
 		return fmt.Errorf("problem starting micro deposits: %v", err)
 	}
 
+	microDepositTransactions, err := getMicroDepositsTransactions(ctx, api, accountId, u, requestId)
+	if err != nil {
+		return fmt.Errorf("problem getting micro-deposit transaction: %v", err)
+	}
+	var microDeposits moov.Amounts
+	for i := range microDepositTransactions {
+		microDeposits.Amounts = append(microDeposits.Amounts, fmt.Sprintf("USD %.2f", microDepositTransactions[i].Lines[0].Amount/100))
+	}
+	if *flagDebug {
+		log.Printf("verifying Depository with micro-deposit amounts: %s", strings.Join(microDeposits.Amounts, ", "))
+	}
+
 	// confirm micro deposits
-	resp, err = api.DepositoriesApi.ConfirmMicroDeposits(ctx, dep.Id, knownDepositAmounts, &moov.ConfirmMicroDepositsOpts{
+	resp, err = api.DepositoriesApi.ConfirmMicroDeposits(ctx, dep.Id, microDeposits, &moov.ConfirmMicroDepositsOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestId:      optional.NewString(requestId),
 	})

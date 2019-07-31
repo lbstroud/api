@@ -280,9 +280,17 @@ func iterate(ctx context.Context) *iteration {
 		setMoovOAuthToken(conf, oauthToken)
 	}
 
+	// Setup our micro-deposit origination account (or read its info if already setup)
+	microDepositOrig, err := createMicroDepositAccount(ctx, api, user, requestId)
+	if err != nil {
+		errLogger("FAILURE: %v", err)
+		return nil
+	}
+	debugLogger("INFO: micro-deposit account=%s", microDepositOrig.Id)
+
 	// Create Originator Account
 	// We create these accounts because they won't exist in the Accounts service already. (We're using fake data/accounts.)
-	origAcct, err := createAccount(ctx, api, user, "from account", requestId)
+	origAcct, err := createAccount(ctx, api, user, "from account", "", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -305,7 +313,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
 
 	// Create Receiver Account
-	receiverAcct, err := createAccount(ctx, api, user, "to account", requestId)
+	receiverAcct, err := createAccount(ctx, api, user, "to account", "", requestId)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil

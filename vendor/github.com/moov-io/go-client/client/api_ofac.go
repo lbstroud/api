@@ -43,7 +43,7 @@ type AddOFACCompanyNameWatchOpts struct {
 
 func (a *OFACApiService) AddOFACCompanyNameWatch(ctx context.Context, name string, watchRequest WatchRequest, localVarOptionals *AddOFACCompanyNameWatchOpts) (Watch, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -143,7 +143,7 @@ type AddOFACCompanyWatchOpts struct {
 
 func (a *OFACApiService) AddOFACCompanyWatch(ctx context.Context, companyId string, watchRequest WatchRequest, localVarOptionals *AddOFACCompanyWatchOpts) (Watch, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -243,7 +243,7 @@ type AddOFACCustomerNameWatchOpts struct {
 
 func (a *OFACApiService) AddOFACCustomerNameWatch(ctx context.Context, name string, watchRequest WatchRequest, localVarOptionals *AddOFACCustomerNameWatchOpts) (Watch, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -343,7 +343,7 @@ type AddOFACCustomerWatchOpts struct {
 
 func (a *OFACApiService) AddOFACCustomerWatch(ctx context.Context, customerId string, watchRequest WatchRequest, localVarOptionals *AddOFACCustomerWatchOpts) (Watch, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -441,7 +441,7 @@ type GetLatestDownloadsOpts struct {
 
 func (a *OFACApiService) GetLatestDownloads(ctx context.Context, localVarOptionals *GetLatestDownloadsOpts) ([]Download, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -537,7 +537,7 @@ type GetOFACCompanyOpts struct {
 
 func (a *OFACApiService) GetOFACCompany(ctx context.Context, companyId string, localVarOptionals *GetOFACCompanyOpts) (OfacCompany, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -634,7 +634,7 @@ type GetOFACCustomerOpts struct {
 
 func (a *OFACApiService) GetOFACCustomer(ctx context.Context, customerId string, localVarOptionals *GetOFACCustomerOpts) (OfacCustomer, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -731,7 +731,7 @@ type GetSDNOpts struct {
 
 func (a *OFACApiService) GetSDN(ctx context.Context, sdnId string, localVarOptionals *GetSDNOpts) (Sdn, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -828,7 +828,7 @@ type GetSDNAddressesOpts struct {
 
 func (a *OFACApiService) GetSDNAddresses(ctx context.Context, sdnId string, localVarOptionals *GetSDNAddressesOpts) ([]Address, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -925,7 +925,7 @@ type GetSDNAltNamesOpts struct {
 
 func (a *OFACApiService) GetSDNAltNames(ctx context.Context, sdnId string, localVarOptionals *GetSDNAltNamesOpts) ([]Alt, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1022,7 +1022,7 @@ type RemoveOFACCompanyNameWatchOpts struct {
 
 func (a *OFACApiService) RemoveOFACCompanyNameWatch(ctx context.Context, watchId string, name string, localVarOptionals *RemoveOFACCompanyNameWatchOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1100,7 +1100,7 @@ type RemoveOFACCompanyWatchOpts struct {
 
 func (a *OFACApiService) RemoveOFACCompanyWatch(ctx context.Context, companyId string, watchId string, localVarOptionals *RemoveOFACCompanyWatchOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1178,7 +1178,7 @@ type RemoveOFACCustomerNameWatchOpts struct {
 
 func (a *OFACApiService) RemoveOFACCustomerNameWatch(ctx context.Context, watchId string, name string, localVarOptionals *RemoveOFACCustomerNameWatchOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1256,7 +1256,7 @@ type RemoveOFACCustomerWatchOpts struct {
 
 func (a *OFACApiService) RemoveOFACCustomerWatch(ctx context.Context, customerId string, watchId string, localVarOptionals *RemoveOFACCustomerWatchOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1327,6 +1327,11 @@ OFACApiService Search SDN names and metadata
  * @param "Q" (optional.String) -  Search across Name, Alt Names, and Address fields for all SDN entries. Entries may be returned in all response sub-objects.
  * @param "Name" (optional.String) -  Name which could correspond to a human on the SDN list. Only SDN results will be returned.
  * @param "Address" (optional.String) -  Phsical address which could correspond to a human on the SDN list. Only Address results will be returned.
+ * @param "City" (optional.String) -  City name as desginated by SDN guidelines. Only Address results will be returned.
+ * @param "State" (optional.String) -  State name as desginated by SDN guidelines. Only Address results will be returned.
+ * @param "Providence" (optional.String) -  Providence name as desginated by SDN guidelines. Only Address results will be returned.
+ * @param "Zip" (optional.String) -  Zip code as desginated by SDN guidelines. Only Address results will be returned.
+ * @param "Country" (optional.String) -  Country name as desginated by SDN guidelines. Only Address results will be returned.
  * @param "AltName" (optional.String) -  Alternate name which could correspond to a human on the SDN list. Only Alt name results will be returned.
  * @param "Limit" (optional.Int32) -  Maximum results returned by a search
 @return Search
@@ -1337,13 +1342,18 @@ type SearchOpts struct {
 	Q          optional.String
 	Name       optional.String
 	Address    optional.String
+	City       optional.String
+	State      optional.String
+	Providence optional.String
+	Zip        optional.String
+	Country    optional.String
 	AltName    optional.String
 	Limit      optional.Int32
 }
 
 func (a *OFACApiService) Search(ctx context.Context, localVarOptionals *SearchOpts) (Search, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1366,6 +1376,21 @@ func (a *OFACApiService) Search(ctx context.Context, localVarOptionals *SearchOp
 	}
 	if localVarOptionals != nil && localVarOptionals.Address.IsSet() {
 		localVarQueryParams.Add("address", parameterToString(localVarOptionals.Address.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.City.IsSet() {
+		localVarQueryParams.Add("city", parameterToString(localVarOptionals.City.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.State.IsSet() {
+		localVarQueryParams.Add("state", parameterToString(localVarOptionals.State.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Providence.IsSet() {
+		localVarQueryParams.Add("providence", parameterToString(localVarOptionals.Providence.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Zip.IsSet() {
+		localVarQueryParams.Add("zip", parameterToString(localVarOptionals.Zip.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Country.IsSet() {
+		localVarQueryParams.Add("country", parameterToString(localVarOptionals.Country.Value(), ""))
 	}
 	if localVarOptionals != nil && localVarOptionals.AltName.IsSet() {
 		localVarQueryParams.Add("altName", parameterToString(localVarOptionals.AltName.Value(), ""))
@@ -1454,7 +1479,7 @@ type UpdateOFACCompanyStatusOpts struct {
 
 func (a *OFACApiService) UpdateOFACCompanyStatus(ctx context.Context, companyId string, updateCompanyStatus UpdateCompanyStatus, localVarOptionals *UpdateOFACCompanyStatusOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Put")
+		localVarHttpMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1533,7 +1558,7 @@ type UpdateOFACCustomerStatusOpts struct {
 
 func (a *OFACApiService) UpdateOFACCustomerStatus(ctx context.Context, customerId string, updateCustomerStatus UpdateCustomerStatus, localVarOptionals *UpdateOFACCustomerStatusOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Put")
+		localVarHttpMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

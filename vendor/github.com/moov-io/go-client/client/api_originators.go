@@ -44,7 +44,7 @@ type AddOriginatorOpts struct {
 
 func (a *OriginatorsApiService) AddOriginator(ctx context.Context, createOriginator CreateOriginator, localVarOptionals *AddOriginatorOpts) (Originator, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -166,7 +166,7 @@ type DeleteOriginatorOpts struct {
 
 func (a *OriginatorsApiService) DeleteOriginator(ctx context.Context, originatorId string, localVarOptionals *DeleteOriginatorOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -259,7 +259,7 @@ type GetOriginatorByIDOpts struct {
 
 func (a *OriginatorsApiService) GetOriginatorByID(ctx context.Context, originatorId string, localVarOptionals *GetOriginatorByIDOpts) (Originator, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -377,7 +377,7 @@ type GetOriginatorsOpts struct {
 
 func (a *OriginatorsApiService) GetOriginators(ctx context.Context, localVarOptionals *GetOriginatorsOpts) ([]Originator, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -494,7 +494,7 @@ type UpdateOriginatorOpts struct {
 
 func (a *OriginatorsApiService) UpdateOriginator(ctx context.Context, originatorId string, createOriginator CreateOriginator, localVarOptionals *UpdateOriginatorOpts) (Originator, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Patch")
+		localVarHttpMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

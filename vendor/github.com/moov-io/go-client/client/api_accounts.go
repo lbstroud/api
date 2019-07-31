@@ -43,7 +43,7 @@ type CreateAccountOpts struct {
 
 func (a *AccountsApiService) CreateAccount(ctx context.Context, xUserId string, createAccount CreateAccount, localVarOptionals *CreateAccountOpts) (Account, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -153,7 +153,7 @@ type CreateTransactionOpts struct {
 
 func (a *AccountsApiService) CreateTransaction(ctx context.Context, xUserId string, createTransaction CreateTransaction, localVarOptionals *CreateTransactionOpts) (Transaction, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -265,7 +265,7 @@ type GetAccountTransactionsOpts struct {
 
 func (a *AccountsApiService) GetAccountTransactions(ctx context.Context, accountId string, xUserId string, localVarOptionals *GetAccountTransactionsOpts) ([]Transaction, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -374,7 +374,7 @@ type SearchAccountsOpts struct {
 
 func (a *AccountsApiService) SearchAccounts(ctx context.Context, xUserId string, localVarOptionals *SearchAccountsOpts) ([]Account, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

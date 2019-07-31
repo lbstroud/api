@@ -16,7 +16,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 // Linger please
@@ -52,7 +51,7 @@ type SearchFEDACHOpts struct {
 
 func (a *FEDApiService) SearchFEDACH(ctx context.Context, localVarOptionals *SearchFEDACHOpts) (AchDictionary, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -185,7 +184,7 @@ type SearchFEDWIREOpts struct {
 
 func (a *FEDApiService) SearchFEDWIRE(ctx context.Context, localVarOptionals *SearchFEDWIREOpts) (WireDictionary, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

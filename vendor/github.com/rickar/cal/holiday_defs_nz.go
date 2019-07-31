@@ -20,7 +20,7 @@ var (
 	NZWanagiDay       = NewHolidayFunc(calculateWarangiDay)
 )
 
-// AddNewZealandHoliday adds all New Zeland holidays
+// AddNewZelandHoliday adds all New Zeland holidays
 func AddNewZealandHoliday(c *Calendar) {
 	c.AddHoliday(
 		NZNewYear,

@@ -19,7 +19,7 @@ type FileHeader struct {
 	ImmediateDestination string `json:"immediateDestination"`
 	// The name of the ACH or receiving point for which that file is destined.
 	ImmediateDestinationName string `json:"immediateDestinationName"`
-	// The File Creation Date is the date when the file was prepared by an ODFI. (Format HHMM - H=Hour, M=Minute)
+	// The File Creation Date is the date when the file was prepared by an ODFI. (Format HHmm - H=Hour, m=Minute)
 	FileCreationTime string `json:"fileCreationTime,omitempty"`
 	// The File Creation Time is the time when the file was prepared by an ODFI. (Format YYMMDD - Y=Year, M=Month, D=Day)
 	FileCreationDate string `json:"fileCreationDate,omitempty"`
