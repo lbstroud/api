@@ -3,7 +3,7 @@ github.com/antihax/optional
 # github.com/docker/docker v1.13.1
 github.com/docker/docker/pkg/namesgenerator
 github.com/docker/docker/pkg/random
-# github.com/golang/protobuf v1.3.2
+# github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
 # github.com/moov-io/ach v1.0.2
 github.com/moov-io/ach
@@ -14,19 +14,19 @@ github.com/moov-io/ach/internal/usabbrev
 github.com/moov-io/base/http/bind
 github.com/moov-io/base/k8s
 github.com/moov-io/base
-# github.com/moov-io/go-client v0.2.0
+# github.com/moov-io/go-client v0.2.1-0.20190731182832-7d6bad9e0dae
 github.com/moov-io/go-client/client
-# github.com/rickar/cal v1.0.1
+# github.com/rickar/cal v1.0.0
 github.com/rickar/cal
 # go4.org v0.0.0-20190313082347-94abd6928b1d
 go4.org/syncutil
-# golang.org/x/net v0.0.0-20190620200207-3b0461eec859
+# golang.org/x/net v0.0.0-20190517184700-3ec191127204
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/context
 # golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
-# google.golang.org/appengine v1.6.1
+# google.golang.org/appengine v1.4.0
 google.golang.org/appengine/urlfetch
 google.golang.org/appengine/internal
 google.golang.org/appengine/internal/urlfetch

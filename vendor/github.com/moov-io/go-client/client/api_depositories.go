@@ -44,7 +44,7 @@ type AddDepositoryOpts struct {
 
 func (a *DepositoriesApiService) AddDepository(ctx context.Context, createDepository CreateDepository, localVarOptionals *AddDepositoryOpts) (Depository, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -169,7 +169,7 @@ type ConfirmMicroDepositsOpts struct {
 
 func (a *DepositoriesApiService) ConfirmMicroDeposits(ctx context.Context, depositoryId string, amounts Amounts, localVarOptionals *ConfirmMicroDepositsOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -262,7 +262,7 @@ type DeleteDepositoryOpts struct {
 
 func (a *DepositoriesApiService) DeleteDepository(ctx context.Context, depositoryId string, localVarOptionals *DeleteDepositoryOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -354,7 +354,7 @@ type GetDepositoriesOpts struct {
 
 func (a *DepositoriesApiService) GetDepositories(ctx context.Context, localVarOptionals *GetDepositoriesOpts) ([]Depository, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -472,7 +472,7 @@ type GetDepositoryByIDOpts struct {
 
 func (a *DepositoriesApiService) GetDepositoryByID(ctx context.Context, depositoryId string, localVarOptionals *GetDepositoryByIDOpts) (Depository, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -588,7 +588,7 @@ type InitiateMicroDepositsOpts struct {
 
 func (a *DepositoriesApiService) InitiateMicroDeposits(ctx context.Context, depositoryId string, localVarOptionals *InitiateMicroDepositsOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -693,7 +693,7 @@ type UpdateDepositoryOpts struct {
 
 func (a *DepositoriesApiService) UpdateDepository(ctx context.Context, depositoryId string, createDepository CreateDepository, localVarOptionals *UpdateDepositoryOpts) (Depository, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Patch")
+		localVarHttpMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

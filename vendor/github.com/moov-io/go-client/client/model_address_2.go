@@ -11,6 +11,8 @@
 package openapi
 
 type Address2 struct {
+	// Unique identifier for this Address
+	Id   string `json:"id,omitempty"`
 	Type string `json:"type,omitempty"`
 	// First line of the address
 	Address1 string `json:"address1,omitempty"`

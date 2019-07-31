@@ -44,7 +44,7 @@ type AddReceiversOpts struct {
 
 func (a *ReceiversApiService) AddReceivers(ctx context.Context, createReceiver CreateReceiver, localVarOptionals *AddReceiversOpts) (Receiver, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -168,7 +168,7 @@ type DeleteReceiverOpts struct {
 
 func (a *ReceiversApiService) DeleteReceiver(ctx context.Context, receiverId string, localVarOptionals *DeleteReceiverOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -265,7 +265,7 @@ type GetDepositoriesByIDOpts struct {
 
 func (a *ReceiversApiService) GetDepositoriesByID(ctx context.Context, receiverId string, depositoryId string, localVarOptionals *GetDepositoriesByIDOpts) (Depository, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -385,7 +385,7 @@ type GetDepositoriesByReceiverIDOpts struct {
 
 func (a *ReceiversApiService) GetDepositoriesByReceiverID(ctx context.Context, receiverId string, localVarOptionals *GetDepositoriesByReceiverIDOpts) ([]Depository, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -504,7 +504,7 @@ type GetReceiverByIDOpts struct {
 
 func (a *ReceiversApiService) GetReceiverByID(ctx context.Context, receiverId string, localVarOptionals *GetReceiverByIDOpts) (Receiver, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -622,7 +622,7 @@ type GetReceiversOpts struct {
 
 func (a *ReceiversApiService) GetReceivers(ctx context.Context, localVarOptionals *GetReceiversOpts) ([]Receiver, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -739,7 +739,7 @@ type UpdateReceiverOpts struct {
 
 func (a *ReceiversApiService) UpdateReceiver(ctx context.Context, receiverId string, createReceiver CreateReceiver, localVarOptionals *UpdateReceiverOpts) (Receiver, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Patch")
+		localVarHttpMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

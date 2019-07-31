@@ -16,7 +16,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 // Linger please
@@ -43,7 +42,7 @@ type AddGatewayOpts struct {
 
 func (a *GatewaysApiService) AddGateway(ctx context.Context, createGateway CreateGateway, localVarOptionals *AddGatewayOpts) (Gateway, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -165,7 +164,7 @@ type GetGatewaysOpts struct {
 
 func (a *GatewaysApiService) GetGateways(ctx context.Context, localVarOptionals *GetGatewaysOpts) ([]Gateway, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

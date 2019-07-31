@@ -46,7 +46,7 @@ type GetEventByIDOpts struct {
 
 func (a *EventsApiService) GetEventByID(ctx context.Context, eventId string, localVarOptionals *GetEventByIDOpts) (Event, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -168,7 +168,7 @@ type GetEventsOpts struct {
 
 func (a *EventsApiService) GetEvents(ctx context.Context, localVarOptionals *GetEventsOpts) ([]Event, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

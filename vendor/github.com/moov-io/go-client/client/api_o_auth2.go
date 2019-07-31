@@ -16,7 +16,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 // Linger please
@@ -40,7 +39,7 @@ type CheckOAuthClientCredentialsOpts struct {
 
 func (a *OAuth2ApiService) CheckOAuthClientCredentials(ctx context.Context, authorization string, localVarOptionals *CheckOAuthClientCredentialsOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -128,7 +127,7 @@ type CreateOAuth2ClientOpts struct {
 
 func (a *OAuth2ApiService) CreateOAuth2Client(ctx context.Context, localVarOptionals *CreateOAuth2ClientOpts) ([]OAuth2Client, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -256,7 +255,7 @@ type CreateOAuth2TokenOpts struct {
 
 func (a *OAuth2ApiService) CreateOAuth2Token(ctx context.Context, localVarOptionals *CreateOAuth2TokenOpts) (OAuth2Token, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -375,7 +374,7 @@ type GetClientsForUserIdOpts struct {
 
 func (a *OAuth2ApiService) GetClientsForUserId(ctx context.Context, localVarOptionals *GetClientsForUserIdOpts) ([]OAuth2Client, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

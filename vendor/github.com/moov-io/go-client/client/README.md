@@ -42,6 +42,7 @@ Class | Method | HTTP request | Description
 *ACHFilesApi* | [**GetFileByID**](docs/ACHFilesApi.md#getfilebyid) | **Get** /v1/ach/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
 *ACHFilesApi* | [**GetFileContents**](docs/ACHFilesApi.md#getfilecontents) | **Get** /v1/ach/files/{file_id}/contents | Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
 *ACHFilesApi* | [**GetFiles**](docs/ACHFilesApi.md#getfiles) | **Get** /v1/ach/files | Gets a list of Files
+*ACHFilesApi* | [**SegmentFile**](docs/ACHFilesApi.md#segmentfile) | **Post** /v1/ach/files/{file_id}/segment | Create a new file object
 *ACHFilesApi* | [**UpdateFile**](docs/ACHFilesApi.md#updatefile) | **Post** /v1/ach/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
 *ACHFilesApi* | [**ValidateFile**](docs/ACHFilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *AccountsApi* | [**CreateAccount**](docs/AccountsApi.md#createaccount) | **Post** /v1/accounts | Create a new account for a Customer
@@ -64,13 +65,24 @@ Class | Method | HTTP request | Description
 *EventsApi* | [**GetEvents**](docs/EventsApi.md#getevents) | **Get** /v1/ach/events | Gets a list of Events
 *FEDApi* | [**SearchFEDACH**](docs/FEDApi.md#searchfedach) | **Get** /v1/fed/ach/search | Search FEDACH names and metadata
 *FEDApi* | [**SearchFEDWIRE**](docs/FEDApi.md#searchfedwire) | **Get** /v1/fed/wire/search | Search FEDWIRE names and metadata
+*FEDWireMessageFileApi* | [**AddFEDWireMessageToFile**](docs/FEDWireMessageFileApi.md#addfedwiremessagetofile) | **Post** /v1/wire/files/{file_id}/FEDWireMessage | Add FEDWireMessage to File
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
+*ImageCashLetterFilesApi* | [**AddICLToFile**](docs/ImageCashLetterFilesApi.md#addicltofile) | **Post** /v1/imagecashletter/files/{file_id}/cashLetters | Add CashLetter to File
+*ImageCashLetterFilesApi* | [**CreateICLFile**](docs/ImageCashLetterFilesApi.md#createiclfile) | **Post** /v1/imagecashletter/files/create | Create a new File object
+*ImageCashLetterFilesApi* | [**DeleteICLFile**](docs/ImageCashLetterFilesApi.md#deleteiclfile) | **Delete** /v1/imagecashletter/files/{file_id} | Permanently deletes a File and associated CashLetters and Bundles. It cannot be undone.
+*ImageCashLetterFilesApi* | [**DeleteICLFromFile**](docs/ImageCashLetterFilesApi.md#deleteiclfromfile) | **Delete** /v1/imagecashletter/files/{file_id}/cashLetters/{cashLetter_id} | Delete a CashLetter from a File
+*ImageCashLetterFilesApi* | [**GetICLFileByID**](docs/ImageCashLetterFilesApi.md#geticlfilebyid) | **Get** /v1/imagecashletter/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+*ImageCashLetterFilesApi* | [**GetICLFileContents**](docs/ImageCashLetterFilesApi.md#geticlfilecontents) | **Get** /v1/imagecashletter/files/{file_id}/contents | Assembles the existing file (Cash Letters, Bundles and Controls) records, computes sequence numbers and totals. Returns plaintext file.
+*ImageCashLetterFilesApi* | [**GetICLFiles**](docs/ImageCashLetterFilesApi.md#geticlfiles) | **Get** /v1/imagecashletter/files | Gets a list of Files
+*ImageCashLetterFilesApi* | [**UpdateICLFile**](docs/ImageCashLetterFilesApi.md#updateiclfile) | **Post** /v1/imagecashletter/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+*ImageCashLetterFilesApi* | [**ValidateICLFile**](docs/ImageCashLetterFilesApi.md#validateiclfile) | **Get** /v1/imagecashletter/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
 *MonitorApi* | [**PingAccounts**](docs/MonitorApi.md#pingaccounts) | **Get** /v1/accounts/ping | Check that the moov-io/accounts service is running
 *MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that the moov-io/auth service is running
 *MonitorApi* | [**PingCustomers**](docs/MonitorApi.md#pingcustomers) | **Get** /v1/customers/ping | Check that the moov-io/customers service is running
 *MonitorApi* | [**PingFED**](docs/MonitorApi.md#pingfed) | **Get** /v1/fed/ping | Check that the moov-io/fed service is running
+*MonitorApi* | [**PingImageCashLetter**](docs/MonitorApi.md#pingimagecashletter) | **Get** /v1/imagecashletter/ping | Check that the moov-io/imagecashletter service is running
 *MonitorApi* | [**PingOFAC**](docs/MonitorApi.md#pingofac) | **Get** /v1/ofac/ping | Check that the moov-io/ofac service is running
 *MonitorApi* | [**PingPaygate**](docs/MonitorApi.md#pingpaygate) | **Get** /v1/paygate/ping | Check that the moov-io/paygate service is running
 *OAuth2Api* | [**CheckOAuthClientCredentials**](docs/OAuth2Api.md#checkoauthclientcredentials) | **Get** /v1/oauth2/authorize | Verify OAuth2 Bearer token
@@ -119,28 +131,57 @@ Class | Method | HTTP request | Description
 *UserApi* | [**UpdateUserProfile**](docs/UserApi.md#updateuserprofile) | **Patch** /v1/users/{user_id} | Update a User&#39;s profile information
 *UserApi* | [**UserLogin**](docs/UserApi.md#userlogin) | **Post** /v1/users/login | Attempt to login with an email and password
 *UserApi* | [**UserLogout**](docs/UserApi.md#userlogout) | **Delete** /v1/users/login | Invalidat a user&#39;s cookie(s).
+*WireFilesApi* | [**CreateWireFile**](docs/WireFilesApi.md#createwirefile) | **Post** /v1/wire/files/create | Create a new File object
+*WireFilesApi* | [**DeleteWireFileByID**](docs/WireFilesApi.md#deletewirefilebyid) | **Delete** /v1/wire/files/{file_id} | Permanently deletes a File and associated FEDWireMessage. It cannot be undone.
+*WireFilesApi* | [**GetWireFileByID**](docs/WireFilesApi.md#getwirefilebyid) | **Get** /v1/wire/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+*WireFilesApi* | [**GetWireFileContents**](docs/WireFilesApi.md#getwirefilecontents) | **Get** /v1/wire/files/{file_id}/contents | Assembles the existing file witha FEDWireMessage, Returns plaintext file.
+*WireFilesApi* | [**GetWireFiles**](docs/WireFilesApi.md#getwirefiles) | **Get** /v1/wire/files | Gets a list of Files
+*WireFilesApi* | [**UpdateWireFileByID**](docs/WireFilesApi.md#updatewirefilebyid) | **Post** /v1/wire/files/{file_id} | Updates the specified FEDWire Message by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+*WireFilesApi* | [**ValidateWireFile**](docs/WireFilesApi.md#validatewirefile) | **Get** /v1/wire/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 
 
 ## Documentation For Models
 
  - [Account](docs/Account.md)
+ - [AccountCreditedDrawdown](docs/AccountCreditedDrawdown.md)
+ - [AccountDebitedDrawdown](docs/AccountDebitedDrawdown.md)
  - [AchDictionary](docs/AchDictionary.md)
  - [AchLocation](docs/AchLocation.md)
  - [AchParticipant](docs/AchParticipant.md)
  - [Addendum](docs/Addendum.md)
+ - [AdditionalFiToFi](docs/AdditionalFiToFi.md)
  - [Address](docs/Address.md)
  - [Address2](docs/Address2.md)
+ - [Adjustment](docs/Adjustment.md)
+ - [Advice](docs/Advice.md)
  - [Alt](docs/Alt.md)
+ - [Amount](docs/Amount.md)
  - [Amounts](docs/Amounts.md)
  - [Batch](docs/Batch.md)
  - [BatchControl](docs/BatchControl.md)
  - [BatchHeader](docs/BatchHeader.md)
+ - [BeneficiaryReference](docs/BeneficiaryReference.md)
+ - [Bundle](docs/Bundle.md)
+ - [BundleControl](docs/BundleControl.md)
+ - [BundleHeader](docs/BundleHeader.md)
+ - [BusinessFunctionCode](docs/BusinessFunctionCode.md)
+ - [CashLetter](docs/CashLetter.md)
+ - [CashLetterControl](docs/CashLetterControl.md)
+ - [CashLetterHeader](docs/CashLetterHeader.md)
  - [CcdDetail](docs/CcdDetail.md)
+ - [Charges](docs/Charges.md)
+ - [CheckDetail](docs/CheckDetail.md)
+ - [CheckDetailAddendumA](docs/CheckDetailAddendumA.md)
+ - [CheckDetailAddendumB](docs/CheckDetailAddendumB.md)
+ - [CheckDetailAddendumC](docs/CheckDetailAddendumC.md)
+ - [Checks](docs/Checks.md)
+ - [CoverPayment](docs/CoverPayment.md)
  - [CreateAccount](docs/CreateAccount.md)
  - [CreateAddress](docs/CreateAddress.md)
  - [CreateCustomer](docs/CreateCustomer.md)
  - [CreateDepository](docs/CreateDepository.md)
  - [CreateFile](docs/CreateFile.md)
+ - [CreateFile2](docs/CreateFile2.md)
  - [CreateGateway](docs/CreateGateway.md)
  - [CreateOriginator](docs/CreateOriginator.md)
  - [CreatePhone](docs/CreatePhone.md)
@@ -148,23 +189,43 @@ Class | Method | HTTP request | Description
  - [CreateTransaction](docs/CreateTransaction.md)
  - [CreateTransfer](docs/CreateTransfer.md)
  - [CreateUser](docs/CreateUser.md)
+ - [CreditItem](docs/CreditItem.md)
+ - [CurrencyInstructedAmount](docs/CurrencyInstructedAmount.md)
  - [Customer](docs/Customer.md)
+ - [DateRemittanceDocument](docs/DateRemittanceDocument.md)
  - [Depository](docs/Depository.md)
  - [Document](docs/Document.md)
  - [Download](docs/Download.md)
+ - [Dpl](docs/Dpl.md)
  - [EntryDetail](docs/EntryDetail.md)
  - [Error](docs/Error.md)
  - [Error2](docs/Error2.md)
+ - [ErrorWire](docs/ErrorWire.md)
  - [Event](docs/Event.md)
+ - [ExchangeRate](docs/ExchangeRate.md)
+ - [FedWireMessage](docs/FedWireMessage.md)
+ - [FiPaymentMethodToBeneficiary](docs/FiPaymentMethodToBeneficiary.md)
+ - [FiToFi](docs/FiToFi.md)
  - [File](docs/File.md)
+ - [File2](docs/File2.md)
  - [FileControl](docs/FileControl.md)
+ - [FileControl2](docs/FileControl2.md)
  - [FileHeader](docs/FileHeader.md)
+ - [FileHeader2](docs/FileHeader2.md)
+ - [FinancialInstitution](docs/FinancialInstitution.md)
  - [Gateway](docs/Gateway.md)
  - [IatBatch](docs/IatBatch.md)
  - [IatBatchHeader](docs/IatBatchHeader.md)
  - [IatDetail](docs/IatDetail.md)
+ - [ImageViewAnalysis](docs/ImageViewAnalysis.md)
+ - [ImageViewData](docs/ImageViewData.md)
+ - [ImageViewDetail](docs/ImageViewDetail.md)
  - [InlineObject](docs/InlineObject.md)
+ - [InputMessageAccountabilityData](docs/InputMessageAccountabilityData.md)
+ - [InstructedAmount](docs/InstructedAmount.md)
+ - [LocalInstrument](docs/LocalInstrument.md)
  - [Login](docs/Login.md)
+ - [MessageDisposition](docs/MessageDisposition.md)
  - [OAuth2Client](docs/OAuth2Client.md)
  - [OAuth2Token](docs/OAuth2Token.md)
  - [OfacCompany](docs/OfacCompany.md)
@@ -172,14 +233,43 @@ Class | Method | HTTP request | Description
  - [OfacCustomer](docs/OfacCustomer.md)
  - [OfacCustomerStatus](docs/OfacCustomerStatus.md)
  - [Originator](docs/Originator.md)
+ - [OriginatorOptionF](docs/OriginatorOptionF.md)
+ - [OriginatorToBeneficiary](docs/OriginatorToBeneficiary.md)
+ - [OutputMessageAccountabilityData](docs/OutputMessageAccountabilityData.md)
+ - [PaymentNotification](docs/PaymentNotification.md)
+ - [Personal](docs/Personal.md)
  - [Phone](docs/Phone.md)
+ - [PreviousMessageIdentifier](docs/PreviousMessageIdentifier.md)
+ - [PrimaryRemittanceDocument](docs/PrimaryRemittanceDocument.md)
+ - [ReceiptTimeStamp](docs/ReceiptTimeStamp.md)
  - [Receiver](docs/Receiver.md)
+ - [ReceiverDepositoryInstitution](docs/ReceiverDepositoryInstitution.md)
+ - [RelatedRemittance](docs/RelatedRemittance.md)
+ - [RemittanceAmount](docs/RemittanceAmount.md)
+ - [RemittanceBeneficiary](docs/RemittanceBeneficiary.md)
+ - [RemittanceData](docs/RemittanceData.md)
+ - [RemittanceFreeText](docs/RemittanceFreeText.md)
+ - [RemittanceOriginator](docs/RemittanceOriginator.md)
+ - [ReturnDetail](docs/ReturnDetail.md)
+ - [ReturnDetailAddendumA](docs/ReturnDetailAddendumA.md)
+ - [ReturnDetailAddendumB](docs/ReturnDetailAddendumB.md)
+ - [ReturnDetailAddendumC](docs/ReturnDetailAddendumC.md)
+ - [ReturnDetailAddendumD](docs/ReturnDetailAddendumD.md)
+ - [Returns](docs/Returns.md)
+ - [RoutingNumberSummary](docs/RoutingNumberSummary.md)
  - [Sdn](docs/Sdn.md)
  - [Search](docs/Search.md)
+ - [SecondaryRemittanceDocument](docs/SecondaryRemittanceDocument.md)
+ - [SenderDepositoryInstitution](docs/SenderDepositoryInstitution.md)
+ - [SenderReference](docs/SenderReference.md)
+ - [SenderSupplied](docs/SenderSupplied.md)
+ - [ServiceMessage](docs/ServiceMessage.md)
  - [TelDetail](docs/TelDetail.md)
  - [Transaction](docs/Transaction.md)
  - [TransactionLine](docs/TransactionLine.md)
  - [Transfer](docs/Transfer.md)
+ - [TypeSubType](docs/TypeSubType.md)
+ - [UnstructuredAddenda](docs/UnstructuredAddenda.md)
  - [UpdateCompanyStatus](docs/UpdateCompanyStatus.md)
  - [UpdateCustomerStatus](docs/UpdateCustomerStatus.md)
  - [User](docs/User.md)

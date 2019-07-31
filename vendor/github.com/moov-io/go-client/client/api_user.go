@@ -40,7 +40,7 @@ type CheckUserLoginOpts struct {
 
 func (a *UserApiService) CheckUserLogin(ctx context.Context, localVarOptionals *CheckUserLoginOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -130,7 +130,7 @@ type CreateUserOpts struct {
 
 func (a *UserApiService) CreateUser(ctx context.Context, createUser CreateUser, localVarOptionals *CreateUserOpts) (User, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -243,7 +243,7 @@ type UpdateUserProfileOpts struct {
 
 func (a *UserApiService) UpdateUserProfile(ctx context.Context, userId string, userProfile UserProfile, localVarOptionals *UpdateUserProfileOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Patch")
+		localVarHttpMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -349,7 +349,7 @@ type UserLoginOpts struct {
 
 func (a *UserApiService) UserLogin(ctx context.Context, login Login, localVarOptionals *UserLoginOpts) (User, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -458,7 +458,7 @@ type UserLogoutOpts struct {
 
 func (a *UserApiService) UserLogout(ctx context.Context, localVarOptionals *UserLogoutOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string

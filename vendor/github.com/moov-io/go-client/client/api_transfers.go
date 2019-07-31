@@ -44,7 +44,7 @@ type AddTransferOpts struct {
 
 func (a *TransfersApiService) AddTransfer(ctx context.Context, createTransfer CreateTransfer, localVarOptionals *AddTransferOpts) (Transfer, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -169,7 +169,7 @@ type AddTransfersOpts struct {
 
 func (a *TransfersApiService) AddTransfers(ctx context.Context, createTransfer []CreateTransfer, localVarOptionals *AddTransfersOpts) ([]Transfer, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -291,7 +291,7 @@ type DeleteTransferByIDOpts struct {
 
 func (a *TransfersApiService) DeleteTransferByID(ctx context.Context, transferId string, localVarOptionals *DeleteTransferByIDOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Delete")
+		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -384,7 +384,7 @@ type GetTransferByIDOpts struct {
 
 func (a *TransfersApiService) GetTransferByID(ctx context.Context, transferId string, localVarOptionals *GetTransferByIDOpts) (Transfer, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -503,7 +503,7 @@ type GetTransferEventsByIDOpts struct {
 
 func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transferId string, localVarOptionals *GetTransferEventsByIDOpts) ([]Event, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -620,7 +620,7 @@ type GetTransferFilesOpts struct {
 
 func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId string, localVarOptionals *GetTransferFilesOpts) ([]File, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -743,7 +743,7 @@ type GetTransferNachaCodeOpts struct {
 
 func (a *TransfersApiService) GetTransferNachaCode(ctx context.Context, transferId string, localVarOptionals *GetTransferNachaCodeOpts) (*http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Post")
+		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -842,7 +842,7 @@ type GetTransfersOpts struct {
 
 func (a *TransfersApiService) GetTransfers(ctx context.Context, localVarOptionals *GetTransfersOpts) ([]Transfer, *http.Response, error) {
 	var (
-		localVarHttpMethod   = strings.ToUpper("Get")
+		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
