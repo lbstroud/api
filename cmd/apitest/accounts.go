@@ -14,10 +14,11 @@ import (
 	"github.com/antihax/optional"
 )
 
-func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, requestId string) (*moov.Account, error) {
+func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, number, requestId string) (*moov.Account, error) {
 	req := moov.CreateAccount{
 		CustomerId: u.ID,
 		Name:       name,
+		Number:     number,
 		Type:       "Savings",
 		Balance:    1000 * 100, // $1,000
 	}
@@ -32,6 +33,27 @@ func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, requ
 		return nil, fmt.Errorf("problem creating account %q: %v", name, err)
 	}
 	return &account, nil
+}
+
+func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user, requestId string) (*moov.Account, error) {
+	// The hardcoded values here need to match paygate's expectations for the micro-deposit origination account
+	opts := &moov.SearchAccountsOpts{
+		Number:        optional.NewString("123"),
+		RoutingNumber: optional.NewString("121042882"),
+		Type_:         optional.NewString("Savings"),
+		XRequestId:    optional.NewString(requestId),
+	}
+	accounts, resp, err := api.AccountsApi.SearchAccounts(ctx, u.ID, opts)
+	if resp != nil && resp.Body != nil {
+		resp.Body.Close()
+	}
+	if err != nil {
+		return nil, fmt.Errorf("micro-deposits: SearchAccounts: userId=%s: %v", u.ID, err)
+	}
+	if len(accounts) > 0 {
+		return &accounts[0], nil
+	}
+	return createAccount(ctx, api, u, "micro-deposit origination", "123", requestId)
 }
 
 // Verify accountId and Transaction exist of a given amount (used to double check transfers).
