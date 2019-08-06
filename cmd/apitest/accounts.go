@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	moov "github.com/moov-io/go-client/client"
 
@@ -99,11 +100,12 @@ func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, acco
 			continue
 		}
 		for j := range transactions[i].Lines {
-			if transactions[i].Lines[j].Amount > 100 {
-				continue // skip transaction as micro-deposits are under $1.00
+			line := transactions[i].Lines[j]
+			if line.AccountId == accountId && strings.EqualFold(line.Purpose, "achcredit") && line.Amount < 100 {
+				txs = append(txs, &transactions[i])
+				break
 			}
 		}
-		txs = append(txs, &transactions[i])
 	}
 	if len(txs) == 0 {
 		return nil, errors.New("unable to find micro-deposit transaction")
