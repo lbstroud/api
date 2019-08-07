@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -116,7 +115,7 @@ func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, acco
 		}
 	}
 	if len(txs) == 0 {
-		return nil, errors.New("unable to find micro-deposit transaction")
+		return nil, fmt.Errorf("unable to find micro-deposit transaction (found %d)", len(txs))
 	}
 	return txs, nil
 }
