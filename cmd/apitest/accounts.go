@@ -99,6 +99,14 @@ func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, acco
 		if len(transactions[i].Lines) != 2 {
 			continue
 		}
+		if *flagDebug {
+			out := ""
+			for j := range transactions[i].Lines {
+				line := transactions[i].Lines[j]
+				out += fmt.Sprintf("\n  accountId=%s purpose=%s amount=%v", line.AccountId, line.Purpose, line.Amount)
+			}
+			fmt.Printf("transaction=%s\n  %s\n", transactions[i].Id, strings.TrimSpace(out))
+		}
 		for j := range transactions[i].Lines {
 			line := transactions[i].Lines[j]
 			if line.AccountId == accountId && strings.EqualFold(line.Purpose, "achcredit") && line.Amount < 100 {
