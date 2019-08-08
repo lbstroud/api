@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/moov-io/ach"
 	moov "github.com/moov-io/go-client/client"
@@ -57,7 +58,15 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountId string
 		return fmt.Errorf("problem starting micro deposits: %v", err)
 	}
 
-	microDepositTransactions, err := getMicroDepositsTransactions(ctx, api, accountId, u, requestId)
+	// Grab the micro-deposit transactions
+	var microDepositTransactions []*moov.Transaction
+	for i := 0; i < 3; i++ {
+		microDepositTransactions, err = getMicroDepositsTransactions(ctx, api, accountId, u, requestId)
+		if len(microDepositTransactions) > 0 {
+			time.Sleep(250 * time.Millisecond)
+			break
+		}
+	}
 	if err != nil {
 		return fmt.Errorf("problem getting micro-deposit transaction: %v", err)
 	}
