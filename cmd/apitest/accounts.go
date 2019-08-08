@@ -115,7 +115,7 @@ func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, acco
 		}
 	}
 	if len(txs) == 0 {
-		return nil, fmt.Errorf("unable to find micro-deposit transaction (found %d)", len(txs))
+		return nil, fmt.Errorf("unable to find micro-deposit transaction (found %d)", len(transactions))
 	}
 	return txs, nil
 }
