@@ -95,6 +95,8 @@ func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, acco
 	}
 	var txs []*moov.Transaction
 	for i := range transactions {
+		fmt.Printf("transactions[%d]=%#v\n", i, transactions[i])
+
 		if len(transactions[i].Lines) != 2 {
 			continue
 		}
