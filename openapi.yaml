@@ -40,7 +40,7 @@ info:
 
     The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.
 
-    When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.
+    When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client ID and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.
 
     Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.
 
@@ -168,38 +168,38 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1gateways'
 
 # OFAC endpoints
-  /v1/ofac/companies/{companyId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyId%7D'
-  /v1/ofac/companies/{companyId}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyId%7D~1watch'
-  /v1/ofac/companies/{companyId}/watch/{watchId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyId%7D~1watch~1%7BwatchId%7D'
+  /v1/ofac/companies/{companyID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyID%7D'
+  /v1/ofac/companies/{companyID}/watch:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyID%7D~1watch'
+  /v1/ofac/companies/{companyID}/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyID%7D~1watch~1%7BwatchID%7D'
   /v1/ofac/companies/watch:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1watch'
-  /v1/ofac/companies/watch/{watchId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1watch~1%7BwatchId%7D'
+  /v1/ofac/companies/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1watch~1%7BwatchID%7D'
   # Customer Endpoints
-  /v1/ofac/customers/{customerId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D'
-  /v1/ofac/customers/{customerId}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D~1watch'
-  /v1/ofac/customers/{customerId}/watch/{watchId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerId%7D~1watch~1%7BwatchId%7D'
+  /v1/ofac/customers/{customerID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D'
+  /v1/ofac/customers/{customerID}/watch:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1watch'
+  /v1/ofac/customers/{customerID}/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1watch~1%7BwatchID%7D'
   /v1/ofac/customers/watch:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch'
-  /v1/ofac/customers/watch/{watchId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch~1%7BwatchId%7D'
+  /v1/ofac/customers/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch~1%7BwatchID%7D'
   # Other Endpoints
   /v1/ofac/downloads:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1downloads'
   /v1/ofac/search:
     $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1search'
-  /v1/ofac/sdn/{sdnId}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D'
-  /v1/ofac/sdn/{sdnId}/alts:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D~1alts'
-  /v1/ofac/sdn/{sdnId}/addresses:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnId%7D~1addresses'
+  /v1/ofac/sdn/{sdnID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnID%7D'
+  /v1/ofac/sdn/{sdnID}/alts:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnID%7D~1alts'
+  /v1/ofac/sdn/{sdnID}/addresses:
+    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnID%7D~1addresses'
 
 # FED endpoints
   /v1/fed/ach/search:
@@ -265,7 +265,7 @@ paths:
       operationId: pingACH
       summary: Check that the moov-io/ach service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -276,7 +276,7 @@ paths:
       operationId: pingAuth
       summary: Check that the moov-io/auth service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -287,7 +287,7 @@ paths:
       operationId: pingFED
       summary: Check that the moov-io/fed service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -298,7 +298,7 @@ paths:
       operationId: pingAccounts
       summary: Check that the moov-io/accounts service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -309,7 +309,7 @@ paths:
       operationId: pingCustomers
       summary: Check that the moov-io/customers service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -320,7 +320,7 @@ paths:
       operationId: pingOFAC
       summary: Check that the moov-io/ofac service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -331,7 +331,7 @@ paths:
       operationId: pingImageCashLetter
       summary: Check that the moov-io/imagecashletter service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
@@ -342,13 +342,13 @@ paths:
       operationId: pingPaygate
       summary: Check that the moov-io/paygate service is running
       parameters:
-        - $ref: '#/components/parameters/requestId'
+        - $ref: '#/components/parameters/requestID'
       responses:
         '200':
           description: Service is running properly
 components:
   parameters:
-    requestId:
+    requestID:
       in: header
       name: X-Request-Id
       description: Optional Request ID allows application developer to trace requests through the systems logs
