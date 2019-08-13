@@ -38,7 +38,7 @@ type user struct {
 }
 
 // createUser randomly generates a user (with profile data) and creates it against the given Moov API.
-func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*user, error) {
+func createUser(ctx context.Context, api *moov.APIClient, requestID string) (*user, error) {
 	first, last := name()
 	req := moov.CreateUser{
 		Email:     email(first, last),
@@ -48,7 +48,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		Phone:     phone(),
 	}
 	_, resp, err := api.UserApi.CreateUser(ctx, req, &moov.CreateUserOpts{
-		XRequestId:      optional.NewString(requestId),
+		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
@@ -68,7 +68,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 	// Now login
 	login := moov.Login{Email: req.Email, Password: *flagPassword}
 	u, resp, err := api.UserApi.UserLogin(ctx, login, &moov.UserLoginOpts{
-		XRequestId:      optional.NewString(requestId),
+		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if resp != nil {
@@ -81,7 +81,7 @@ func createUser(ctx context.Context, api *moov.APIClient, requestId string) (*us
 		return nil, fmt.Errorf("got zero time: %#v", u)
 	}
 	return &user{
-		ID:     u.Id,
+		ID:     u.ID,
 		Name:   fmt.Sprintf("%s %s", u.FirstName, u.LastName),
 		Email:  u.Email,
 		Cookie: findMoovCookie(resp.Cookies()),

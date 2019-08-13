@@ -33,9 +33,9 @@ func removeMoovAuthCookie(conf *moov.Configuration) {
 
 // verifyUserIsLoggedIn takes the given moov.APIClient and checks if it's is logged in. A non-nil error signals
 // the client doens't have valid authentication.
-func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, requestId string) error {
+func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, requestID string) error {
 	resp, err := api.UserApi.CheckUserLogin(ctx, &moov.CheckUserLoginOpts{
-		XRequestId: optional.NewString(requestId),
+		XRequestID: optional.NewString(requestID),
 	})
 	if resp != nil {
 		resp.Body.Close()
@@ -50,11 +50,11 @@ func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user, 
 }
 
 // attemptFailedLogin will try with random data to ensure failed credentials don't authenticate a request.
-func attemptFailedLogin(ctx context.Context, api *moov.APIClient, requestId string) error {
+func attemptFailedLogin(ctx context.Context, api *moov.APIClient, requestID string) error {
 	email, password := name()                                                     // random noise
 	login := moov.Login{Email: email + "@moov.io", Password: password + password} // email format, make sure it's long enough
 	_, resp, err := api.UserApi.UserLogin(ctx, login, &moov.UserLoginOpts{
-		XRequestId:      optional.NewString(requestId),
+		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if resp != nil {

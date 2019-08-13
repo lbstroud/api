@@ -78,7 +78,7 @@ func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
 						log.Printf("DEBUG: amounts %s vs %s\n", iterations[i].transfer.Amount, amount)
 					}
 					if iterations[i].transfer.Amount == amount {
-						log.Printf("INFO: Matched transfer %s for %s", iterations[i].transfer.Id, iterations[i].transfer.Amount)
+						log.Printf("INFO: Matched transfer %s for %s", iterations[i].transfer.ID, iterations[i].transfer.Amount)
 						// found a match // TODO(adam): compare more fields?
 						iterations = append(iterations[:i], iterations[i+1:]...) // remove iteration
 						i = -1                                                   // reset i so we reprocess entire iterations array
@@ -97,7 +97,7 @@ func verifyTransfersWereMerged(dir string, iterations []*iteration) error {
 	if len(iterations) > 0 {
 		var transferLine []string
 		for i := range iterations {
-			transferLine = append(transferLine, fmt.Sprintf("%s (amount: %s)", iterations[i].transfer.Id, iterations[i].transfer.Amount))
+			transferLine = append(transferLine, fmt.Sprintf("%s (amount: %s)", iterations[i].transfer.ID, iterations[i].transfer.Amount))
 		}
 		if iterationsBeforeMatching == len(iterations) || mergedFilesProcessed == 0 {
 			log.Printf("0/%d transfers matched, did paygate create any merged files? (%d files processed)", iterationsBeforeMatching, mergedFilesProcessed)
