@@ -229,7 +229,7 @@ func (a *UserApiService) CreateUser(ctx context.Context, createUser CreateUser, 
 /*
 UserApiService Update a User's profile information
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param userId Moov API User ID
+ * @param userID Moov API User ID
  * @param userProfile User profile information
  * @param optional nil or *UpdateUserProfileOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
@@ -241,7 +241,7 @@ type UpdateUserProfileOpts struct {
 	XRequestID      optional.String
 }
 
-func (a *UserApiService) UpdateUserProfile(ctx context.Context, userId string, userProfile UserProfile, localVarOptionals *UpdateUserProfileOpts) (*http.Response, error) {
+func (a *UserApiService) UpdateUserProfile(ctx context.Context, userID string, userProfile UserProfile, localVarOptionals *UpdateUserProfileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPatch
 		localVarPostBody     interface{}
@@ -251,8 +251,8 @@ func (a *UserApiService) UpdateUserProfile(ctx context.Context, userId string, u
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/users/{user_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", fmt.Sprintf("%v", userId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/users/{userID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"userID"+"}", fmt.Sprintf("%v", userID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

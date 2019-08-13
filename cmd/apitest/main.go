@@ -165,7 +165,7 @@ func pingApps(ctx context.Context) error {
 
 	// ACH
 	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{
-		XRequestId: optional.NewString(requestID),
+		XRequestID: optional.NewString(requestID),
 	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping ACH: %v", err)
@@ -175,7 +175,7 @@ func pingApps(ctx context.Context) error {
 
 	// auth
 	resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{
-		XRequestId: optional.NewString(requestID),
+		XRequestID: optional.NewString(requestID),
 	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping auth: %v", err)
@@ -185,7 +185,7 @@ func pingApps(ctx context.Context) error {
 
 	// paygate
 	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{
-		XRequestId: optional.NewString(requestID),
+		XRequestID: optional.NewString(requestID),
 	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)

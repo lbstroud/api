@@ -30,7 +30,7 @@ type ImageCashLetterFilesApiService service
 /*
 ImageCashLetterFilesApiService Add CashLetter to File
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param cashLetter
  * @param optional nil or *AddICLToFileOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -42,7 +42,7 @@ type AddICLToFileOpts struct {
 	XIDempotencyKey optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) AddICLToFile(ctx context.Context, fileId string, cashLetter CashLetter, localVarOptionals *AddICLToFileOpts) (*http.Response, error) {
+func (a *ImageCashLetterFilesApiService) AddICLToFile(ctx context.Context, fileID string, cashLetter CashLetter, localVarOptionals *AddICLToFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -52,8 +52,8 @@ func (a *ImageCashLetterFilesApiService) AddICLToFile(ctx context.Context, fileI
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}/cashLetters"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}/cashLetters"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -251,7 +251,7 @@ func (a *ImageCashLetterFilesApiService) CreateICLFile(ctx context.Context, crea
 /*
 ImageCashLetterFilesApiService Permanently deletes a File and associated CashLetters and Bundles. It cannot be undone.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *DeleteICLFileOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
@@ -260,7 +260,7 @@ type DeleteICLFileOpts struct {
 	XRequestID optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) DeleteICLFile(ctx context.Context, fileId string, localVarOptionals *DeleteICLFileOpts) (*http.Response, error) {
+func (a *ImageCashLetterFilesApiService) DeleteICLFile(ctx context.Context, fileID string, localVarOptionals *DeleteICLFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
@@ -270,8 +270,8 @@ func (a *ImageCashLetterFilesApiService) DeleteICLFile(ctx context.Context, file
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -339,8 +339,8 @@ func (a *ImageCashLetterFilesApiService) DeleteICLFile(ctx context.Context, file
 /*
 ImageCashLetterFilesApiService Delete a CashLetter from a File
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
- * @param cashLetterId CashLetter ID
+ * @param fileID File ID
+ * @param cashLetterID CashLetter ID
  * @param optional nil or *DeleteICLFromFileOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
@@ -349,7 +349,7 @@ type DeleteICLFromFileOpts struct {
 	XRequestID optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) DeleteICLFromFile(ctx context.Context, fileId string, cashLetterId string, localVarOptionals *DeleteICLFromFileOpts) (*http.Response, error) {
+func (a *ImageCashLetterFilesApiService) DeleteICLFromFile(ctx context.Context, fileID string, cashLetterID string, localVarOptionals *DeleteICLFromFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
@@ -359,9 +359,9 @@ func (a *ImageCashLetterFilesApiService) DeleteICLFromFile(ctx context.Context, 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}/cashLetters/{cashLetter_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"cashLetter_id"+"}", fmt.Sprintf("%v", cashLetterId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}/cashLetters/{cashLetterID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"cashLetterID"+"}", fmt.Sprintf("%v", cashLetterID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -429,7 +429,7 @@ func (a *ImageCashLetterFilesApiService) DeleteICLFromFile(ctx context.Context, 
 /*
 ImageCashLetterFilesApiService Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *GetICLFileByIDOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return File2
@@ -439,7 +439,7 @@ type GetICLFileByIDOpts struct {
 	XRequestID optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) GetICLFileByID(ctx context.Context, fileId string, localVarOptionals *GetICLFileByIDOpts) (File2, *http.Response, error) {
+func (a *ImageCashLetterFilesApiService) GetICLFileByID(ctx context.Context, fileID string, localVarOptionals *GetICLFileByIDOpts) (File2, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -450,8 +450,8 @@ func (a *ImageCashLetterFilesApiService) GetICLFileByID(ctx context.Context, fil
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -538,7 +538,7 @@ func (a *ImageCashLetterFilesApiService) GetICLFileByID(ctx context.Context, fil
 /*
 ImageCashLetterFilesApiService Assembles the existing file (Cash Letters, Bundles and Controls) records, computes sequence numbers and totals. Returns plaintext file.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *GetICLFileContentsOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return string
@@ -548,7 +548,7 @@ type GetICLFileContentsOpts struct {
 	XRequestID optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) GetICLFileContents(ctx context.Context, fileId string, localVarOptionals *GetICLFileContentsOpts) (string, *http.Response, error) {
+func (a *ImageCashLetterFilesApiService) GetICLFileContents(ctx context.Context, fileID string, localVarOptionals *GetICLFileContentsOpts) (string, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -559,8 +559,8 @@ func (a *ImageCashLetterFilesApiService) GetICLFileContents(ctx context.Context,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}/contents"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}/contents"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -754,7 +754,7 @@ func (a *ImageCashLetterFilesApiService) GetICLFiles(ctx context.Context, localV
 /*
 ImageCashLetterFilesApiService Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param fileHeader2
  * @param optional nil or *UpdateICLFileOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
@@ -767,7 +767,7 @@ type UpdateICLFileOpts struct {
 	XIDempotencyKey optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) UpdateICLFile(ctx context.Context, fileId string, fileHeader2 FileHeader2, localVarOptionals *UpdateICLFileOpts) (File2, *http.Response, error) {
+func (a *ImageCashLetterFilesApiService) UpdateICLFile(ctx context.Context, fileID string, fileHeader2 FileHeader2, localVarOptionals *UpdateICLFileOpts) (File2, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -778,8 +778,8 @@ func (a *ImageCashLetterFilesApiService) UpdateICLFile(ctx context.Context, file
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -881,7 +881,7 @@ func (a *ImageCashLetterFilesApiService) UpdateICLFile(ctx context.Context, file
 /*
 ImageCashLetterFilesApiService Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *ValidateICLFileOpts - Optional Parameters:
  * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return File2
@@ -891,7 +891,7 @@ type ValidateICLFileOpts struct {
 	XRequestID optional.String
 }
 
-func (a *ImageCashLetterFilesApiService) ValidateICLFile(ctx context.Context, fileId string, localVarOptionals *ValidateICLFileOpts) (File2, *http.Response, error) {
+func (a *ImageCashLetterFilesApiService) ValidateICLFile(ctx context.Context, fileID string, localVarOptionals *ValidateICLFileOpts) (File2, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -902,8 +902,8 @@ func (a *ImageCashLetterFilesApiService) ValidateICLFile(ctx context.Context, fi
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{file_id}/validate"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/imagecashletter/files/{fileID}/validate"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

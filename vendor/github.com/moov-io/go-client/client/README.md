@@ -33,27 +33,27 @@ All URIs are relative to *https://api.moov.io*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*ACHFilesApi* | [**AddBatchToFile**](docs/ACHFilesApi.md#addbatchtofile) | **Post** /v1/ach/files/{file_id}/batches | Add Batch to File
+*ACHFilesApi* | [**AddBatchToFile**](docs/ACHFilesApi.md#addbatchtofile) | **Post** /v1/ach/files/{fileID}/batches | Add Batch to File
 *ACHFilesApi* | [**CreateFile**](docs/ACHFilesApi.md#createfile) | **Post** /v1/ach/files/create | Create a new File object
-*ACHFilesApi* | [**DeleteACHFile**](docs/ACHFilesApi.md#deleteachfile) | **Delete** /v1/ach/files/{file_id} | Permanently deletes a File and associated Batches. It cannot be undone.
-*ACHFilesApi* | [**DeleteFileBatch**](docs/ACHFilesApi.md#deletefilebatch) | **Delete** /v1/ach/files/{file_id}/batches/{batch_id} | Delete a Batch from a File
-*ACHFilesApi* | [**GetFileBatch**](docs/ACHFilesApi.md#getfilebatch) | **Get** /v1/ach/files/{file_id}/batches/{batch_id} | Get a specific Batch on a FIle
-*ACHFilesApi* | [**GetFileBatches**](docs/ACHFilesApi.md#getfilebatches) | **Get** /v1/ach/files/{file_id}/batches | Get the batches on a File.
-*ACHFilesApi* | [**GetFileByID**](docs/ACHFilesApi.md#getfilebyid) | **Get** /v1/ach/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
-*ACHFilesApi* | [**GetFileContents**](docs/ACHFilesApi.md#getfilecontents) | **Get** /v1/ach/files/{file_id}/contents | Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
+*ACHFilesApi* | [**DeleteACHFile**](docs/ACHFilesApi.md#deleteachfile) | **Delete** /v1/ach/files/{fileID} | Permanently deletes a File and associated Batches. It cannot be undone.
+*ACHFilesApi* | [**DeleteFileBatch**](docs/ACHFilesApi.md#deletefilebatch) | **Delete** /v1/ach/files/{fileID}/batches/{batchID} | Delete a Batch from a File
+*ACHFilesApi* | [**GetFileBatch**](docs/ACHFilesApi.md#getfilebatch) | **Get** /v1/ach/files/{fileID}/batches/{batchID} | Get a specific Batch on a FIle
+*ACHFilesApi* | [**GetFileBatches**](docs/ACHFilesApi.md#getfilebatches) | **Get** /v1/ach/files/{fileID}/batches | Get the batches on a File.
+*ACHFilesApi* | [**GetFileByID**](docs/ACHFilesApi.md#getfilebyid) | **Get** /v1/ach/files/{fileID} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+*ACHFilesApi* | [**GetFileContents**](docs/ACHFilesApi.md#getfilecontents) | **Get** /v1/ach/files/{fileID}/contents | Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
 *ACHFilesApi* | [**GetFiles**](docs/ACHFilesApi.md#getfiles) | **Get** /v1/ach/files | Gets a list of Files
-*ACHFilesApi* | [**SegmentFile**](docs/ACHFilesApi.md#segmentfile) | **Post** /v1/ach/files/{file_id}/segment | Create a new file object
-*ACHFilesApi* | [**UpdateFile**](docs/ACHFilesApi.md#updatefile) | **Post** /v1/ach/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
-*ACHFilesApi* | [**ValidateFile**](docs/ACHFilesApi.md#validatefile) | **Get** /v1/ach/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
+*ACHFilesApi* | [**SegmentFile**](docs/ACHFilesApi.md#segmentfile) | **Post** /v1/ach/files/{fileID}/segment | Create a new file object
+*ACHFilesApi* | [**UpdateFile**](docs/ACHFilesApi.md#updatefile) | **Post** /v1/ach/files/{fileID} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+*ACHFilesApi* | [**ValidateFile**](docs/ACHFilesApi.md#validatefile) | **Get** /v1/ach/files/{fileID}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *AccountsApi* | [**CreateAccount**](docs/AccountsApi.md#createaccount) | **Post** /v1/accounts | Create a new account for a Customer
 *AccountsApi* | [**CreateTransaction**](docs/AccountsApi.md#createtransaction) | **Post** /v1/accounts/transactions | Post a transaction against multiple accounts. All transaction lines must sum to zero. No money is created or destroyed in a transaction - only moved from account to account. Accounts can be referred to in a Transaction without creating them first.
-*AccountsApi* | [**GetAccountTransactions**](docs/AccountsApi.md#getaccounttransactions) | **Get** /v1/accounts/{account_id}/transactions | Get transactions for an account. Ordered descending from their posted date.
+*AccountsApi* | [**GetAccountTransactions**](docs/AccountsApi.md#getaccounttransactions) | **Get** /v1/accounts/{accountID}/transactions | Get transactions for an account. Ordered descending from their posted date.
 *AccountsApi* | [**SearchAccounts**](docs/AccountsApi.md#searchaccounts) | **Get** /v1/accounts/search | Search for account which matches all query parameters
 *CustomersApi* | [**CreateCustomer**](docs/CustomersApi.md#createcustomer) | **Post** /v1/customers | Create a new customer
-*CustomersApi* | [**GetCustomer**](docs/CustomersApi.md#getcustomer) | **Get** /v1/customers/{customer_id} | Retrieves a Customer object associated with the customer ID.
-*CustomersApi* | [**GetCustomerDocumentContents**](docs/CustomersApi.md#getcustomerdocumentcontents) | **Get** /v1/customers/{customer_id}/documents/{document_id} | Retrieve the referenced document
-*CustomersApi* | [**GetCustomerDocuments**](docs/CustomersApi.md#getcustomerdocuments) | **Get** /v1/customers/{customer_id}/documents | Get documents for a customer
-*CustomersApi* | [**UploadCustomerDocument**](docs/CustomersApi.md#uploadcustomerdocument) | **Post** /v1/customers/{customer_id}/documents | Upload a document for the given customer.
+*CustomersApi* | [**GetCustomer**](docs/CustomersApi.md#getcustomer) | **Get** /v1/customers/{customerID} | Retrieves a Customer object associated with the customer ID.
+*CustomersApi* | [**GetCustomerDocumentContents**](docs/CustomersApi.md#getcustomerdocumentcontents) | **Get** /v1/customers/{customerID}/documents/{documentID} | Retrieve the referenced document
+*CustomersApi* | [**GetCustomerDocuments**](docs/CustomersApi.md#getcustomerdocuments) | **Get** /v1/customers/{customerID}/documents | Get documents for a customer
+*CustomersApi* | [**UploadCustomerDocument**](docs/CustomersApi.md#uploadcustomerdocument) | **Post** /v1/customers/{customerID}/documents | Upload a document for the given customer.
 *DepositoriesApi* | [**AddDepository**](docs/DepositoriesApi.md#adddepository) | **Post** /v1/ach/depositories | Create a new depository account for the authenticated user
 *DepositoriesApi* | [**ConfirmMicroDeposits**](docs/DepositoriesApi.md#confirmmicrodeposits) | **Post** /v1/ach/depositories/{depositoryID}/micro-deposits/confirm | Confirm micro deposit amounts after they have been posted to the depository account
 *DepositoriesApi* | [**DeleteDepository**](docs/DepositoriesApi.md#deletedepository) | **Delete** /v1/ach/depositories/{depositoryID} | Permanently deletes a depository and associated transfers. It cannot be undone. Immediately cancels any active Transfers for the depository.
@@ -65,18 +65,18 @@ Class | Method | HTTP request | Description
 *EventsApi* | [**GetEvents**](docs/EventsApi.md#getevents) | **Get** /v1/ach/events | Gets a list of Events
 *FEDApi* | [**SearchFEDACH**](docs/FEDApi.md#searchfedach) | **Get** /v1/fed/ach/search | Search FEDACH names and metadata
 *FEDApi* | [**SearchFEDWIRE**](docs/FEDApi.md#searchfedwire) | **Get** /v1/fed/wire/search | Search FEDWIRE names and metadata
-*FEDWireMessageFileApi* | [**AddFEDWireMessageToFile**](docs/FEDWireMessageFileApi.md#addfedwiremessagetofile) | **Post** /v1/wire/files/{file_id}/FEDWireMessage | Add FEDWireMessage to File
+*FEDWireMessageFileApi* | [**AddFEDWireMessageToFile**](docs/FEDWireMessageFileApi.md#addfedwiremessagetofile) | **Post** /v1/wire/files/{fileID}/FEDWireMessage | Add FEDWireMessage to File
 *GatewaysApi* | [**AddGateway**](docs/GatewaysApi.md#addgateway) | **Post** /v1/ach/gateways | Create a new Gateway object
 *GatewaysApi* | [**GetGateways**](docs/GatewaysApi.md#getgateways) | **Get** /v1/ach/gateways | Gets a list of Gatways
-*ImageCashLetterFilesApi* | [**AddICLToFile**](docs/ImageCashLetterFilesApi.md#addicltofile) | **Post** /v1/imagecashletter/files/{file_id}/cashLetters | Add CashLetter to File
+*ImageCashLetterFilesApi* | [**AddICLToFile**](docs/ImageCashLetterFilesApi.md#addicltofile) | **Post** /v1/imagecashletter/files/{fileID}/cashLetters | Add CashLetter to File
 *ImageCashLetterFilesApi* | [**CreateICLFile**](docs/ImageCashLetterFilesApi.md#createiclfile) | **Post** /v1/imagecashletter/files/create | Create a new File object
-*ImageCashLetterFilesApi* | [**DeleteICLFile**](docs/ImageCashLetterFilesApi.md#deleteiclfile) | **Delete** /v1/imagecashletter/files/{file_id} | Permanently deletes a File and associated CashLetters and Bundles. It cannot be undone.
-*ImageCashLetterFilesApi* | [**DeleteICLFromFile**](docs/ImageCashLetterFilesApi.md#deleteiclfromfile) | **Delete** /v1/imagecashletter/files/{file_id}/cashLetters/{cashLetter_id} | Delete a CashLetter from a File
-*ImageCashLetterFilesApi* | [**GetICLFileByID**](docs/ImageCashLetterFilesApi.md#geticlfilebyid) | **Get** /v1/imagecashletter/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
-*ImageCashLetterFilesApi* | [**GetICLFileContents**](docs/ImageCashLetterFilesApi.md#geticlfilecontents) | **Get** /v1/imagecashletter/files/{file_id}/contents | Assembles the existing file (Cash Letters, Bundles and Controls) records, computes sequence numbers and totals. Returns plaintext file.
+*ImageCashLetterFilesApi* | [**DeleteICLFile**](docs/ImageCashLetterFilesApi.md#deleteiclfile) | **Delete** /v1/imagecashletter/files/{fileID} | Permanently deletes a File and associated CashLetters and Bundles. It cannot be undone.
+*ImageCashLetterFilesApi* | [**DeleteICLFromFile**](docs/ImageCashLetterFilesApi.md#deleteiclfromfile) | **Delete** /v1/imagecashletter/files/{fileID}/cashLetters/{cashLetterID} | Delete a CashLetter from a File
+*ImageCashLetterFilesApi* | [**GetICLFileByID**](docs/ImageCashLetterFilesApi.md#geticlfilebyid) | **Get** /v1/imagecashletter/files/{fileID} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+*ImageCashLetterFilesApi* | [**GetICLFileContents**](docs/ImageCashLetterFilesApi.md#geticlfilecontents) | **Get** /v1/imagecashletter/files/{fileID}/contents | Assembles the existing file (Cash Letters, Bundles and Controls) records, computes sequence numbers and totals. Returns plaintext file.
 *ImageCashLetterFilesApi* | [**GetICLFiles**](docs/ImageCashLetterFilesApi.md#geticlfiles) | **Get** /v1/imagecashletter/files | Gets a list of Files
-*ImageCashLetterFilesApi* | [**UpdateICLFile**](docs/ImageCashLetterFilesApi.md#updateiclfile) | **Post** /v1/imagecashletter/files/{file_id} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
-*ImageCashLetterFilesApi* | [**ValidateICLFile**](docs/ImageCashLetterFilesApi.md#validateiclfile) | **Get** /v1/imagecashletter/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
+*ImageCashLetterFilesApi* | [**UpdateICLFile**](docs/ImageCashLetterFilesApi.md#updateiclfile) | **Post** /v1/imagecashletter/files/{fileID} | Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+*ImageCashLetterFilesApi* | [**ValidateICLFile**](docs/ImageCashLetterFilesApi.md#validateiclfile) | **Get** /v1/imagecashletter/files/{fileID}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 *MonitorApi* | [**PingACH**](docs/MonitorApi.md#pingach) | **Get** /v1/ach/ping | Check that the moov-io/ach service is running
 *MonitorApi* | [**PingAccounts**](docs/MonitorApi.md#pingaccounts) | **Get** /v1/accounts/ping | Check that the moov-io/accounts service is running
 *MonitorApi* | [**PingAuth**](docs/MonitorApi.md#pingauth) | **Get** /v1/auth/ping | Check that the moov-io/auth service is running
@@ -128,16 +128,16 @@ Class | Method | HTTP request | Description
 *TransfersApi* | [**GetTransfers**](docs/TransfersApi.md#gettransfers) | **Get** /v1/ach/transfers | A list of all Transfer objects
 *UserApi* | [**CheckUserLogin**](docs/UserApi.md#checkuserlogin) | **Get** /v1/users/login | Check if a cookie is valid and authentic for a user.
 *UserApi* | [**CreateUser**](docs/UserApi.md#createuser) | **Post** /v1/users/create | Create a new user using an email address not seen before.
-*UserApi* | [**UpdateUserProfile**](docs/UserApi.md#updateuserprofile) | **Patch** /v1/users/{user_id} | Update a User&#39;s profile information
+*UserApi* | [**UpdateUserProfile**](docs/UserApi.md#updateuserprofile) | **Patch** /v1/users/{userID} | Update a User&#39;s profile information
 *UserApi* | [**UserLogin**](docs/UserApi.md#userlogin) | **Post** /v1/users/login | Attempt to login with an email and password
 *UserApi* | [**UserLogout**](docs/UserApi.md#userlogout) | **Delete** /v1/users/login | Invalidat a user&#39;s cookie(s).
 *WireFilesApi* | [**CreateWireFile**](docs/WireFilesApi.md#createwirefile) | **Post** /v1/wire/files/create | Create a new File object
-*WireFilesApi* | [**DeleteWireFileByID**](docs/WireFilesApi.md#deletewirefilebyid) | **Delete** /v1/wire/files/{file_id} | Permanently deletes a File and associated FEDWireMessage. It cannot be undone.
-*WireFilesApi* | [**GetWireFileByID**](docs/WireFilesApi.md#getwirefilebyid) | **Get** /v1/wire/files/{file_id} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
-*WireFilesApi* | [**GetWireFileContents**](docs/WireFilesApi.md#getwirefilecontents) | **Get** /v1/wire/files/{file_id}/contents | Assembles the existing file witha FEDWireMessage, Returns plaintext file.
+*WireFilesApi* | [**DeleteWireFileByID**](docs/WireFilesApi.md#deletewirefilebyid) | **Delete** /v1/wire/files/{fileID} | Permanently deletes a File and associated FEDWireMessage. It cannot be undone.
+*WireFilesApi* | [**GetWireFileByID**](docs/WireFilesApi.md#getwirefilebyid) | **Get** /v1/wire/files/{fileID} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
+*WireFilesApi* | [**GetWireFileContents**](docs/WireFilesApi.md#getwirefilecontents) | **Get** /v1/wire/files/{fileID}/contents | Assembles the existing file witha FEDWireMessage, Returns plaintext file.
 *WireFilesApi* | [**GetWireFiles**](docs/WireFilesApi.md#getwirefiles) | **Get** /v1/wire/files | Gets a list of Files
-*WireFilesApi* | [**UpdateWireFileByID**](docs/WireFilesApi.md#updatewirefilebyid) | **Post** /v1/wire/files/{file_id} | Updates the specified FEDWire Message by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
-*WireFilesApi* | [**ValidateWireFile**](docs/WireFilesApi.md#validatewirefile) | **Get** /v1/wire/files/{file_id}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
+*WireFilesApi* | [**UpdateWireFileByID**](docs/WireFilesApi.md#updatewirefilebyid) | **Post** /v1/wire/files/{fileID} | Updates the specified FEDWire Message by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+*WireFilesApi* | [**ValidateWireFile**](docs/WireFilesApi.md#validatewirefile) | **Get** /v1/wire/files/{fileID}/validate | Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
 
 
 ## Documentation For Models

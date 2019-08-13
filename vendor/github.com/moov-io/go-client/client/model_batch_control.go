@@ -12,7 +12,7 @@ package openapi
 
 type BatchControl struct {
 	// Batch ID
-	Id string `json:"id,omitempty"`
+	ID string `json:"ID,omitempty"`
 	// Same as ServiceClassCode in BatchHeaderRecord
 	ServiceClassCode int32 `json:"serviceClassCode,omitempty"`
 	// EntryAddendaCount is a tally of each Entry Detail Record and each Addenda Record processed, within either the batch or file as appropriate.

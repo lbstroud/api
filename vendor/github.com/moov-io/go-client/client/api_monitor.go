@@ -29,11 +29,11 @@ type MonitorApiService service
 MonitorApiService Check that the moov-io/ach service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingACHOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingACHOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingACH(ctx context.Context, localVarOptionals *PingACHOpts) (*http.Response, error) {
@@ -69,8 +69,8 @@ func (a *MonitorApiService) PingACH(ctx context.Context, localVarOptionals *Ping
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -103,11 +103,11 @@ func (a *MonitorApiService) PingACH(ctx context.Context, localVarOptionals *Ping
 MonitorApiService Check that the moov-io/accounts service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingAccountsOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingAccountsOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingAccounts(ctx context.Context, localVarOptionals *PingAccountsOpts) (*http.Response, error) {
@@ -143,8 +143,8 @@ func (a *MonitorApiService) PingAccounts(ctx context.Context, localVarOptionals 
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -177,11 +177,11 @@ func (a *MonitorApiService) PingAccounts(ctx context.Context, localVarOptionals 
 MonitorApiService Check that the moov-io/auth service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingAuthOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingAuthOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingAuth(ctx context.Context, localVarOptionals *PingAuthOpts) (*http.Response, error) {
@@ -217,8 +217,8 @@ func (a *MonitorApiService) PingAuth(ctx context.Context, localVarOptionals *Pin
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -251,11 +251,11 @@ func (a *MonitorApiService) PingAuth(ctx context.Context, localVarOptionals *Pin
 MonitorApiService Check that the moov-io/customers service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingCustomersOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingCustomersOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingCustomers(ctx context.Context, localVarOptionals *PingCustomersOpts) (*http.Response, error) {
@@ -291,8 +291,8 @@ func (a *MonitorApiService) PingCustomers(ctx context.Context, localVarOptionals
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -325,11 +325,11 @@ func (a *MonitorApiService) PingCustomers(ctx context.Context, localVarOptionals
 MonitorApiService Check that the moov-io/fed service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingFEDOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingFEDOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingFED(ctx context.Context, localVarOptionals *PingFEDOpts) (*http.Response, error) {
@@ -365,8 +365,8 @@ func (a *MonitorApiService) PingFED(ctx context.Context, localVarOptionals *Ping
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -399,11 +399,11 @@ func (a *MonitorApiService) PingFED(ctx context.Context, localVarOptionals *Ping
 MonitorApiService Check that the moov-io/imagecashletter service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingImageCashLetterOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingImageCashLetterOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingImageCashLetter(ctx context.Context, localVarOptionals *PingImageCashLetterOpts) (*http.Response, error) {
@@ -439,8 +439,8 @@ func (a *MonitorApiService) PingImageCashLetter(ctx context.Context, localVarOpt
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -473,11 +473,11 @@ func (a *MonitorApiService) PingImageCashLetter(ctx context.Context, localVarOpt
 MonitorApiService Check that the moov-io/ofac service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingOFACOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingOFACOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingOFAC(ctx context.Context, localVarOptionals *PingOFACOpts) (*http.Response, error) {
@@ -513,8 +513,8 @@ func (a *MonitorApiService) PingOFAC(ctx context.Context, localVarOptionals *Pin
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -547,11 +547,11 @@ func (a *MonitorApiService) PingOFAC(ctx context.Context, localVarOptionals *Pin
 MonitorApiService Check that the moov-io/paygate service is running
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *PingPaygateOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type PingPaygateOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *MonitorApiService) PingPaygate(ctx context.Context, localVarOptionals *PingPaygateOpts) (*http.Response, error) {
@@ -587,8 +587,8 @@ func (a *MonitorApiService) PingPaygate(ctx context.Context, localVarOptionals *
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {

@@ -12,7 +12,7 @@ package openapi
 
 type IatBatchHeader struct {
 	// ID is a client defined string used as a reference to this record.
-	Id string `json:"id,omitempty"`
+	ID string `json:"ID,omitempty"`
 	// ServiceClassCode ACH Mixed Debits and Credits ‘200’ ACH Credits Only ‘220’ ACH Debits Only ‘225'
 	ServiceClassCode int32 `json:"serviceClassCode,omitempty"`
 	// Leave Blank. Only used for corrected IAT entries

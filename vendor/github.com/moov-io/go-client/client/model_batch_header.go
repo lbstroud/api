@@ -12,7 +12,7 @@ package openapi
 
 type BatchHeader struct {
 	// Batch Header ID
-	Id string `json:"id,omitempty"`
+	ID string `json:"ID,omitempty"`
 	// Service Class Code - ACH Credits Only 220 and ACH Debits Only 225
 	ServiceClassCode int32 `json:"serviceClassCode"`
 	// Company originating the entries in the batch

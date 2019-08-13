@@ -12,7 +12,7 @@ package openapi
 
 type EntryDetail struct {
 	// Entry Detail ID
-	Id string `json:"id"`
+	ID string `json:"ID,omitempty"`
 	// transactionCode if the receivers account is: Credit (deposit) to checking account 22 Prenote for credit to checking account 23 Debit (withdrawal) to checking account 27 Prenote for debit to checking account 28 Credit to savings account 32 Prenote for credit to savings account 33 Debit to savings account 37 Prenote for debit to savings account 38
 	TransactionCode int32 `json:"transactionCode"`
 	// RDFI's routing number without the last digit.

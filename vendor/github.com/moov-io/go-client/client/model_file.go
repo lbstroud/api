@@ -12,7 +12,7 @@ package openapi
 
 type File struct {
 	// File ID
-	Id          string      `json:"id,omitempty"`
+	ID          string      `json:"ID,omitempty"`
 	FileHeader  FileHeader  `json:"fileHeader,omitempty"`
 	Batches     []Batch     `json:"batches,omitempty"`
 	IATBatches  []IatBatch  `json:"IATBatches,omitempty"`

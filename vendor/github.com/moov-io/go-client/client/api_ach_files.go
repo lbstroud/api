@@ -30,19 +30,19 @@ type ACHFilesApiService service
 /*
 ACHFilesApiService Add Batch to File
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param batch
  * @param optional nil or *AddBatchToFileOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
 */
 
 type AddBatchToFileOpts struct {
-	XRequestId      optional.String
+	XRequestID      optional.String
 	XIdempotencyKey optional.String
 }
 
-func (a *ACHFilesApiService) AddBatchToFile(ctx context.Context, fileId string, batch Batch, localVarOptionals *AddBatchToFileOpts) (*http.Response, error) {
+func (a *ACHFilesApiService) AddBatchToFile(ctx context.Context, fileID string, batch Batch, localVarOptionals *AddBatchToFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -52,8 +52,8 @@ func (a *ACHFilesApiService) AddBatchToFile(ctx context.Context, fileId string, 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/batches"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/batches"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -76,8 +76,8 @@ func (a *ACHFilesApiService) AddBatchToFile(ctx context.Context, fileId string, 
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
@@ -128,13 +128,13 @@ ACHFilesApiService Create a new File object
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param createFile Content of the ACH file (in json or raw text)
  * @param optional nil or *CreateFileOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
 @return File
 */
 
 type CreateFileOpts struct {
-	XRequestId      optional.String
+	XRequestID      optional.String
 	XIdempotencyKey optional.String
 }
 
@@ -172,8 +172,8 @@ func (a *ACHFilesApiService) CreateFile(ctx context.Context, createFile CreateFi
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
@@ -251,16 +251,16 @@ func (a *ACHFilesApiService) CreateFile(ctx context.Context, createFile CreateFi
 /*
 ACHFilesApiService Permanently deletes a File and associated Batches. It cannot be undone.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *DeleteACHFileOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type DeleteACHFileOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) DeleteACHFile(ctx context.Context, fileId string, localVarOptionals *DeleteACHFileOpts) (*http.Response, error) {
+func (a *ACHFilesApiService) DeleteACHFile(ctx context.Context, fileID string, localVarOptionals *DeleteACHFileOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
@@ -270,8 +270,8 @@ func (a *ACHFilesApiService) DeleteACHFile(ctx context.Context, fileId string, l
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -294,8 +294,8 @@ func (a *ACHFilesApiService) DeleteACHFile(ctx context.Context, fileId string, l
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -339,17 +339,17 @@ func (a *ACHFilesApiService) DeleteACHFile(ctx context.Context, fileId string, l
 /*
 ACHFilesApiService Delete a Batch from a File
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
- * @param batchId Batch ID
+ * @param fileID File ID
+ * @param batchID Batch ID
  * @param optional nil or *DeleteFileBatchOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type DeleteFileBatchOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) DeleteFileBatch(ctx context.Context, fileId string, batchId string, localVarOptionals *DeleteFileBatchOpts) (*http.Response, error) {
+func (a *ACHFilesApiService) DeleteFileBatch(ctx context.Context, fileID string, batchID string, localVarOptionals *DeleteFileBatchOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
@@ -359,9 +359,9 @@ func (a *ACHFilesApiService) DeleteFileBatch(ctx context.Context, fileId string,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/batches/{batch_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"batch_id"+"}", fmt.Sprintf("%v", batchId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/batches/{batchID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"batchID"+"}", fmt.Sprintf("%v", batchID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -384,8 +384,8 @@ func (a *ACHFilesApiService) DeleteFileBatch(ctx context.Context, fileId string,
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -429,18 +429,18 @@ func (a *ACHFilesApiService) DeleteFileBatch(ctx context.Context, fileId string,
 /*
 ACHFilesApiService Get a specific Batch on a FIle
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
- * @param batchId Batch ID
+ * @param fileID File ID
+ * @param batchID Batch ID
  * @param optional nil or *GetFileBatchOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return Batch
 */
 
 type GetFileBatchOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) GetFileBatch(ctx context.Context, fileId string, batchId string, localVarOptionals *GetFileBatchOpts) (Batch, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileBatch(ctx context.Context, fileID string, batchID string, localVarOptionals *GetFileBatchOpts) (Batch, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -451,9 +451,9 @@ func (a *ACHFilesApiService) GetFileBatch(ctx context.Context, fileId string, ba
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/batches/{batch_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"batch_id"+"}", fmt.Sprintf("%v", batchId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/batches/{batchID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"batchID"+"}", fmt.Sprintf("%v", batchID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -476,8 +476,8 @@ func (a *ACHFilesApiService) GetFileBatch(ctx context.Context, fileId string, ba
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -540,17 +540,17 @@ func (a *ACHFilesApiService) GetFileBatch(ctx context.Context, fileId string, ba
 /*
 ACHFilesApiService Get the batches on a File.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *GetFileBatchesOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return []Batch
 */
 
 type GetFileBatchesOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) GetFileBatches(ctx context.Context, fileId string, localVarOptionals *GetFileBatchesOpts) ([]Batch, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileBatches(ctx context.Context, fileID string, localVarOptionals *GetFileBatchesOpts) ([]Batch, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -561,8 +561,8 @@ func (a *ACHFilesApiService) GetFileBatches(ctx context.Context, fileId string, 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/batches"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/batches"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -585,8 +585,8 @@ func (a *ACHFilesApiService) GetFileBatches(ctx context.Context, fileId string, 
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -649,17 +649,17 @@ func (a *ACHFilesApiService) GetFileBatches(ctx context.Context, fileId string, 
 /*
 ACHFilesApiService Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *GetFileByIDOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return File
 */
 
 type GetFileByIDOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) GetFileByID(ctx context.Context, fileId string, localVarOptionals *GetFileByIDOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileByID(ctx context.Context, fileID string, localVarOptionals *GetFileByIDOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -670,8 +670,8 @@ func (a *ACHFilesApiService) GetFileByID(ctx context.Context, fileId string, loc
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -694,8 +694,8 @@ func (a *ACHFilesApiService) GetFileByID(ctx context.Context, fileId string, loc
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -758,17 +758,17 @@ func (a *ACHFilesApiService) GetFileByID(ctx context.Context, fileId string, loc
 /*
 ACHFilesApiService Assembles the existing file (batches and controls) records, computes sequence numbers and totals. Returns plaintext file.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *GetFileContentsOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return string
 */
 
 type GetFileContentsOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) GetFileContents(ctx context.Context, fileId string, localVarOptionals *GetFileContentsOpts) (string, *http.Response, error) {
+func (a *ACHFilesApiService) GetFileContents(ctx context.Context, fileID string, localVarOptionals *GetFileContentsOpts) (string, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -779,8 +779,8 @@ func (a *ACHFilesApiService) GetFileContents(ctx context.Context, fileId string,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/contents"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/contents"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -803,8 +803,8 @@ func (a *ACHFilesApiService) GetFileContents(ctx context.Context, fileId string,
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -868,12 +868,12 @@ func (a *ACHFilesApiService) GetFileContents(ctx context.Context, fileId string,
 ACHFilesApiService Gets a list of Files
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *GetFilesOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return []File
 */
 
 type GetFilesOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *ACHFilesApiService) GetFiles(ctx context.Context, localVarOptionals *GetFilesOpts) ([]File, *http.Response, error) {
@@ -910,8 +910,8 @@ func (a *ACHFilesApiService) GetFiles(ctx context.Context, localVarOptionals *Ge
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -974,20 +974,20 @@ func (a *ACHFilesApiService) GetFiles(ctx context.Context, localVarOptionals *Ge
 /*
 ACHFilesApiService Create a new file object
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param createFile Content of the ACH file (in json or raw text)
  * @param optional nil or *SegmentFileOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
 @return File
 */
 
 type SegmentFileOpts struct {
-	XRequestId      optional.String
+	XRequestID      optional.String
 	XIdempotencyKey optional.String
 }
 
-func (a *ACHFilesApiService) SegmentFile(ctx context.Context, fileId string, createFile CreateFile, localVarOptionals *SegmentFileOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) SegmentFile(ctx context.Context, fileID string, createFile CreateFile, localVarOptionals *SegmentFileOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -998,8 +998,8 @@ func (a *ACHFilesApiService) SegmentFile(ctx context.Context, fileId string, cre
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/segment"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/segment"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1022,8 +1022,8 @@ func (a *ACHFilesApiService) SegmentFile(ctx context.Context, fileId string, cre
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
@@ -1091,20 +1091,20 @@ func (a *ACHFilesApiService) SegmentFile(ctx context.Context, fileId string, cre
 /*
 ACHFilesApiService Updates the specified File Header by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param createFile
  * @param optional nil or *UpdateFileOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
 @return File
 */
 
 type UpdateFileOpts struct {
-	XRequestId      optional.String
+	XRequestID      optional.String
 	XIdempotencyKey optional.String
 }
 
-func (a *ACHFilesApiService) UpdateFile(ctx context.Context, fileId string, createFile CreateFile, localVarOptionals *UpdateFileOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) UpdateFile(ctx context.Context, fileID string, createFile CreateFile, localVarOptionals *UpdateFileOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -1115,8 +1115,8 @@ func (a *ACHFilesApiService) UpdateFile(ctx context.Context, fileId string, crea
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1139,8 +1139,8 @@ func (a *ACHFilesApiService) UpdateFile(ctx context.Context, fileId string, crea
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
@@ -1218,17 +1218,17 @@ func (a *ACHFilesApiService) UpdateFile(ctx context.Context, fileId string, crea
 /*
 ACHFilesApiService Validates the existing file. You need only supply the unique File identifier that was returned upon creation.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param fileId File ID
+ * @param fileID File ID
  * @param optional nil or *ValidateFileOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return File
 */
 
 type ValidateFileOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *ACHFilesApiService) ValidateFile(ctx context.Context, fileId string, localVarOptionals *ValidateFileOpts) (File, *http.Response, error) {
+func (a *ACHFilesApiService) ValidateFile(ctx context.Context, fileID string, localVarOptionals *ValidateFileOpts) (File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -1239,8 +1239,8 @@ func (a *ACHFilesApiService) ValidateFile(ctx context.Context, fileId string, lo
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{file_id}/validate"
-	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", fmt.Sprintf("%v", fileId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/files/{fileID}/validate"
+	localVarPath = strings.Replace(localVarPath, "{"+"fileID"+"}", fmt.Sprintf("%v", fileID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1263,8 +1263,8 @@ func (a *ACHFilesApiService) ValidateFile(ctx context.Context, fileId string, lo
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
