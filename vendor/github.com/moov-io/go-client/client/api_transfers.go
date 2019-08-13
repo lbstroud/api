@@ -1,7 +1,7 @@
 /*
  * Moov API
  *
- * _Note_: We're currently in pre-release of our API. We expect breaking changes before launching v1 so please join our [slack organization](http://moov-io.slack.com/) ([request an invite](https://join.slack.com/t/moov-io/shared_invite/enQtNDE5NzIwNTYxODEwLTRkYTcyZDI5ZTlkZWRjMzlhMWVhMGZlOTZiOTk4MmM3MmRhZDY4OTJiMDVjOTE2MGEyNWYzYzY1MGMyMThiZjg)) or [mailing list](https://groups.google.com/forum/#!forum/moov-users) for more updates and notices.  The Moov API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), allowing you to interact securely with our API from client-side web applications (never expose your secret API key in any public website's client-side code). [JSON](http://www.json.org/) is returned by all API responses, including errors, although you can generate client code via [OpenAPI code generation](https://github.com/OpenAPITools/openapi-generator) or the [OpenAPI editor](https://editor.swagger.io/) to convert responses to appropriate language-specific objects.  The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.  When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client Id and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.  Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.  The following order of API operations is suggested to start developing against the Moov API:  1. [Create a Moov API user](#operation/createUser) with a unique email address 1. [Login with user/password credentials](#operation/userLogin) 1. [Create an OAuth2 client](#operation/createOAuth2Client) and [Generate an OAuth access token](#operation/createOAuth2Token) 1. Using the OAuth credentials create:    - [Originator](#operation/addOriginator) and [Originator Depository](#operation/addDepository) (requires micro deposit setup)    - [Receiver](#operation/addReceivers) and [Receiver Depository](#operation/addDepository) (requires micro deposit setup) 1. [Submit the Transfer](#operation/addTransfer)  After signup clients can [submit ACH files](#operation/addFile) (either in JSON or plaintext) for [validation](#operation/validateFile) and [tabulation](#operation/getFileContents).  The Moov API offers many services: - Automated Clearing House (ACH) origination and file management - Transfers and ACH Receiver management. - X9 / Image Cash Ledger (ICL) specification support (image uplaod)  ACH is implemented a RESTful API enabling ACH transactions to be submitted and received without a deep understanding of a full NACHA file specification.  An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Receiver. Originators and Receivers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Receiver with an amount and flow of funds. ``` Originator                 ->   Gateway   ->   Receiver  - OriginatorDepository                         - ReceiverDepository  - Type   (Push or Pull)  - Amount (USD 12.43)  - Status (Pending)  ```  If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io).
+ * _Note_: We're currently in pre-release of our API. We expect breaking changes before launching v1 so please join our [slack organization](http://moov-io.slack.com/) ([request an invite](https://join.slack.com/t/moov-io/shared_invite/enQtNDE5NzIwNTYxODEwLTRkYTcyZDI5ZTlkZWRjMzlhMWVhMGZlOTZiOTk4MmM3MmRhZDY4OTJiMDVjOTE2MGEyNWYzYzY1MGMyMThiZjg)) or [mailing list](https://groups.google.com/forum/#!forum/moov-users) for more updates and notices.  The Moov API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), allowing you to interact securely with our API from client-side web applications (never expose your secret API key in any public website's client-side code). [JSON](http://www.json.org/) is returned by all API responses, including errors, although you can generate client code via [OpenAPI code generation](https://github.com/OpenAPITools/openapi-generator) or the [OpenAPI editor](https://editor.swagger.io/) to convert responses to appropriate language-specific objects.  The Moov API offers two methods of authentication, Cookie and OAuth2 access tokens. The cookie auth is designed for web browsers while the OAuth2 authentication is designed for automated access of our API.  When an API requires a token generated using OAuth (2-legged), no end user is involved. You generate the token by passing your client credentials (Client ID and Client Secret) in a simple call to Create access token (`/oauth2/token`). The operation returns a token that is valid for a few hours and can be renewed; when it expires, you just repeat the call and get a new token. Making additional token requests will keep generating tokens. There are no hard or soft limits.  Cookie auth is setup by provided (`/users/login`) a valid email and password combination. A `Set-Cookie` header is returned on success, which can be used in later calls. Cookie auth is required to generate OAuth2 client credentials.  The following order of API operations is suggested to start developing against the Moov API:  1. [Create a Moov API user](#operation/createUser) with a unique email address 1. [Login with user/password credentials](#operation/userLogin) 1. [Create an OAuth2 client](#operation/createOAuth2Client) and [Generate an OAuth access token](#operation/createOAuth2Token) 1. Using the OAuth credentials create:    - [Originator](#operation/addOriginator) and [Originator Depository](#operation/addDepository) (requires micro deposit setup)    - [Receiver](#operation/addReceivers) and [Receiver Depository](#operation/addDepository) (requires micro deposit setup) 1. [Submit the Transfer](#operation/addTransfer)  After signup clients can [submit ACH files](#operation/addFile) (either in JSON or plaintext) for [validation](#operation/validateFile) and [tabulation](#operation/getFileContents).  The Moov API offers many services: - Automated Clearing House (ACH) origination and file management - Transfers and ACH Receiver management. - X9 / Image Cash Ledger (ICL) specification support (image uplaod)  ACH is implemented a RESTful API enabling ACH transactions to be submitted and received without a deep understanding of a full NACHA file specification.  An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Receiver. Originators and Receivers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Receiver with an amount and flow of funds. ``` Originator                 ->   Gateway   ->   Receiver  - OriginatorDepository                         - ReceiverDepository  - Type   (Push or Pull)  - Amount (USD 12.43)  - Status (Pending)  ```  If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io).
  *
  * API version: v1
  * Contact: security@moov.io
@@ -33,13 +33,13 @@ TransfersApiService Create a new transfer between an Originator and a Receiver. 
  * @param createTransfer
  * @param optional nil or *AddTransferOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return Transfer
 */
 
 type AddTransferOpts struct {
 	XIdempotencyKey optional.String
-	XRequestId      optional.String
+	XRequestID      optional.String
 }
 
 func (a *TransfersApiService) AddTransfer(ctx context.Context, createTransfer CreateTransfer, localVarOptionals *AddTransferOpts) (Transfer, *http.Response, error) {
@@ -79,8 +79,8 @@ func (a *TransfersApiService) AddTransfer(ctx context.Context, createTransfer Cr
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	// body params
 	localVarPostBody = &createTransfer
@@ -158,13 +158,13 @@ TransfersApiService Create a new list of transfer, validate, build, and process.
  * @param createTransfer
  * @param optional nil or *AddTransfersOpts - Optional Parameters:
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return []Transfer
 */
 
 type AddTransfersOpts struct {
 	XIdempotencyKey optional.String
-	XRequestId      optional.String
+	XRequestID      optional.String
 }
 
 func (a *TransfersApiService) AddTransfers(ctx context.Context, createTransfer []CreateTransfer, localVarOptionals *AddTransfersOpts) ([]Transfer, *http.Response, error) {
@@ -204,8 +204,8 @@ func (a *TransfersApiService) AddTransfers(ctx context.Context, createTransfer [
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	// body params
 	localVarPostBody = &createTransfer
@@ -280,16 +280,16 @@ func (a *TransfersApiService) AddTransfers(ctx context.Context, createTransfer [
 /*
 TransfersApiService It is possible to recall (delete) a transfer before it has been released from the financial institution.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transferId Transfer ID
+ * @param transferID Transfer ID
  * @param optional nil or *DeleteTransferByIDOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 */
 
 type DeleteTransferByIDOpts struct {
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *TransfersApiService) DeleteTransferByID(ctx context.Context, transferId string, localVarOptionals *DeleteTransferByIDOpts) (*http.Response, error) {
+func (a *TransfersApiService) DeleteTransferByID(ctx context.Context, transferID string, localVarOptionals *DeleteTransferByIDOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodDelete
 		localVarPostBody     interface{}
@@ -299,8 +299,8 @@ func (a *TransfersApiService) DeleteTransferByID(ctx context.Context, transferId
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"transferId"+"}", fmt.Sprintf("%v", transferId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"transferID"+"}", fmt.Sprintf("%v", transferID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -323,8 +323,8 @@ func (a *TransfersApiService) DeleteTransferByID(ctx context.Context, transferId
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -368,21 +368,21 @@ func (a *TransfersApiService) DeleteTransferByID(ctx context.Context, transferId
 /*
 TransfersApiService Get a Transfer object for the supplied ID
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transferId Transfer ID
+ * @param transferID Transfer ID
  * @param optional nil or *GetTransferByIDOpts - Optional Parameters:
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return Transfer
 */
 
 type GetTransferByIDOpts struct {
 	Offset     optional.Int32
 	Limit      optional.Int32
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *TransfersApiService) GetTransferByID(ctx context.Context, transferId string, localVarOptionals *GetTransferByIDOpts) (Transfer, *http.Response, error) {
+func (a *TransfersApiService) GetTransferByID(ctx context.Context, transferID string, localVarOptionals *GetTransferByIDOpts) (Transfer, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -393,8 +393,8 @@ func (a *TransfersApiService) GetTransferByID(ctx context.Context, transferId st
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"transferId"+"}", fmt.Sprintf("%v", transferId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"transferID"+"}", fmt.Sprintf("%v", transferID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -423,8 +423,8 @@ func (a *TransfersApiService) GetTransferByID(ctx context.Context, transferId st
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -487,21 +487,21 @@ func (a *TransfersApiService) GetTransferByID(ctx context.Context, transferId st
 /*
 TransfersApiService Get all Events associated with the Transfer object's for the supplied ID
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transferId Transfer ID
+ * @param transferID Transfer ID
  * @param optional nil or *GetTransferEventsByIDOpts - Optional Parameters:
  * @param "Offset" (optional.Int32) -  The number of items to skip before starting to collect the result set
  * @param "Limit" (optional.Int32) -  The number of items to return
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return []Event
 */
 
 type GetTransferEventsByIDOpts struct {
 	Offset     optional.Int32
 	Limit      optional.Int32
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
-func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transferId string, localVarOptionals *GetTransferEventsByIDOpts) ([]Event, *http.Response, error) {
+func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transferID string, localVarOptionals *GetTransferEventsByIDOpts) ([]Event, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -512,8 +512,8 @@ func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transfe
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferId}/events"
-	localVarPath = strings.Replace(localVarPath, "{"+"transferId"+"}", fmt.Sprintf("%v", transferId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferID}/events"
+	localVarPath = strings.Replace(localVarPath, "{"+"transferID"+"}", fmt.Sprintf("%v", transferID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -542,8 +542,8 @@ func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transfe
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
@@ -606,19 +606,19 @@ func (a *TransfersApiService) GetTransferEventsByID(ctx context.Context, transfe
 /*
 TransfersApiService Get the ACH files to be used in this transfer.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transferId Transfer ID
+ * @param transferID Transfer ID
  * @param optional nil or *GetTransferFilesOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
 @return []File
 */
 
 type GetTransferFilesOpts struct {
-	XRequestId      optional.String
+	XRequestID      optional.String
 	XIdempotencyKey optional.String
 }
 
-func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId string, localVarOptionals *GetTransferFilesOpts) ([]File, *http.Response, error) {
+func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferID string, localVarOptionals *GetTransferFilesOpts) ([]File, *http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -629,8 +629,8 @@ func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId s
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferId}/files"
-	localVarPath = strings.Replace(localVarPath, "{"+"transferId"+"}", fmt.Sprintf("%v", transferId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferID}/files"
+	localVarPath = strings.Replace(localVarPath, "{"+"transferID"+"}", fmt.Sprintf("%v", transferID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -653,8 +653,8 @@ func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId s
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
@@ -730,18 +730,18 @@ func (a *TransfersApiService) GetTransferFiles(ctx context.Context, transferId s
 /*
 TransfersApiService Get the NACHA return code and description
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transferId Transfer ID
+ * @param transferID Transfer ID
  * @param optional nil or *GetTransferNachaCodeOpts - Optional Parameters:
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
  * @param "XIdempotencyKey" (optional.String) -  Idempotent key in the header which expires after 24 hours. These strings should contain enough entropy for to not collide with each other in your requests.
 */
 
 type GetTransferNachaCodeOpts struct {
-	XRequestId      optional.String
+	XRequestID      optional.String
 	XIdempotencyKey optional.String
 }
 
-func (a *TransfersApiService) GetTransferNachaCode(ctx context.Context, transferId string, localVarOptionals *GetTransferNachaCodeOpts) (*http.Response, error) {
+func (a *TransfersApiService) GetTransferNachaCode(ctx context.Context, transferID string, localVarOptionals *GetTransferNachaCodeOpts) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = http.MethodPost
 		localVarPostBody     interface{}
@@ -751,8 +751,8 @@ func (a *TransfersApiService) GetTransferNachaCode(ctx context.Context, transfer
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferId}/failed"
-	localVarPath = strings.Replace(localVarPath, "{"+"transferId"+"}", fmt.Sprintf("%v", transferId), -1)
+	localVarPath := a.client.cfg.BasePath + "/v1/ach/transfers/{transferID}/failed"
+	localVarPath = strings.Replace(localVarPath, "{"+"transferID"+"}", fmt.Sprintf("%v", transferID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -775,8 +775,8 @@ func (a *TransfersApiService) GetTransferNachaCode(ctx context.Context, transfer
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if localVarOptionals != nil && localVarOptionals.XIdempotencyKey.IsSet() {
 		localVarHeaderParams["X-Idempotency-Key"] = parameterToString(localVarOptionals.XIdempotencyKey.Value(), "")
@@ -828,7 +828,7 @@ TransfersApiService A list of all Transfer objects
  * @param "Limit" (optional.Int32) -  The number of items to return
  * @param "StartDate" (optional.Time) -  Filter objects created after this date. ISO-8601 format YYYY-MM-DD. Can optionally be used with endDate to specify a date range.
  * @param "EndDate" (optional.Time) -  Filter objects created before this date. ISO-8601 format YYYY-MM-DD. Can optionally be used with startDate to specify a date range.
- * @param "XRequestId" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
+ * @param "XRequestID" (optional.String) -  Optional Request ID allows application developer to trace requests through the systems logs
 @return []Transfer
 */
 
@@ -837,7 +837,7 @@ type GetTransfersOpts struct {
 	Limit      optional.Int32
 	StartDate  optional.Time
 	EndDate    optional.Time
-	XRequestId optional.String
+	XRequestID optional.String
 }
 
 func (a *TransfersApiService) GetTransfers(ctx context.Context, localVarOptionals *GetTransfersOpts) ([]Transfer, *http.Response, error) {
@@ -886,8 +886,8 @@ func (a *TransfersApiService) GetTransfers(ctx context.Context, localVarOptional
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRequestId.IsSet() {
-		localVarHeaderParams["X-Request-Id"] = parameterToString(localVarOptionals.XRequestId.Value(), "")
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
 	}
 	if ctx != nil {
 		// API Key Authentication
