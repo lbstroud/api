@@ -158,14 +158,14 @@ func makeConfiguration() *moov.Configuration {
 }
 
 func pingApps(ctx context.Context) error {
-	requestId := generateID()
+	requestID := generateID()
 	conf := makeConfiguration()
-	conf.AddDefaultHeader("X-Request-ID", requestId)
+	conf.AddDefaultHeader("X-Request-ID", requestID)
 	api := moov.NewAPIClient(conf)
 
 	// ACH
 	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{
-		XRequestId: optional.NewString(requestId),
+		XRequestId: optional.NewString(requestID),
 	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping ACH: %v", err)
@@ -175,7 +175,7 @@ func pingApps(ctx context.Context) error {
 
 	// auth
 	resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{
-		XRequestId: optional.NewString(requestId),
+		XRequestId: optional.NewString(requestID),
 	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping auth: %v", err)
@@ -185,7 +185,7 @@ func pingApps(ctx context.Context) error {
 
 	// paygate
 	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{
-		XRequestId: optional.NewString(requestId),
+		XRequestId: optional.NewString(requestID),
 	})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)
@@ -237,14 +237,14 @@ func iterate(ctx context.Context) *iteration {
 		fmt.Println("")
 	}()
 
-	requestId := generateID()
+	requestID := generateID()
 	conf := makeConfiguration()
-	conf.AddDefaultHeader("X-Request-ID", requestId)
-	debugLogger("Using X-Request-ID: %s", requestId)
+	conf.AddDefaultHeader("X-Request-ID", requestID)
+	debugLogger("Using X-Request-ID: %s", requestID)
 	api := moov.NewAPIClient(conf)
 
 	// Create our random user
-	user, err := createUser(ctx, api, requestId)
+	user, err := createUser(ctx, api, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -255,13 +255,13 @@ func iterate(ctx context.Context) *iteration {
 	setMoovAuthCookie(conf, user)
 
 	// Verify Cookie works
-	if err := verifyUserIsLoggedIn(ctx, api, user, requestId); err != nil {
+	if err := verifyUserIsLoggedIn(ctx, api, user, requestID); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 	debugLogger("SUCCESS: Cookie works for user %s", user.ID)
 
-	oauthToken, err := createOAuthToken(ctx, api, user, requestId)
+	oauthToken, err := createOAuthToken(ctx, api, user, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -281,75 +281,75 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Setup our micro-deposit origination account (or read its info if already setup)
-	microDepositOrig, err := createMicroDepositAccount(ctx, api, user, requestId)
+	microDepositOrig, err := createMicroDepositAccount(ctx, api, user, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("INFO: micro-deposit account=%s", microDepositOrig.Id)
+	debugLogger("INFO: micro-deposit account=%s", microDepositOrig.ID)
 
 	// Create Originator Account
 	// We create these accounts because they won't exist in the Accounts service already. (We're using fake data/accounts.)
-	origAcct, err := createAccount(ctx, api, user, "from account", "", requestId)
+	origAcct, err := createAccount(ctx, api, user, "from account", "", requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 
 	// Create Originator Depository
-	origDep, err := createDepository(ctx, api, user, origAcct, requestId)
+	origDep, err := createDepository(ctx, api, user, origAcct, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Originator Depository (id=%s) for user", origDep.Id)
+	debugLogger("SUCCESS: Created Originator Depository (id=%s) for user", origDep.ID)
 
 	// Create Originator
-	orig, err := createOriginator(ctx, api, origDep.Id, requestId)
+	orig, err := createOriginator(ctx, api, origDep.ID, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.Id)
+	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.ID)
 
 	// Create Receiver Account
-	receiverAcct, err := createAccount(ctx, api, user, "to account", "", requestId)
+	receiverAcct, err := createAccount(ctx, api, user, "to account", "", requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 
 	// Create Receiver Depository
-	receiverDep, err := createDepository(ctx, api, user, receiverAcct, requestId)
+	receiverDep, err := createDepository(ctx, api, user, receiverAcct, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Receiver Depository (id=%s) for user", receiverDep.Id)
+	debugLogger("SUCCESS: Created Receiver Depository (id=%s) for user", receiverDep.ID)
 
 	// Create Receiver
-	receiver, err := createReceiver(ctx, api, user, receiverDep.Id, requestId)
+	receiver, err := createReceiver(ctx, api, user, receiverDep.ID, requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.Id)
+	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.ID)
 
 	// Create Transfer
-	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestId)
+	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
-	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.Id)
+	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.ID)
 
 	// Verify the Transaction was posted
 	if *flagVerifyAccounts {
-		if err := checkTransactions(ctx, api, origAcct.Id, user, tx.Amount, requestId); err != nil {
+		if err := checkTransactions(ctx, api, origAcct.ID, user, tx.Amount, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		}
-		if err := checkTransactions(ctx, api, receiverAcct.Id, user, tx.Amount, requestId); err != nil {
+		if err := checkTransactions(ctx, api, receiverAcct.ID, user, tx.Amount, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		}
@@ -357,14 +357,14 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Attempt a Failed login
-	if err := attemptFailedLogin(ctx, api, requestId); err != nil {
+	if err := attemptFailedLogin(ctx, api, requestID); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 	debugLogger("SUCCESS: invalid login credentials were rejected")
 
 	// Attempt a Failed OAuth2 auth check
-	if err := attemptFailedOAuth2Login(ctx, api, requestId); err != nil {
+	if err := attemptFailedOAuth2Login(ctx, api, requestID); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}

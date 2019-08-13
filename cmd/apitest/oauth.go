@@ -25,10 +25,10 @@ func setMoovOAuthToken(conf *moov.Configuration, oauthToken *moov.OAuth2Token) {
 	}
 }
 
-func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, requestId string) (*moov.OAuth2Token, error) {
+func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, requestID string) (*moov.OAuth2Token, error) {
 	// Create OAuth client credentials
 	clients, resp, err := api.OAuth2Api.CreateOAuth2Client(ctx, &moov.CreateOAuth2ClientOpts{
-		XRequestId:      optional.NewString(requestId),
+		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if resp != nil {
@@ -45,7 +45,7 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 
 	// Generate OAuth2 Token
 	token, resp, err := api.OAuth2Api.CreateOAuth2Token(ctx, &moov.CreateOAuth2TokenOpts{
-		XRequestId:      optional.NewString(requestId),
+		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 		GrantType:       optional.NewString("client_credentials"),
 		ClientId:        optional.NewString(client.ClientId),
@@ -64,7 +64,7 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 	// Verify OAuth access token works
 	accessToken := fmt.Sprintf("Bearer %s", token.AccessToken)
 	resp, err = api.OAuth2Api.CheckOAuthClientCredentials(ctx, accessToken, &moov.CheckOAuthClientCredentialsOpts{
-		XRequestId: optional.NewString(requestId),
+		XRequestID: optional.NewString(requestID),
 	})
 	if resp != nil {
 		resp.Body.Close()
@@ -73,11 +73,11 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user, request
 }
 
 // attemptFailedOAuth2Login will try with a OAuth2 access token to ensure failed credentials don't authenticate a request.
-func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient, requestId string) error {
+func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient, requestID string) error {
 	token, _ := name()
 
 	resp, err := api.OAuth2Api.CheckOAuthClientCredentials(ctx, fmt.Sprintf("Bearer %s", token), &moov.CheckOAuthClientCredentialsOpts{
-		XRequestId: optional.NewString(requestId),
+		XRequestID: optional.NewString(requestID),
 	})
 	if resp != nil {
 		resp.Body.Close()
