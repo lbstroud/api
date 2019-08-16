@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	iso8601Format = "2006-01-02T15:04:05Z07:00"
+	// ISO8601Format represents an ISO 8601 format with timezone
+	ISO8601Format = "2006-01-02T15:04:05Z07:00"
 )
 
 // Time is an time.Time struct that encodes and decodes in ISO 8601.
@@ -62,23 +63,25 @@ func NewTime(t time.Time) Time {
 	return tt
 }
 
+// MarshalJSON returns JSON for the given Time
 func (t Time) MarshalJSON() ([]byte, error) {
 	var bs []byte
 	bs = append(bs, '"')
 
 	t.Time = t.Time.Truncate(1 * time.Second) // drop milliseconds
-	bs = t.AppendFormat(bs, iso8601Format)
+	bs = t.AppendFormat(bs, ISO8601Format)
 
 	bs = append(bs, '"')
 	return bs, nil
 }
 
+// UnmarshalJSON unpacks a JSON string to populate a Time instance
 func (t *Time) UnmarshalJSON(data []byte) error {
 	// Ignore null, like in the main JSON package.
 	if string(data) == "null" {
 		return nil
 	}
-	tt, err := time.Parse(`"`+iso8601Format+`"`, string(data))
+	tt, err := time.Parse(`"`+ISO8601Format+`"`, string(data))
 	if err != nil || tt.IsZero() {
 		// Try in RFC3339 format (default Go time)
 		tt, _ = time.Parse(time.RFC3339, string(data))
