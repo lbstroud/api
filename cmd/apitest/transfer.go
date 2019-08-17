@@ -162,7 +162,7 @@ func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Rece
 	if err != nil {
 		return tx, fmt.Errorf("problem creating %s transfer: %v", amount, err)
 	}
-	if !*flagFakeData {
+	if *flagCleanup {
 		// Delete the transfer (and underlying file) since we're only making one Transfer
 		resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.ID, &moov.DeleteTransferByIDOpts{
 			XRequestID: optional.NewString(requestID),

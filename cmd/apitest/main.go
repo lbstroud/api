@@ -45,6 +45,8 @@ var (
 	flagACHType = flag.String("ach.type", "PPD", "ACH Service Class Code (SEC) to use. Options: PPD, IAT")
 	flagOAuth   = flag.Bool("oauth", false, "Use OAuth instead of cookie auth")
 
+	flagCleanup = flag.Bool("cleanup", false, "Cleanup files, transfers, etc after creation")
+
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
