@@ -38,7 +38,14 @@ release: docker generate AUTHORS
 
 release-push:
 	docker push moov/ach:$(VERSION)
+	docker push moov/ach:latest
 	docker push moov/achfuzz:$(VERSION)
+
+.PHONY: cover-test cover-web
+cover-test:
+	go test -coverprofile=cover.out ./...
+cover-web:
+	go tool cover -html=cover.out
 
 # From https://github.com/genuinetools/img
 .PHONY: AUTHORS

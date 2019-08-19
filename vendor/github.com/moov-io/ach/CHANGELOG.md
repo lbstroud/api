@@ -1,3 +1,41 @@
+## v1.1.0 (Released 2019-08-19)
+
+BREAKING CHANGES
+
+In our OpenAPI we've renamed fields generated as `Id` to `ID`, which is more in-line with Go's style conventions.
+
+BUG FIXES
+
+- fileHeader: allow immediate origin to be a 10 digit value (See: [#513](https://github.com/moov-io/ach/pull/513) by [@eduardev](https://github.com/eduardev))
+- Fix JSON omitempty typo in `ADVEntryDetail`
+- fileHeader: trim padded 0's from ImmediateOriginField() and fixup docs
+- batch: only check DNE specifics if the SEC code is DNE
+- files: FileHeader validate CheckRoutingNumber
+- files: on empty FileCreation dates or times render today's value
+- reader: return ErrFileAddendaOutsideBatch from parseAddenda when currentBatch is nil
+
+ADDITIONS
+
+- batch: add Equal method
+- Addenda99: Add `ReturnCodeField()` for detailed information about a returned file
+- files: support arbitrary merging of ACH files (See [#529](https://github.com/moov-io/ach/issues/529))
+- entryDetail: validate that Amount is non-negative
+- batch: create Debit and Credit EntryDetail offset records if needed (via `WithOffset`)
+- addenda types: Add RuneCountInString check to Parse(record string) function
+- file: create debit ach file and credit ach file from a mixed debit and credit ach file (via `SegmentFile`) (see [#528](https://github.com/moov-io/ach/issues/528))
+- cmd/server: add environment variables to override command line flags (`-http.addr` and `-log.format`)
+- file: support ADV and IAT files in (*File).SegmentFile(...)
+- cmd/server: bind HTTP server with TLS if HTTPS_* variables are defined
+- cmd/server: add endpoints for segmenting files into debits and credits
+
+BUILD
+
+- vendor: update dependencies
+- Fix `moov/achfuzz` docker image build
+- api: inline parameters to fix codegen crash
+- build: push moov/ach:latest and update docs accordingly
+- chore(deps): update module prometheus/client_golang to v1.1.0
+
 ## v1.0.0 (Released 2019-03-26)
 
 - No changes from v0.6.0

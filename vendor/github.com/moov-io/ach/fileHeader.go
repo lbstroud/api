@@ -6,7 +6,10 @@ package ach
 
 import (
 	"strings"
+	"time"
 	"unicode/utf8"
+
+	"github.com/moov-io/base"
 )
 
 // FileHeader is a Record designating physical file characteristics and identify
@@ -30,10 +33,10 @@ type FileHeader struct {
 
 	// ImmediateOrigin contains the Routing Number of the ACH Operator or sending
 	// point that is sending the file. The ach file format specifies a 10 character field
-	// which begins with a blank space in the first position, followed by the four digit
+	// which can begin with a blank space, 0 or 1 in the first position, followed by the four digit
 	// Federal Reserve Routing Symbol, the four digit ABA Institution Identifier, and the Check
-	// Digit (bTTTTAAAAC).  ImmediateOriginField() will append the blank space to the routing
-	// number.
+	// Digit (bTTTTAAAAC).  ImmediateOriginField() will prepend a 0 to the routing number to match
+	// the field size.
 	ImmediateOrigin string `json:"immediateOrigin"`
 
 	// FileCreationDate is the date on which the file is prepared by an ODFI (ACH input files)
@@ -45,7 +48,7 @@ type FileHeader struct {
 
 	// FileCreationTime is the system time when the ACH file was created.
 	//
-	// The format is: HHMM. H=Hour, M=Minute
+	// The format is: HHmm. H=Hour, m=Minute
 	FileCreationTime string `json:"fileCreationTime"`
 
 	// This field should start at zero and increment by 1 (up to 9) and then go to
@@ -113,11 +116,11 @@ func (fh *FileHeader) Parse(record string) {
 	// (4-13) A blank space followed by your ODFI's routing number. For example: " 121140399"
 	fh.ImmediateDestination = fh.parseStringField(record[3:13])
 	// (14-23) A 10-digit number assigned to you by the ODFI once they approve you to originate ACH files through them
-	fh.ImmediateOrigin = fh.parseStringField(record[13:23])
+	fh.ImmediateOrigin = trimImmediateOriginLeadingZero(fh.parseStringField(record[13:23]))
 	// 24-29 Today's date in YYMMDD format
 	// must be after today's date.
 	fh.FileCreationDate = fh.validateSimpleDate(record[23:29])
-	// 30-33 The current time in HHMM format
+	// 30-33 The current time in HHmm format
 	fh.FileCreationTime = fh.validateSimpleTime(record[29:33])
 	// 35-37 Always "A"
 	fh.FileIDModifier = record[33:34]
@@ -133,6 +136,14 @@ func (fh *FileHeader) Parse(record string) {
 	fh.ImmediateOriginName = strings.TrimSpace(record[63:86])
 	//97-94 Optional field that may be used to describe the ACH file for internal accounting purposes
 	fh.ReferenceCode = strings.TrimSpace(record[86:94])
+}
+
+func trimImmediateOriginLeadingZero(s string) string {
+	if utf8.RuneCountInString(s) == 10 && s[0] == '0' && s != "0000000000" {
+		// trim off a leading 0 as ImmediateOriginField() will pad it back
+		return s[1:]
+	}
+	return s
 }
 
 // String writes the FileHeader struct to a 94 character string.
@@ -182,11 +193,17 @@ func (fh *FileHeader) Validate() error {
 	if err := fh.isAlphanumeric(fh.ImmediateDestinationName); err != nil {
 		return fieldError("ImmediateDestinationName", err, fh.ImmediateDestinationName)
 	}
-	if fh.ImmediateOrigin == "000000000" {
+	if fh.ImmediateOrigin == "0000000000" {
 		return fieldError("ImmediateOrigin", ErrConstructor, fh.ImmediateOrigin)
 	}
 	if fh.ImmediateDestination == "000000000" {
 		return fieldError("ImmediateDestination", ErrConstructor, fh.ImmediateDestination)
+	}
+	if err := CheckRoutingNumber(trimImmediateOriginLeadingZero(fh.ImmediateOrigin)); err != nil {
+		return fieldError("ImmediateOrigin", err, fh.ImmediateOrigin)
+	}
+	if err := CheckRoutingNumber(fh.ImmediateDestination); err != nil {
+		return fieldError("ImmediateDestination", err, fh.ImmediateDestination)
 	}
 	if err := fh.isAlphanumeric(fh.ImmediateOriginName); err != nil {
 		return fieldError("ImmediateOriginName", err, fh.ImmediateOriginName)
@@ -194,7 +211,6 @@ func (fh *FileHeader) Validate() error {
 	if err := fh.isAlphanumeric(fh.ReferenceCode); err != nil {
 		return fieldError("ReferenceCode", err, fh.ReferenceCode)
 	}
-
 	// todo: handle test cases for before date
 	/*
 		if fh.fileCreationDate.Before(time.Now()) {
@@ -241,17 +257,41 @@ func (fh *FileHeader) ImmediateDestinationField() string {
 
 // ImmediateOriginField gets the immediate origin number with 0 padding
 func (fh *FileHeader) ImmediateOriginField() string {
-	return " " + fh.stringField(fh.ImmediateOrigin, 9)
+	return fh.stringField(fh.ImmediateOrigin, 10)
 }
 
-// FileCreationDateField gets the file creation date in YYMMDD format
+// FileCreationDateField gets the file creation date in YYMMDD (year, month, day) format
+// A blank string is returned when an error occurred while parsing the timestamp. ISO 8601
+// is the only other format supported.
 func (fh *FileHeader) FileCreationDateField() string {
-	return fh.formatSimpleDate(fh.FileCreationDate) // YYMMDD
+	switch utf8.RuneCountInString(fh.FileCreationDate) {
+	case 0:
+		return time.Now().Format("060102")
+	case 6:
+		return fh.formatSimpleDate(fh.FileCreationDate) // YYMMDD
+	}
+	t, err := time.Parse(base.ISO8601Format, fh.FileCreationDate)
+	if err != nil {
+		return ""
+	}
+	return t.Format("060102") // YYMMDD
 }
 
-// FileCreationTimeField gets the file creation time in HHMM format
+// FileCreationTimeField gets the file creation time in HHmm (hour, minute) format
+// A blank string is returned when an error occurred while parsing the timestamp. ISO 8601
+// is the only other format supported.
 func (fh *FileHeader) FileCreationTimeField() string {
-	return fh.formatSimpleTime(fh.FileCreationTime) // HHMM
+	switch utf8.RuneCountInString(fh.FileCreationTime) {
+	case 0:
+		return time.Now().Format("1504")
+	case 4:
+		return fh.formatSimpleTime(fh.FileCreationTime) // HHmm
+	}
+	t, err := time.Parse(base.ISO8601Format, fh.FileCreationTime)
+	if err != nil {
+		return ""
+	}
+	return t.Format("1504") // HHmm
 }
 
 // ImmediateDestinationNameField gets the ImmediateDestinationName field padded

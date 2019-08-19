@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/moov-io/base"
+	"time"
 )
 
 // First position of all Record Types. These codes are uniquely assigned to
@@ -173,6 +175,11 @@ func setEntryRecordType(e *EntryDetail) {
 	}
 }
 
+func setADVEntryRecordType(e *ADVEntryDetail) {
+	e.recordType = "6"
+	e.Category = CategoryForward
+}
+
 func setIATEntryRecordType(e *IATEntryDetail) {
 	// these values need to be inferred from the json field names
 	e.recordType = "6"
@@ -250,6 +257,9 @@ func (f *File) setBatchesFromJSON(bs []byte) error {
 		for _, e := range batch.Entries {
 			// these values need to be inferred from the json field names
 			setEntryRecordType(e)
+		}
+		for _, e := range batch.ADVEntries {
+			setADVEntryRecordType(e)
 		}
 
 		if err := batch.build(); err != nil {
@@ -374,6 +384,32 @@ func (f *File) AddBatch(batch Batcher) []Batcher {
 	}
 	f.Batches = append(f.Batches, batch)
 	return f.Batches
+}
+
+// RemoveBatch will delete a given Batcher from an ach.File
+func (f *File) RemoveBatch(batch Batcher) {
+	if batch.Category() == CategoryNOC {
+		for i := 0; i < len(f.NotificationOfChange); i++ {
+			if f.NotificationOfChange[i].Equal(batch) {
+				f.NotificationOfChange = append(f.NotificationOfChange[:i], f.NotificationOfChange[i+1:]...)
+				i--
+			}
+		}
+	}
+	if batch.Category() == CategoryReturn {
+		for i := 0; i < len(f.ReturnEntries); i++ {
+			if f.ReturnEntries[i].Equal(batch) {
+				f.ReturnEntries = append(f.ReturnEntries[:i], f.ReturnEntries[i+1:]...)
+				i--
+			}
+		}
+	}
+	for i := 0; i < len(f.Batches); i++ {
+		if f.Batches[i].Equal(batch) {
+			f.Batches = append(f.Batches[:i], f.Batches[i+1:]...)
+			i--
+		}
+	}
 }
 
 // AddIATBatch appends a IATBatch to the ach.File
@@ -560,28 +596,23 @@ func (f *File) calculateEntryHash(IsADV bool) int {
 	return hash
 }
 
-// IsADV determines if the File is an File containing ADV batches
+// IsADV determines if the File is a File containing ADV batches
 func (f *File) IsADV() bool {
-	ok := false
-	for _, batch := range f.Batches {
-		if v := batch.GetHeader(); v == nil {
-			batch.SetHeader(NewBatchHeader())
+	for i := range f.Batches {
+		if v := f.Batches[i].GetHeader(); v == nil {
+			f.Batches[i].SetHeader(NewBatchHeader())
 		}
-
-		if v := batch.GetControl(); v == nil {
-			batch.SetControl(NewBatchControl())
+		if v := f.Batches[i].GetControl(); v == nil {
+			f.Batches[i].SetControl(NewBatchControl())
 		}
-
-		ok = batch.GetHeader().StandardEntryClassCode == ADV
-		if ok {
-			break
+		if f.Batches[i].GetHeader().StandardEntryClassCode == ADV {
+			return true
 		}
 	}
-	return ok
+	return false
 }
 
 func (f *File) createFileADV() error {
-
 	// add 2 for FileHeader/control and reset if build was called twice do to error
 	totalRecordsInFile := 2
 	batchSeq := 1
@@ -626,4 +657,240 @@ func (f *File) createFileADV() error {
 	f.ADVControl = fc
 
 	return nil
+}
+
+// SegmentFile takes a valid ACH File and returns 2 segmented ACH Files, one ACH File containing credit entries and one
+// ACH File containing debit entries.  The return is 2 Files a Credit File and Debit File, or an error.:
+// File - Credit File
+// File - Debit File
+// Error - Error or Nil
+// Callers should always check for a nil-error before using the returned file.
+//
+// The File returned may not be valid and callers should confirm with Validate(). Invalid files may
+// be rejected by other Financial Institutions or ACH tools.
+func (f *File) SegmentFile(sfc *SegmentFileConfiguration) (*File, *File, error) {
+	if err := f.Validate(); err != nil {
+		return nil, nil, err
+	}
+
+	creditFile := NewFile()
+	debitFile := NewFile()
+
+	if f.Batches != nil {
+		f.segmentFileBatches(creditFile, debitFile)
+	}
+
+	if f.IATBatches != nil {
+		f.segmentFileIATBatches(creditFile, debitFile)
+	}
+
+	// Additional Sorting to be FI specific
+	if len(creditFile.Batches) != 0 || len(creditFile.IATBatches) != 0 {
+		f.addFileHeaderData(creditFile)
+		if err := creditFile.Create(); err != nil {
+			return nil, nil, err
+		}
+		if err := creditFile.Validate(); err != nil {
+			return nil, nil, err
+		}
+	}
+	if len(debitFile.Batches) != 0 || len(debitFile.IATBatches) != 0 {
+		f.addFileHeaderData(debitFile)
+		if err := debitFile.Create(); err != nil {
+			return nil, nil, err
+		}
+		if err := debitFile.Validate(); err != nil {
+			return nil, nil, err
+		}
+	}
+	return creditFile, debitFile, nil
+}
+
+func (f *File) segmentFileBatches(creditFile, debitFile *File) {
+	for _, batch := range f.Batches {
+		bh := batch.GetHeader()
+
+		var creditBatch Batcher
+		var debitBatch Batcher
+
+		switch bh.StandardEntryClassCode {
+		case ADV:
+			switch bh.ServiceClassCode {
+			case AutomatedAccountingAdvices:
+				bh := createSegmentFileBatchHeader(AutomatedAccountingAdvices, bh)
+				creditBatch, _ = NewBatch(bh)
+				debitBatch, _ = NewBatch(bh)
+
+				entries := batch.GetADVEntries()
+				for _, entry := range entries {
+					segmentFileBatchAddADVEntry(creditBatch, debitBatch, entry)
+				}
+				// Add the Entry to its Batch
+				if creditBatch != nil && len(creditBatch.GetADVEntries()) > 0 {
+					creditBatch.Create()
+					creditFile.AddBatch(creditBatch)
+				}
+
+				if debitBatch != nil && len(debitBatch.GetADVEntries()) > 0 {
+					debitBatch.Create()
+					debitFile.AddBatch(debitBatch)
+				}
+			}
+		default:
+			switch bh.ServiceClassCode {
+			case MixedDebitsAndCredits:
+				cbh := createSegmentFileBatchHeader(CreditsOnly, bh)
+				creditBatch, _ = NewBatch(cbh)
+
+				dbh := createSegmentFileBatchHeader(DebitsOnly, bh)
+				debitBatch, _ = NewBatch(dbh)
+
+				entries := batch.GetEntries()
+				for _, entry := range entries {
+					segmentFileBatchAddEntry(creditBatch, debitBatch, entry)
+				}
+
+				if creditBatch != nil && len(creditBatch.GetEntries()) > 0 {
+					creditBatch.Create()
+					creditFile.AddBatch(creditBatch)
+				}
+				if debitBatch != nil && len(debitBatch.GetEntries()) > 0 {
+					debitBatch.Create()
+					debitFile.AddBatch(debitBatch)
+				}
+			case CreditsOnly:
+				creditFile.AddBatch(batch)
+			case DebitsOnly:
+				debitFile.AddBatch(batch)
+			}
+		}
+	}
+}
+
+// segmentFileIATBatches segments IAT batches debits and credits into debit and credit files
+func (f *File) segmentFileIATBatches(creditFile, debitFile *File) {
+	for _, iatb := range f.IATBatches {
+		IATBh := iatb.GetHeader()
+
+		switch IATBh.ServiceClassCode {
+		case MixedDebitsAndCredits:
+			cbh := createSegmentFileIATBatchHeader(CreditsOnly, IATBh)
+			creditIATBatch := NewIATBatch(cbh)
+
+			dbh := createSegmentFileIATBatchHeader(DebitsOnly, IATBh)
+			debitIATBatch := NewIATBatch(dbh)
+
+			entries := iatb.GetEntries()
+			for _, IATEntry := range entries {
+				IATEntry.TraceNumber = "" // unset so Batch.build generates a TraceNumber
+				switch IATEntry.TransactionCode {
+				case CheckingCredit, CheckingReturnNOCCredit, CheckingPrenoteCredit, CheckingZeroDollarRemittanceCredit,
+					SavingsCredit, SavingsReturnNOCCredit, SavingsPrenoteCredit, SavingsZeroDollarRemittanceCredit,
+					GLCredit, GLReturnNOCCredit, GLPrenoteCredit, GLZeroDollarRemittanceCredit,
+					LoanCredit, LoanReturnNOCCredit, LoanPrenoteCredit, LoanZeroDollarRemittanceCredit:
+					creditIATBatch.AddEntry(IATEntry)
+				case CheckingDebit, CheckingReturnNOCDebit, CheckingPrenoteDebit, CheckingZeroDollarRemittanceDebit,
+					SavingsDebit, SavingsReturnNOCDebit, SavingsPrenoteDebit, SavingsZeroDollarRemittanceDebit,
+					GLDebit, GLReturnNOCDebit, GLPrenoteDebit, GLZeroDollarRemittanceDebit,
+					LoanDebit, LoanReturnNOCDebit:
+					debitIATBatch.AddEntry(IATEntry)
+				}
+			}
+
+			if len(creditIATBatch.GetEntries()) > 0 {
+				creditIATBatch.Create()
+				creditFile.AddIATBatch(creditIATBatch)
+			}
+			if len(debitIATBatch.GetEntries()) > 0 {
+				debitIATBatch.Create()
+				debitFile.AddIATBatch(debitIATBatch)
+			}
+		case CreditsOnly:
+			creditFile.AddIATBatch(iatb)
+		case DebitsOnly:
+			debitFile.AddIATBatch(iatb)
+		}
+	}
+
+}
+
+// createSegmentFileBatchHeader adds BatchHeader data for a debit/credit Segment File
+func createSegmentFileBatchHeader(serviceClassCode int, bh *BatchHeader) *BatchHeader {
+	nbh := NewBatchHeader()
+	nbh.ID = base.ID()
+	nbh.ServiceClassCode = serviceClassCode
+	nbh.CompanyName = bh.CompanyName
+	nbh.CompanyDiscretionaryData = bh.CompanyDiscretionaryData
+	nbh.CompanyIdentification = bh.CompanyIdentification
+	nbh.StandardEntryClassCode = bh.StandardEntryClassCode
+	nbh.CompanyEntryDescription = bh.CompanyEntryDescription
+	nbh.CompanyDescriptiveDate = bh.CompanyDescriptiveDate
+	nbh.EffectiveEntryDate = bh.EffectiveEntryDate
+	nbh.settlementDate = bh.settlementDate
+	if serviceClassCode == AutomatedAccountingAdvices {
+		nbh.OriginatorStatusCode = 0 // ADV requires this be 0
+	} else {
+		nbh.OriginatorStatusCode = bh.OriginatorStatusCode
+	}
+	nbh.ODFIIdentification = bh.ODFIIdentification
+	return nbh
+}
+
+// createSegmentFileIATBatchHeader adds IATBatchHeader data for a debit/credit Segment File
+func createSegmentFileIATBatchHeader(serviceClassCode int, IATBh *IATBatchHeader) *IATBatchHeader {
+	nbh := NewIATBatchHeader()
+	nbh.ID = base.ID()
+	nbh.ServiceClassCode = serviceClassCode
+	nbh.ForeignExchangeIndicator = IATBh.ForeignExchangeIndicator
+	nbh.ForeignExchangeReferenceIndicator = IATBh.ForeignExchangeReferenceIndicator
+	nbh.ISODestinationCountryCode = IATBh.ISODestinationCountryCode
+	nbh.OriginatorIdentification = IATBh.OriginatorIdentification
+	nbh.StandardEntryClassCode = IATBh.StandardEntryClassCode
+	nbh.CompanyEntryDescription = IATBh.CompanyEntryDescription
+	nbh.ISOOriginatingCurrencyCode = IATBh.ISOOriginatingCurrencyCode
+	nbh.ISODestinationCurrencyCode = IATBh.ISODestinationCurrencyCode
+	nbh.ODFIIdentification = IATBh.ODFIIdentification
+	return nbh
+}
+
+// addFileHeaderData adds FileHeader data for a debit/credit Segment File
+func (f *File) addFileHeaderData(file *File) *File {
+	file.ID = base.ID()
+	file.Header.ID = base.ID()
+	file.Header.ImmediateOrigin = f.Header.ImmediateOrigin
+	file.Header.ImmediateDestination = f.Header.ImmediateDestination
+	file.Header.FileCreationDate = time.Now().Format("060102")
+	file.Header.FileCreationTime = time.Now().AddDate(0, 0, 1).Format("1504") // HHmm
+	file.Header.ImmediateDestinationName = f.Header.ImmediateDestinationName
+	file.Header.ImmediateOriginName = f.Header.ImmediateOriginName
+	return file
+}
+
+// segmentFileBatchAddEntry adds entries to batches in a segmented file
+// Applies to All SEC Codes except ADV (Automated Accounting Advice)
+func segmentFileBatchAddEntry(creditBatch, debitBatch Batcher, entry *EntryDetail) {
+
+	entry.TraceNumber = "" // unset so Batch.build generates a TraceNumber
+	switch entry.TransactionCode {
+	case CheckingCredit, CheckingReturnNOCCredit, CheckingPrenoteCredit, CheckingZeroDollarRemittanceCredit,
+		SavingsCredit, SavingsReturnNOCCredit, SavingsPrenoteCredit, SavingsZeroDollarRemittanceCredit,
+		GLCredit, GLReturnNOCCredit, GLPrenoteCredit, GLZeroDollarRemittanceCredit,
+		LoanCredit, LoanReturnNOCCredit, LoanPrenoteCredit, LoanZeroDollarRemittanceCredit:
+		creditBatch.AddEntry(entry)
+	case CheckingDebit, CheckingReturnNOCDebit, CheckingPrenoteDebit, CheckingZeroDollarRemittanceDebit,
+		SavingsDebit, SavingsReturnNOCDebit, SavingsPrenoteDebit, SavingsZeroDollarRemittanceDebit,
+		GLDebit, GLReturnNOCDebit, GLPrenoteDebit, GLZeroDollarRemittanceDebit,
+		LoanDebit, LoanReturnNOCDebit:
+		debitBatch.AddEntry(entry)
+	}
+}
+
+// segmentFileBatchAddADVEntry adds entries to batches in a segment file for SEC Code ADV (Automated Accounting Advice)
+func segmentFileBatchAddADVEntry(creditBatch Batcher, debitBatch Batcher, entry *ADVEntryDetail) {
+	switch entry.TransactionCode {
+	case CreditForDebitsOriginated, CreditForCreditsReceived, CreditForCreditsRejected, CreditSummary:
+		creditBatch.AddADVEntry(entry)
+	case DebitForCreditsOriginated, DebitForDebitsReceived, DebitForDebitsRejectedBatches, DebitSummary:
+		debitBatch.AddADVEntry(entry)
+	}
 }

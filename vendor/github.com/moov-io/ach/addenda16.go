@@ -6,6 +6,7 @@ package ach
 
 import (
 	"strings"
+	"unicode/utf8"
 )
 
 // Addenda16 is an addenda which provides business transaction information for Addenda Type
@@ -24,11 +25,11 @@ type Addenda16 struct {
 	// Receiver City & State / Province
 	// Data elements City and State / Province  should be separated with an asterisk (*) as a delimiter
 	// and the field should end with a backslash (\).
-	// For example: San FranciscoCA.
+	// For example: San Francisco*CA\
 	ReceiverCityStateProvince string `json:"receiverCityStateProvince"`
 	// Receiver Country & Postal Code
 	// Data elements must be separated by an asterisk (*) and must end with a backslash (\)
-	// For example: US10036\
+	// For example: US*10036\
 	ReceiverCountryPostalCode string `json:"receiverCountryPostalCode"`
 	// reserved - Leave blank
 	reserved string
@@ -55,6 +56,10 @@ func NewAddenda16() *Addenda16 {
 //
 // Parse provides no guarantee about all fields being filled in. Callers should make a Validate() call to confirm successful parsing and data validity.
 func (addenda16 *Addenda16) Parse(record string) {
+	if utf8.RuneCountInString(record) != 94 {
+		return
+	}
+
 	// 1-1 Always "7"
 	addenda16.recordType = "7"
 	// 2-3 Always 16
