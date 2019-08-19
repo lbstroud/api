@@ -27,3 +27,6 @@ comment:
 
 ignore:
   - "*Errors.go"  # ignore error files
+  - "test/.*"
+  - "*_test.go"
+  - "examples/.*"
