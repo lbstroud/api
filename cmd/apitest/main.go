@@ -141,7 +141,7 @@ func makeConfiguration() *moov.Configuration {
 
 	// setup HTTP client
 	conf.HTTPClient = &http.Client{
-		Timeout: 10 * time.Second,
+		Timeout: 30 * time.Second,
 		Transport: &http.Transport{
 			MaxIdleConns:        100,
 			MaxIdleConnsPerHost: 100,
