@@ -25,8 +25,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/moov-io/api"
 	"github.com/moov-io/api/cmd/apitest/local"
-	"github.com/moov-io/api/internal/version"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -41,6 +41,8 @@ var (
 	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses (e.g. 'go run')")
 	flagLocalDev   = flag.Bool("dev", false, "Use tilt local HTTP address")
 
+	flagVersion = flag.Bool("version", false, "Show the version and quit")
+
 	// Business logic flags
 	flagACHType = flag.String("ach.type", "PPD", "ACH Service Class Code (SEC) to use. Options: PPD, IAT")
 	flagOAuth   = flag.Bool("oauth", false, "Use OAuth instead of cookie auth")
@@ -50,6 +52,7 @@ var (
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
+	// TODO(adam): can we run this in CI now? with paygate's docker-compose setup??
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
 	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
 
@@ -59,8 +62,13 @@ var (
 func main() {
 	flag.Parse()
 
+	if *flagVersion {
+		fmt.Println(api.Version())
+		return
+	}
+
 	log.SetFlags(log.Ldate | log.Ltime | log.LUTC | log.Lmicroseconds | log.Lshortfile)
-	log.Printf("Starting apitest %s", version.Version)
+	log.Printf("Starting apitest %s", api.Version())
 
 	ctx := context.TODO()
 
@@ -137,7 +145,7 @@ func makeConfiguration() *moov.Configuration {
 	apiAddressOnce.Do(func() {
 		log.Printf("Using %s as base API address", conf.BasePath)
 	})
-	conf.UserAgent = fmt.Sprintf("moov apitest/%s", version.Version)
+	conf.UserAgent = fmt.Sprintf("moov apitest/%s", api.Version())
 
 	// setup HTTP client
 	conf.HTTPClient = &http.Client{

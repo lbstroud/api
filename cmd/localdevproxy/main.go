@@ -25,8 +25,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/moov-io/api"
 	"github.com/moov-io/api/cmd/apitest/local"
-	"github.com/moov-io/api/internal/version"
 	"github.com/moov-io/base/k8s"
 )
 
@@ -39,7 +39,7 @@ func main() {
 	flag.Parse()
 
 	log.SetFlags(log.Ldate | log.Ltime | log.LUTC | log.Lmicroseconds | log.Lshortfile)
-	log.Printf("Starting moov localproxy %s", version.Version)
+	log.Printf("Starting moov localproxy %s", api.Version())
 
 	proxy := createReverseProxy()
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

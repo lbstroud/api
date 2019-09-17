@@ -2,6 +2,13 @@
 // Use of this source code is governed by an Apache License
 // license that can be found in the LICENSE file.
 
-package version
+package api
 
-const Version = "v0.13.0-dev"
+import (
+	"fmt"
+	"time"
+)
+
+func Version() string {
+	return fmt.Sprintf("v%s.1", time.Now().Format("2006-01-02"))
+}

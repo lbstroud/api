@@ -1,5 +1,5 @@
 PLATFORM=$(shell uname -s | tr '[:upper:]' '[:lower:]')
-VERSION := $(shell grep -Eo '(v[0-9]+[\.][0-9]+[\.][0-9]+(-[a-zA-Z0-9]*)?)' internal/version/version.go)
+VERSION=v$(shell date +"%Y.%m.%d").1
 
 .PHONY: build docker release dist test
 
