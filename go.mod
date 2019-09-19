@@ -8,3 +8,5 @@ require (
 	github.com/moov-io/go-client v0.3.0
 	go4.org v0.0.0-20190313082347-94abd6928b1d
 )
+
+go 1.13
