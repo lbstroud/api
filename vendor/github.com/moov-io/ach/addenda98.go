@@ -1,6 +1,19 @@
-// Copyright 2018 The Moov Authors
-// Use of this source code is governed by an Apache License
-// license that can be found in the LICENSE file.
+// Licensed to The Moov Authors under one or more contributor
+// license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright
+// ownership. The Moov Authors licenses this file to you under
+// the Apache License, Version 2.0 (the "License"); you may
+// not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
 package ach
 
@@ -41,7 +54,7 @@ type Addenda98 struct {
 }
 
 var (
-	changeCodeDict = map[string]*changeCode{}
+	changeCodeDict = map[string]*ChangeCode{}
 )
 
 func init() {
@@ -49,10 +62,12 @@ func init() {
 	changeCodeDict = makeChangeCodeDict()
 }
 
-// changeCode holds a change Code, Reason/Title, and Description
+// ChangeCode holds a change Code, Reason/Title, and Description
 // table of return codes exists in Part 4.2 of the NACHA corporate rules and guidelines
-type changeCode struct {
-	Code, Reason, Description string
+type ChangeCode struct {
+	Code        string `json:"code"`
+	Reason      string `json:"reason"`
+	Description string `json:"description"`
 }
 
 // NewAddenda98 returns an reference to an instantiated Addenda98 with default values
@@ -151,10 +166,27 @@ func (addenda98 *Addenda98) TraceNumberField() string {
 	return addenda98.stringField(addenda98.TraceNumber, 15)
 }
 
-func makeChangeCodeDict() map[string]*changeCode {
-	dict := make(map[string]*changeCode)
+func (addenda98 *Addenda98) ChangeCodeField() *ChangeCode {
+	code, ok := changeCodeDict[addenda98.ChangeCode]
+	if ok {
+		return code
+	}
+	return nil
+}
 
-	codes := []changeCode{
+// LookupChangeCode will return a struct representing the reason and description for
+// the provided NACHA change code.
+func LookupChangeCode(code string) *ChangeCode {
+	if code, exists := changeCodeDict[strings.ToUpper(code)]; exists {
+		return code
+	}
+	return nil
+}
+
+func makeChangeCodeDict() map[string]*ChangeCode {
+	dict := make(map[string]*ChangeCode)
+
+	codes := []ChangeCode{
 		{"C01", "Incorrect bank account number", "Bank account number incorrect or formatted incorrectly"},
 		{"C02", "Incorrect transit/routing number", "Once valid transit/routing number must be changed"},
 		{"C03", "Incorrect transit/routing number and bank account number", "Once valid transit/routing number must be changed and causes a change to bank account number structure"},
@@ -168,8 +200,8 @@ func makeChangeCodeDict() map[string]*changeCode {
 		{"C12", "Incorrect company name and company ID", "Both the company name and company id are no longer valid and must be changed"},
 	}
 	// populate the map
-	for _, code := range codes {
-		dict[code.Code] = &code
+	for i := range codes {
+		dict[codes[i].Code] = &codes[i]
 	}
 	return dict
 }

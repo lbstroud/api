@@ -1,6 +1,19 @@
-// Copyright 2018 The Moov Authors
-// Use of this source code is governed by an Apache License
-// license that can be found in the LICENSE file.
+// Licensed to The Moov Authors under one or more contributor
+// license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright
+// ownership. The Moov Authors licenses this file to you under
+// the Apache License, Version 2.0 (the "License"); you may
+// not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
 package ach
 
@@ -62,7 +75,9 @@ type Addenda99 struct {
 //
 // Table of return codes exists in Part 4.2 of the NACHA corporate rules and guidelines
 type ReturnCode struct {
-	Code, Reason, Description string
+	Code        string `json:"code"`
+	Reason      string `json:"reason"`
+	Description string `json:"description"`
 }
 
 // NewAddenda99 returns a new Addenda99 with default values for none exported fields
@@ -191,6 +206,15 @@ func (Addenda99 *Addenda99) TraceNumberField() string {
 func (Addenda99 *Addenda99) ReturnCodeField() *ReturnCode {
 	code, ok := returnCodeDict[Addenda99.ReturnCode]
 	if ok {
+		return code
+	}
+	return nil
+}
+
+// LookupReturnCode will return a struct representing the reason and description for
+// the provided NACHA return code.
+func LookupReturnCode(code string) *ReturnCode {
+	if code, exists := returnCodeDict[strings.ToUpper(code)]; exists {
 		return code
 	}
 	return nil

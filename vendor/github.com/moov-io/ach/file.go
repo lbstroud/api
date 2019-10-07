@@ -1,6 +1,19 @@
-// Copyright 2018 The Moov Authors
-// Use of this source code is governed by an Apache License
-// license that can be found in the LICENSE file.
+// Licensed to The Moov Authors under one or more contributor
+// license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright
+// ownership. The Moov Authors licenses this file to you under
+// the Apache License, Version 2.0 (the "License"); you may
+// not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
 package ach
 
@@ -9,8 +22,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/moov-io/base"
+	"strings"
 	"time"
+
+	"github.com/moov-io/base"
 )
 
 // First position of all Record Types. These codes are uniquely assigned to
@@ -81,8 +96,11 @@ type advFileControl struct {
 //
 // Callers should always check for a nil-error before using the returned file.
 //
-// The File returned may not be valid and callers should confirm with Validate(). Invalid files may
-// be rejected by other Financial Institutions or ACH tools.
+// The File returned may not be valid and callers should confirm with Validate().
+// Invalid files may be rejected by other Financial Institutions or ACH tools.
+//
+// Date and Time fields in formats: RFC 3339 and ISO 8601 will be parsed and rewritten
+// as their YYMMDD (year, month, day) or hhmm (hour, minute) formats.
 func FileFromJSON(bs []byte) (*File, error) {
 	if len(bs) == 0 {
 		return nil, errors.New("no JSON data provided")
@@ -109,6 +127,9 @@ func FileFromJSON(bs []byte) (*File, error) {
 	if err := file.setBatchesFromJSON(bs); err != nil {
 		return nil, err
 	}
+
+	// Overwrite various timestamps with their ACH formatted values
+	file.overwriteDateTimeFields()
 
 	if !file.IsADV() {
 		// Read FileControl
@@ -137,6 +158,9 @@ func FileFromJSON(bs []byte) (*File, error) {
 	}
 
 	if err := file.Create(); err != nil {
+		return file, err
+	}
+	if err := file.Validate(); err != nil {
 		return file, err
 	}
 	return file, nil
@@ -177,7 +201,9 @@ func setEntryRecordType(e *EntryDetail) {
 
 func setADVEntryRecordType(e *ADVEntryDetail) {
 	e.recordType = "6"
-	e.Category = CategoryForward
+	if e.Addenda99 == nil {
+		e.Category = CategoryForward
+	}
 }
 
 func setIATEntryRecordType(e *IATEntryDetail) {
@@ -293,6 +319,56 @@ func (f *File) setBatchesFromJSON(bs []byte) error {
 	}
 
 	return nil
+}
+
+// overwriteDateTimeFields will scan through fields in a File for Date / Time
+// values which are not in their ACH format (YYMMDD, hhmm). It'll attempt to parse
+// various formats and overwrite them to the expected values (YYMMDD, hhmm).
+func (f *File) overwriteDateTimeFields() {
+	// File header
+	if t, err := datetimeParse(f.Header.FileCreationDate); err == nil {
+		f.Header.FileCreationDate = t.Format("060102")
+	}
+	if t, err := datetimeParse(f.Header.FileCreationTime); err == nil {
+		f.Header.FileCreationTime = t.Format("1504")
+	}
+
+	// Batches
+	for i := range f.Batches {
+		// BatchHeader
+		header := f.Batches[i].GetHeader()
+		if t, err := datetimeParse(strings.TrimPrefix(header.CompanyDescriptiveDate, "SD")); err == nil {
+			header.CompanyDescriptiveDate = "SD" + t.Format("1504")
+		}
+		if t, err := datetimeParse(header.EffectiveEntryDate); err == nil {
+			header.EffectiveEntryDate = t.Format("060102")
+		}
+		f.Batches[i].SetHeader(header)
+	}
+
+	// TODO(adam): Addenda99 has DateOfDeath which is hard to parse and overwrite with Batcher.GetEntries() copying structs
+
+	// IAT Batches
+	for i := range f.IATBatches {
+		if t, err := datetimeParse(f.IATBatches[i].Header.EffectiveEntryDate); err == nil {
+			f.IATBatches[i].Header.EffectiveEntryDate = t.Format("060102")
+		}
+	}
+}
+
+var datetimeformats = []string{
+	"2006-01-02T15:04:05.999Z", // Default javascript (new Date).toISOString()
+	"2006-01-02T15:04:05Z",     // ISO 8601 without milliseconds
+	time.RFC3339,               // Go default
+}
+
+func datetimeParse(v string) (time.Time, error) {
+	for i := range datetimeformats {
+		if t, err := time.Parse(datetimeformats[i], v); err == nil && !t.IsZero() {
+			return t, nil
+		}
+	}
+	return time.Time{}, fmt.Errorf("unknown format: %s", v)
 }
 
 // Create will tabulate and assemble an ACH file into a valid state. This includes
@@ -727,12 +803,12 @@ func (f *File) segmentFileBatches(creditFile, debitFile *File) {
 				}
 				// Add the Entry to its Batch
 				if creditBatch != nil && len(creditBatch.GetADVEntries()) > 0 {
-					creditBatch.Create()
+					_ = creditBatch.Create()
 					creditFile.AddBatch(creditBatch)
 				}
 
 				if debitBatch != nil && len(debitBatch.GetADVEntries()) > 0 {
-					debitBatch.Create()
+					_ = debitBatch.Create()
 					debitFile.AddBatch(debitBatch)
 				}
 			}
@@ -747,15 +823,16 @@ func (f *File) segmentFileBatches(creditFile, debitFile *File) {
 
 				entries := batch.GetEntries()
 				for _, entry := range entries {
+					entry.TraceNumber = "" // unset so Batch.build generates a TraceNumber
 					segmentFileBatchAddEntry(creditBatch, debitBatch, entry)
 				}
 
 				if creditBatch != nil && len(creditBatch.GetEntries()) > 0 {
-					creditBatch.Create()
+					_ = creditBatch.Create()
 					creditFile.AddBatch(creditBatch)
 				}
 				if debitBatch != nil && len(debitBatch.GetEntries()) > 0 {
-					debitBatch.Create()
+					_ = debitBatch.Create()
 					debitFile.AddBatch(debitBatch)
 				}
 			case CreditsOnly:
@@ -798,11 +875,11 @@ func (f *File) segmentFileIATBatches(creditFile, debitFile *File) {
 			}
 
 			if len(creditIATBatch.GetEntries()) > 0 {
-				creditIATBatch.Create()
+				_ = creditIATBatch.Create()
 				creditFile.AddIATBatch(creditIATBatch)
 			}
 			if len(debitIATBatch.GetEntries()) > 0 {
-				debitIATBatch.Create()
+				_ = debitIATBatch.Create()
 				debitFile.AddIATBatch(debitIATBatch)
 			}
 		case CreditsOnly:
@@ -893,4 +970,117 @@ func segmentFileBatchAddADVEntry(creditBatch Batcher, debitBatch Batcher, entry 
 	case DebitForCreditsOriginated, DebitForDebitsReceived, DebitForDebitsRejectedBatches, DebitSummary:
 		debitBatch.AddADVEntry(entry)
 	}
+}
+
+// FlattenBatches flattens File Batches by consolidating batches with the same BatchHeader data into one Batch.
+func (f *File) FlattenBatches() (*File, error) {
+	if err := f.Validate(); err != nil {
+		return nil, err
+	}
+	of := NewFile()
+
+	if f.Batches != nil {
+		// Slice of BatchHeaders
+		sbh := make([]string, 0)
+		for _, b := range f.Batches {
+			bh := b.GetHeader()
+			bh.BatchNumber = 0
+			sbh = append(sbh, bh.String())
+		}
+		// Remove duplicate BatchHeader entries
+		sbh = removeDuplicateBatchHeaders(sbh)
+		// Add new batches for flattened file
+		for _, record := range sbh {
+			bh := &BatchHeader{}
+			bh.Parse(record)
+
+			b, _ := NewBatch(bh)
+			of.AddBatch(b)
+		}
+		for _, batch := range f.Batches {
+			fbh := batch.GetHeader().String()[:87]
+			// Add entries for batches
+			for i, ofBatch := range of.Batches {
+				if strings.EqualFold(fbh, ofBatch.GetHeader().String()[:87]) {
+					if ofBatch.GetHeader().StandardEntryClassCode == "ADV" {
+						entries := batch.GetADVEntries()
+						for _, advEntry := range entries {
+							of.Batches[i].AddADVEntry(advEntry)
+						}
+					} else {
+						entries := batch.GetEntries()
+						for _, entry := range entries {
+							// Reset TraceNumber
+							entry.TraceNumber = ""
+							of.Batches[i].AddEntry(entry)
+						}
+					}
+					_ = of.Batches[i].Create()
+				}
+			}
+		}
+	}
+
+	if f.IATBatches != nil {
+		// Slice of IATBatchHeaders
+		sIATBh := make([]string, 0)
+		for _, iatB := range f.IATBatches {
+			bh := iatB.GetHeader()
+			bh.BatchNumber = 0
+			sIATBh = append(sIATBh, bh.String())
+		}
+		// Remove duplicate IATBatchHeader entries
+		sIATBh = removeDuplicateBatchHeaders(sIATBh)
+		// Add new IATBatches for flattened file
+		for _, record := range sIATBh {
+			iatBh := &IATBatchHeader{}
+			iatBh.Parse(record)
+
+			b := NewIATBatch(iatBh)
+			of.AddIATBatch(b)
+		}
+		for _, iatBatch := range f.IATBatches {
+			fbh := iatBatch.GetHeader().String()[:87]
+			// Add entries for IATBatches
+			for i, ofBatch := range of.IATBatches {
+				if strings.EqualFold(fbh, ofBatch.GetHeader().String()[:87]) {
+					iatEntries := iatBatch.GetEntries()
+					for _, iatEntry := range iatEntries {
+						// reset TraceNumber
+						iatEntry.TraceNumber = ""
+						of.IATBatches[i].AddEntry(iatEntry)
+					}
+				}
+				_ = of.IATBatches[i].Create()
+			}
+		}
+	}
+
+	// Add FileHeaderData.
+	f.addFileHeaderData(of)
+
+	if err := of.Create(); err != nil {
+		return nil, err
+	}
+	if err := of.Validate(); err != nil {
+		return nil, err
+	}
+	return of, nil
+}
+
+// removeDuplicateBatchHeaders removes duplicate batch header
+func removeDuplicateBatchHeaders(s []string) []string {
+	encountered := map[string]bool{}
+
+	// Create a map of all unique elements.
+	for v := range s {
+		encountered[s[v]] = true
+	}
+
+	// Place all keys from the map into a slice.
+	result := make([]string, 0)
+	for key := range encountered {
+		result = append(result, key)
+	}
+	return result
 }
