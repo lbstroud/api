@@ -38,6 +38,8 @@ github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lN
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/moov-io/ach v1.1.0 h1:2XctnQ/n5+wtWtarR79MxU+6ZkrS0dCnY60rRTPvZdU=
 github.com/moov-io/ach v1.1.0/go.mod h1:WR1Yk22LffSDJmEnNrrfe64k15CvYp5J/R/HuAze84w=
+github.com/moov-io/ach v1.2.0 h1:pBdbYz89NeJvaaIzhYqnJPcFEtq+z7Cuj6LG0J5JImM=
+github.com/moov-io/ach v1.2.0/go.mod h1:WR1Yk22LffSDJmEnNrrfe64k15CvYp5J/R/HuAze84w=
 github.com/moov-io/base v0.10.0 h1:9A/N0E+oB5nqxTMWszN06Az1PRAkW9EgQ4UQ/94S1IU=
 github.com/moov-io/base v0.10.0/go.mod h1:pPu/TAc9PkaaegbREVEeDHsGqyAlvji9vqTuARuAnd0=
 github.com/moov-io/go-client v0.2.1-0.20190813201019-2ff0c356cab4 h1:sTyZQMzOjITojvvua5xgCep+LsCKJb2pHOin9t1f/7U=

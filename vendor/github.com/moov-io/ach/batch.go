@@ -1,6 +1,19 @@
-// Copyright 2018 The Moov Authors
-// Use of this source code is governed by an Apache License
-// license that can be found in the LICENSE file.
+// Licensed to The Moov Authors under one or more contributor
+// license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright
+// ownership. The Moov Authors licenses this file to you under
+// the Apache License, Version 2.0 (the "License"); you may
+// not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
 package ach
 
@@ -478,7 +491,23 @@ func (batch *Batch) GetADVEntries() []*ADVEntryDetail {
 
 // Category returns batch category
 func (batch *Batch) Category() string {
-	return batch.category
+	if len(batch.Entries) == 0 && batch.category != "" {
+		return batch.category
+	}
+	// If an Entry has NOC or Return that's the Batch's category
+	for i := range batch.Entries {
+		switch batch.Entries[i].Category {
+		case CategoryReturn, CategoryNOC:
+			return batch.Entries[i].Category
+		}
+	}
+	for i := range batch.ADVEntries {
+		switch batch.ADVEntries[i].Category {
+		case CategoryReturn, CategoryNOC:
+			return batch.ADVEntries[i].Category
+		}
+	}
+	return CategoryForward
 }
 
 // ID returns the id of the batch
@@ -1075,6 +1104,8 @@ func (b *Batch) upsertOffsets() error {
 		b.Control.TotalCreditEntryDollarAmount += creditED.Amount
 	}
 	b.Header.ServiceClassCode = MixedDebitsAndCredits
+
+	b.Control.ServiceClassCode = MixedDebitsAndCredits
 	b.Control.EntryHash = b.calculateEntryHash()
 
 	return nil
@@ -1088,7 +1119,9 @@ func createOffsetEntryDetail(off *Offset, batch *Batch) *EntryDetail {
 	ed.IdentificationNumber = "" // left empty
 	ed.IndividualName = "OFFSET"
 	ed.DiscretionaryData = batch.offset.Description
-	ed.Category = CategoryForward
+	if len(batch.Entries) > 0 {
+		ed.Category = batch.Entries[0].Category
+	}
 	return ed
 }
 
