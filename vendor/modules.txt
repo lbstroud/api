@@ -5,7 +5,7 @@ github.com/docker/docker/pkg/namesgenerator
 github.com/docker/docker/pkg/random
 # github.com/golang/protobuf v1.3.2
 github.com/golang/protobuf/proto
-# github.com/moov-io/ach v1.2.0
+# github.com/moov-io/ach v1.2.1
 github.com/moov-io/ach
 github.com/moov-io/ach/internal/iso3166
 github.com/moov-io/ach/internal/iso4217
@@ -18,7 +18,7 @@ github.com/moov-io/base/k8s
 github.com/moov-io/go-client/client
 # github.com/rickar/cal v1.0.1
 github.com/rickar/cal
-# go4.org v0.0.0-20190919214946-0cfe6e5be80f
+# go4.org v0.0.0-20191010144846-132d2879e1e9
 go4.org/syncutil
 # golang.org/x/net v0.0.0-20190613194153-d28f0bde5980
 golang.org/x/net/context
