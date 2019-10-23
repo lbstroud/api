@@ -93,11 +93,21 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 }
 
 func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID string) (moov.Originator, error) {
+	// Just get a valid date that's not today
+	birthDate := time.Now().Truncate(24 * time.Hour).Add(-30 * 24 * time.Hour) // 30 days ago
+
 	first, _ := name()
 	req := moov.CreateOriginator{
 		DefaultDepository: depId,
 		Identification:    "123456789",
-		Metadata:          fmt.Sprintf("%s Corp", first),
+		BirthDate:         birthDate,
+		Address: &Address{
+			Address1:   "123 1st St",
+			City:       "Anytown",
+			State:      "CA",
+			PostalCode: "90301",
+		},
+		Metadata: fmt.Sprintf("%s Corp", first),
 	}
 	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, req, &moov.AddOriginatorOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
@@ -113,10 +123,20 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID
 }
 
 func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, requestID string) (moov.Receiver, error) {
+	// Create a date in the past
+	birthDate := time.Now().Truncate(24 * time.Hour).Add(-20 * 24 * time.Hour) // 20 days ago
+
 	req := moov.CreateReceiver{
 		Email:             email(name()), // new random email address
 		DefaultDepository: depId,
-		Metadata:          u.Name,
+		BirthDate:         birthDate,
+		Address: &Address{
+			Address1:   "123 1st St",
+			City:       "Anytown",
+			State:      "CA",
+			PostalCode: "90301",
+		},
+		Metadata: u.Name,
 	}
 	receiver, resp, err := api.ReceiversApi.AddReceivers(ctx, req, &moov.AddReceiversOpts{
 		XIdempotencyKey: optional.NewString(generateID()),

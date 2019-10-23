@@ -52,6 +52,8 @@ var (
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
+	flagCustomersAdminAddress = flag.String("customers.admin-address", "", "If non-empty attempt approval calls to Moov's Customers service")
+
 	// TODO(adam): can we run this in CI now? with paygate's docker-compose setup??
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
 	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
@@ -342,6 +344,13 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.ID)
 
+	if flagCustomersAdminAddress != nil && *flagCustomersAdminAddress != "" {
+		if err := attemptCustomerApprovalToKYC(ctx, *flagCustomersAdminAddress, orig.CustomerID, requestID); err != nil {
+			errLogger("FAILURE: %v", err)
+			return nil
+		}
+	}
+
 	// Create Receiver Account
 	receiverAcct, err := createAccount(ctx, api, user, "to account", "", requestID)
 	if err != nil {
@@ -364,6 +373,13 @@ func iterate(ctx context.Context) *iteration {
 		return nil
 	}
 	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.ID)
+
+	if flagCustomersAdminAddress != nil && *flagCustomersAdminAddress != "" {
+		if err := attemptCustomerApprovalToKYC(ctx, *flagCustomersAdminAddress, receiver.CustomerID, requestID); err != nil {
+			errLogger("FAILURE: %v", err)
+			return nil
+		}
+	}
 
 	// Create Transfer
 	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID)
