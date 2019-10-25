@@ -193,6 +193,26 @@ func pingApps(ctx context.Context) error {
 	resp.Body.Close()
 	log.Println("auth PONG")
 
+	// fed
+	resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{
+		XRequestID: optional.NewString(requestID),
+	})
+	if err != nil {
+		return fmt.Errorf("ERROR: failed to ping FED: %v", err)
+	}
+	resp.Body.Close()
+	log.Println("FED PONG")
+
+	// ofac
+	resp, err = api.MonitorApi.PingOFAC(ctx, &moov.PingOFACOpts{
+		XRequestID: optional.NewString(requestID),
+	})
+	if err != nil {
+		return fmt.Errorf("ERROR: failed to ping OFAC: %v", err)
+	}
+	resp.Body.Close()
+	log.Println("OFAC PONG")
+
 	// paygate
 	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{
 		XRequestID: optional.NewString(requestID),
