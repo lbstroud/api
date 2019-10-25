@@ -53,6 +53,10 @@ func TestTransport(t *testing.T) {
 			"https://api.moov.io/v1/fed/test", // fed
 			"http://localhost:8086/fed/test",
 		},
+		{
+			"https://api.moov.io/v1/fed/ping", // fed
+			"http://localhost:8086/ping",
+		},
 	}
 	for i := range cases {
 		r := httptest.NewRequest("GET", cases[i].incoming, nil)
