@@ -27,6 +27,7 @@ import (
 
 	"github.com/moov-io/api"
 	"github.com/moov-io/api/cmd/apitest/local"
+	"github.com/moov-io/base/http/bind"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -52,7 +53,8 @@ var (
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
-	flagCustomersAdminAddress = flag.String("customers.admin-address", "", "If non-empty attempt approval calls to Moov's Customers service")
+	flagApproveCustomers      = flag.Bool("customers.approve", false, "Make approval calls to Moov's Customers service. Default's true with -local")
+	flagCustomersAdminAddress = flag.String("customers.admin-address", fmt.Sprintf("http://localhost%s", bind.Admin("customers")), "HTTP address for Customers service")
 
 	// TODO(adam): can we run this in CI now? with paygate's docker-compose setup??
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
@@ -344,8 +346,9 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.ID)
 
-	if flagCustomersAdminAddress != nil && *flagCustomersAdminAddress != "" {
-		if err := attemptCustomerApprovalToKYC(ctx, *flagCustomersAdminAddress, orig.CustomerID, requestID); err != nil {
+	// By default with -local assume we want to approve customers.
+	if *flagLocal || *flagApproveCustomers {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, conf.HTTPClient, orig.CustomerID, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		}
@@ -374,8 +377,8 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.ID)
 
-	if flagCustomersAdminAddress != nil && *flagCustomersAdminAddress != "" {
-		if err := attemptCustomerApprovalToKYC(ctx, *flagCustomersAdminAddress, receiver.CustomerID, requestID); err != nil {
+	if *flagLocal || *flagApproveCustomers {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, conf.HTTPClient, receiver.CustomerID, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		}
