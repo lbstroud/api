@@ -76,7 +76,7 @@ func main() {
 
 	ctx := context.TODO()
 
-	// Run tests
+	// Basic sanity check against apps
 	if err := pingApps(ctx); err != nil {
 		log.Fatalf("FAILURE: %v", err)
 	}
@@ -177,6 +177,18 @@ func pingApps(ctx context.Context) error {
 	conf.AddDefaultHeader("X-Request-ID", requestID)
 	api := moov.NewAPIClient(conf)
 
+	// Accounts
+	if *flagVerifyAccounts {
+		resp, err := api.MonitorApi.PingAccounts(ctx, &moov.PingAccountsOpts{
+			XRequestID: optional.NewString(requestID),
+		})
+		if err != nil {
+			return fmt.Errorf("ERROR: failed to ping Accounts: %v", err)
+		}
+		resp.Body.Close()
+		log.Println("Accouns PONG")
+	}
+
 	// ACH
 	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{
 		XRequestID: optional.NewString(requestID),
@@ -196,6 +208,18 @@ func pingApps(ctx context.Context) error {
 	}
 	resp.Body.Close()
 	log.Println("auth PONG")
+
+	// Customers
+	if *flagApproveCustomers {
+		resp, err := api.MonitorApi.PingCustomers(ctx, &moov.PingCustomersOpts{
+			XRequestID: optional.NewString(requestID),
+		})
+		if err != nil {
+			return fmt.Errorf("ERROR: failed to ping Customers: %v", err)
+		}
+		resp.Body.Close()
+		log.Println("Customers PONG")
+	}
 
 	// fed
 	resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{
