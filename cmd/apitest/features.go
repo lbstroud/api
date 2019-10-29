@@ -12,7 +12,14 @@ type featureFlags struct {
 	CustomersCallsDisabled bool `json:"customersCallsDisabled"`
 }
 
-func grabPaygateFeatures(paygateAdminAddress string, httpClient *http.Client) (*featureFlags, error) {
+func grabPaygateFeatures(flagLocal *bool, paygateAdminAddress string, httpClient *http.Client) (*featureFlags, error) {
+	if !*flagLocal {
+		return &featureFlags{
+			AccountsCallsDisabled:  true,
+			CustomersCallsDisabled: true,
+		}, nil
+	}
+
 	u, err := url.Parse(paygateAdminAddress)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse %s: %v", paygateAdminAddress, err)

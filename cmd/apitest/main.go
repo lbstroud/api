@@ -275,7 +275,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("Using X-Request-ID: %s", requestID)
 	api := moov.NewAPIClient(conf)
 
-	featureFlags, err := grabPaygateFeatures(*flagPaygateAdminAddress, adminHTTPClient)
+	featureFlags, err := grabPaygateFeatures(flagLocal, *flagPaygateAdminAddress, adminHTTPClient)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
