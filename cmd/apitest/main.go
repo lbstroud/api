@@ -363,7 +363,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator Depository (id=%s) for user", origDep.ID)
 
 	// Create Originator
-	orig, err := createOriginator(ctx, api, origDep.ID, requestID)
+	orig, err := createOriginator(ctx, api, origDep.ID, requestID, user.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -409,7 +409,7 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Create Transfer
-	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID)
+	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID, user.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
