@@ -68,7 +68,11 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		r.URL.Host += bind.HTTP("accounts")
 		r.URL.Path = "/accounts"
 		if len(parts) > 3 {
-			r.URL.Path += "/"
+			if parts[3] == "ping" {
+				r.URL.Path = "/"
+			} else {
+				r.URL.Path += "/"
+			}
 		}
 	case "customers":
 		if len(parts) >= 5 && strings.EqualFold(parts[4], "accounts") {

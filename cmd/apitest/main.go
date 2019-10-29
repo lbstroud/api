@@ -53,14 +53,12 @@ var (
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
-	flagApproveCustomers      = flag.Bool("customers.approve", false, "Make approval calls to Moov's Customers service. Default's true with -local")
 	flagCustomersAdminAddress = flag.String("customers.admin-address", fmt.Sprintf("http://localhost%s", bind.Admin("customers")), "HTTP address for Customers service")
+	flagPaygateAdminAddress   = flag.String("paygate.admin-address", fmt.Sprintf("http://localhost%s", bind.Admin("paygate")), "HTTP address for Moov paygate service")
 
 	// TODO(adam): can we run this in CI now? with paygate's docker-compose setup??
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
 	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
-
-	flagVerifyAccounts = flag.Bool("verify.accounts", true, "Verify account balances and posted transactions, see ACCOUNTS_CALLS_DISABLED in paygate")
 )
 
 func main() {
@@ -177,18 +175,6 @@ func pingApps(ctx context.Context) error {
 	conf.AddDefaultHeader("X-Request-ID", requestID)
 	api := moov.NewAPIClient(conf)
 
-	// Accounts
-	if *flagVerifyAccounts {
-		resp, err := api.MonitorApi.PingAccounts(ctx, &moov.PingAccountsOpts{
-			XRequestID: optional.NewString(requestID),
-		})
-		if err != nil {
-			return fmt.Errorf("ERROR: failed to ping Accounts: %v", err)
-		}
-		resp.Body.Close()
-		log.Println("Accouns PONG")
-	}
-
 	// ACH
 	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{
 		XRequestID: optional.NewString(requestID),
@@ -208,18 +194,6 @@ func pingApps(ctx context.Context) error {
 	}
 	resp.Body.Close()
 	log.Println("auth PONG")
-
-	// Customers
-	if *flagApproveCustomers {
-		resp, err := api.MonitorApi.PingCustomers(ctx, &moov.PingCustomersOpts{
-			XRequestID: optional.NewString(requestID),
-		})
-		if err != nil {
-			return fmt.Errorf("ERROR: failed to ping Customers: %v", err)
-		}
-		resp.Body.Close()
-		log.Println("Customers PONG")
-	}
 
 	// fed
 	resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{
@@ -301,6 +275,12 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("Using X-Request-ID: %s", requestID)
 	api := moov.NewAPIClient(conf)
 
+	featureFlags, err := grabPaygateFeatures(*flagPaygateAdminAddress, adminHTTPClient)
+	if err != nil {
+		errLogger("FAILURE: %v", err)
+		return nil
+	}
+
 	// Create our random user
 	user, err := createUser(ctx, api, requestID)
 	if err != nil {
@@ -371,10 +351,12 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.ID)
 
 	// By default with -local assume we want to approve customers.
-	if *flagLocal || *flagApproveCustomers {
-		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, conf.HTTPClient, orig.CustomerID, requestID); err != nil {
+	if !featureFlags.CustomersCallsDisabled {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, orig.CustomerID, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
+		} else {
+			debugLogger("INFO: approved customer=%s", orig.CustomerID)
 		}
 	}
 
@@ -401,10 +383,12 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.ID)
 
-	if *flagLocal || *flagApproveCustomers {
-		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, conf.HTTPClient, receiver.CustomerID, requestID); err != nil {
+	if !featureFlags.CustomersCallsDisabled {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, receiver.CustomerID, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
+		} else {
+			debugLogger("INFO: approved customer=%s", receiver.CustomerID)
 		}
 	}
 
@@ -417,7 +401,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.ID)
 
 	// Verify the Transaction was posted
-	if *flagVerifyAccounts {
+	if !featureFlags.AccountsCallsDisabled {
 		if err := checkTransactions(ctx, api, origAcct.ID, user, tx.Amount, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil

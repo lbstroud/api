@@ -7,12 +7,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 )
 
-func attemptCustomerApproval(ctx context.Context, address string, httpClient *http.Client, customerID, requestID string) error {
+func attemptCustomerApproval(ctx context.Context, address string, customerID, requestID string) error {
 	u, err := url.Parse(address)
 	if err != nil {
 		return fmt.Errorf("failed to parse %s: %v", address, err)
@@ -21,17 +22,18 @@ func attemptCustomerApproval(ctx context.Context, address string, httpClient *ht
 
 	// 'OFAC' is the minimum status required for a Customer before Paygate will initiate a transfer
 	body := strings.NewReader(`{"status": "OFAC", "comments": "approval from apitest"}`)
-	req, err := http.NewRequest("POST", u.String(), body)
+	req, err := http.NewRequest("PUT", u.String(), body)
 	if err != nil {
 		return err
 	}
 
-	resp, err := httpClient.Do(req)
+	resp, err := adminHTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
 	if resp.StatusCode > 299 {
-		return fmt.Errorf("problem updating customer=%s status=%v", customerID, resp.Status)
+		bs, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("problem updating customer=%s status=%v: %v", customerID, resp.Status, string(bs))
 	}
 	return nil
 }

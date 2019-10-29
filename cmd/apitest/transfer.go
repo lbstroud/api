@@ -47,7 +47,7 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, account
 
 func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string, dep moov.Depository, u *user, requestID string) error {
 	// start micro deposits
-	resp, err := api.DepositoriesApi.InitiateMicroDeposits(ctx, u.ID, dep.ID, &moov.InitiateMicroDepositsOpts{
+	resp, err := api.DepositoriesApi.InitiateMicroDeposits(ctx, dep.ID, u.ID, &moov.InitiateMicroDepositsOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -79,7 +79,7 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	}
 
 	// confirm micro deposits
-	resp, err = api.DepositoriesApi.ConfirmMicroDeposits(ctx, u.ID, dep.ID, microDeposits, &moov.ConfirmMicroDepositsOpts{
+	resp, err = api.DepositoriesApi.ConfirmMicroDeposits(ctx, dep.ID, u.ID, microDeposits, &moov.ConfirmMicroDepositsOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -100,7 +100,7 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID
 		DefaultDepository: depId,
 		Identification:    "123456789",
 		BirthDate:         birthDate,
-		Address: &Address{
+		Address: moov.Address{
 			Address1:   "123 1st St",
 			City:       "Anytown",
 			State:      "CA",
@@ -129,7 +129,7 @@ func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, re
 		Email:             email(name()), // new random email address
 		DefaultDepository: depId,
 		BirthDate:         birthDate,
-		Address: &Address{
+		Address: moov.Address{
 			Address1:   "123 1st St",
 			City:       "Anytown",
 			State:      "CA",
