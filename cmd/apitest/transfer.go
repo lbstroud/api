@@ -26,7 +26,7 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, account
 		HolderType:    "Individual",
 		Type:          account.Type,
 	}
-	dep, resp, err := api.DepositoriesApi.AddDepository(ctx, req, &moov.AddDepositoryOpts{
+	dep, resp, err := api.DepositoriesApi.AddDepository(ctx, u.ID, req, &moov.AddDepositoryOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -47,7 +47,7 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, account
 
 func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string, dep moov.Depository, u *user, requestID string) error {
 	// start micro deposits
-	resp, err := api.DepositoriesApi.InitiateMicroDeposits(ctx, dep.ID, &moov.InitiateMicroDepositsOpts{
+	resp, err := api.DepositoriesApi.InitiateMicroDeposits(ctx, dep.ID, u.ID, &moov.InitiateMicroDepositsOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -79,7 +79,7 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	}
 
 	// confirm micro deposits
-	resp, err = api.DepositoriesApi.ConfirmMicroDeposits(ctx, dep.ID, microDeposits, &moov.ConfirmMicroDepositsOpts{
+	resp, err = api.DepositoriesApi.ConfirmMicroDeposits(ctx, dep.ID, u.ID, microDeposits, &moov.ConfirmMicroDepositsOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -92,14 +92,23 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	return nil
 }
 
-func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID string) (moov.Originator, error) {
+func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID, userID string) (moov.Originator, error) {
 	first, _ := name()
+	birthDate := time.Now().Truncate(24 * time.Hour).Add(-30 * 24 * time.Hour) // 30 days ago
+
 	req := moov.CreateOriginator{
 		DefaultDepository: depId,
 		Identification:    "123456789",
-		Metadata:          fmt.Sprintf("%s Corp", first),
+		BirthDate:         birthDate,
+		Address: moov.Address{
+			Address1:   "123 1st St",
+			City:       "Anytown",
+			State:      "CA",
+			PostalCode: "90301",
+		},
+		Metadata: fmt.Sprintf("%s Corp", first),
 	}
-	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, req, &moov.AddOriginatorOpts{
+	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, userID, req, &moov.AddOriginatorOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -113,12 +122,22 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID
 }
 
 func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, requestID string) (moov.Receiver, error) {
+	// Create a date in the past
+	birthDate := time.Now().Truncate(24 * time.Hour).Add(-20 * 24 * time.Hour) // 20 days ago
+
 	req := moov.CreateReceiver{
 		Email:             email(name()), // new random email address
 		DefaultDepository: depId,
-		Metadata:          u.Name,
+		BirthDate:         birthDate,
+		Address: moov.Address{
+			Address1:   "123 1st St",
+			City:       "Anytown",
+			State:      "CA",
+			PostalCode: "90301",
+		},
+		Metadata: u.Name,
 	}
-	receiver, resp, err := api.ReceiversApi.AddReceivers(ctx, req, &moov.AddReceiversOpts{
+	receiver, resp, err := api.ReceiversApi.AddReceivers(ctx, u.ID, req, &moov.AddReceiversOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -131,7 +150,7 @@ func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, re
 	return receiver, nil
 }
 
-func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Receiver, orig moov.Originator, amount string, requestID string) (moov.Transfer, error) {
+func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Receiver, orig moov.Originator, amount string, requestID, userID string) (moov.Transfer, error) {
 	req := moov.CreateTransfer{
 		TransferType:         "Push",
 		Amount:               amount,
@@ -152,7 +171,7 @@ func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Rece
 		req.WEBDetail = createWEBDetail()
 
 	}
-	tx, resp, err := api.TransfersApi.AddTransfer(ctx, req, &moov.AddTransferOpts{
+	tx, resp, err := api.TransfersApi.AddTransfer(ctx, userID, req, &moov.AddTransferOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -164,7 +183,7 @@ func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Rece
 	}
 	if *flagCleanup {
 		// Delete the transfer (and underlying file) since we're only making one Transfer
-		resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.ID, &moov.DeleteTransferByIDOpts{
+		resp, err = api.TransfersApi.DeleteTransferByID(ctx, userID, tx.ID, &moov.DeleteTransferByIDOpts{
 			XRequestID: optional.NewString(requestID),
 		})
 		if resp != nil {

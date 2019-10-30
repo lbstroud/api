@@ -27,6 +27,7 @@ import (
 
 	"github.com/moov-io/api"
 	"github.com/moov-io/api/cmd/apitest/local"
+	"github.com/moov-io/base/http/bind"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
@@ -52,11 +53,12 @@ var (
 	flagFakeData       = flag.Bool("fake-data", false, "Generate fake data (instead of one transfer) across several routing numbers, receivers, and originators")
 	flagFakeIterations = flag.Int("fake-data.iterations", 1000, "How many users and transfers to create")
 
+	flagCustomersAdminAddress = flag.String("customers.admin-address", fmt.Sprintf("http://localhost%s", bind.Admin("customers")), "HTTP address for Customers service")
+	flagPaygateAdminAddress   = flag.String("paygate.admin-address", fmt.Sprintf("http://localhost%s", bind.Admin("paygate")), "HTTP address for Moov paygate service")
+
 	// TODO(adam): can we run this in CI now? with paygate's docker-compose setup??
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
 	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
-
-	flagVerifyAccounts = flag.Bool("verify.accounts", true, "Verify account balances and posted transactions, see ACCOUNTS_CALLS_DISABLED in paygate")
 )
 
 func main() {
@@ -72,7 +74,7 @@ func main() {
 
 	ctx := context.TODO()
 
-	// Run tests
+	// Basic sanity check against apps
 	if err := pingApps(ctx); err != nil {
 		log.Fatalf("FAILURE: %v", err)
 	}
@@ -273,6 +275,12 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("Using X-Request-ID: %s", requestID)
 	api := moov.NewAPIClient(conf)
 
+	featureFlags, err := grabPaygateFeatures(flagLocal, *flagPaygateAdminAddress, adminHTTPClient)
+	if err != nil {
+		errLogger("FAILURE: %v", err)
+		return nil
+	}
+
 	// Create our random user
 	user, err := createUser(ctx, api, requestID)
 	if err != nil {
@@ -335,12 +343,22 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator Depository (id=%s) for user", origDep.ID)
 
 	// Create Originator
-	orig, err := createOriginator(ctx, api, origDep.ID, requestID)
+	orig, err := createOriginator(ctx, api, origDep.ID, requestID, user.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 	debugLogger("SUCCESS: Created Originator (id=%s) for user", orig.ID)
+
+	// By default with -local assume we want to approve customers.
+	if !featureFlags.CustomersCallsDisabled {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, orig.CustomerID, requestID); err != nil {
+			errLogger("FAILURE: %v", err)
+			return nil
+		} else {
+			debugLogger("INFO: approved customer=%s", orig.CustomerID)
+		}
+	}
 
 	// Create Receiver Account
 	receiverAcct, err := createAccount(ctx, api, user, "to account", "", requestID)
@@ -365,8 +383,17 @@ func iterate(ctx context.Context) *iteration {
 	}
 	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.ID)
 
+	if !featureFlags.CustomersCallsDisabled {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, receiver.CustomerID, requestID); err != nil {
+			errLogger("FAILURE: %v", err)
+			return nil
+		} else {
+			debugLogger("INFO: approved customer=%s", receiver.CustomerID)
+		}
+	}
+
 	// Create Transfer
-	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID)
+	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID, user.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -374,7 +401,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created %s transfer (id=%s) for user", tx.Amount, tx.ID)
 
 	// Verify the Transaction was posted
-	if *flagVerifyAccounts {
+	if !featureFlags.AccountsCallsDisabled {
 		if err := checkTransactions(ctx, api, origAcct.ID, user, tx.Amount, requestID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
