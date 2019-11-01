@@ -92,23 +92,25 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	return nil
 }
 
-func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID, userID string) (moov.Originator, error) {
+func createOriginator(ctx context.Context, api *moov.APIClient, u *user, flags *featureFlags, depId, requestID string) (moov.Originator, error) {
 	first, _ := name()
-	birthDate := time.Now().Truncate(24 * time.Hour).Add(-30 * 24 * time.Hour) // 30 days ago
-
 	req := moov.CreateOriginator{
 		DefaultDepository: depId,
 		Identification:    "123456789",
-		BirthDate:         birthDate,
-		Address: moov.Address{
+		Metadata:          fmt.Sprintf("%s Corp", first),
+	}
+	if !flags.CustomersCallsDisabled {
+		birthDate := time.Now().Truncate(24 * time.Hour).Add(-30 * 24 * time.Hour) // 30 days ago
+		req.BirthDate = birthDate
+
+		req.Address = moov.Address{
 			Address1:   "123 1st St",
 			City:       "Anytown",
 			State:      "CA",
 			PostalCode: "90301",
-		},
-		Metadata: fmt.Sprintf("%s Corp", first),
+		}
 	}
-	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, userID, req, &moov.AddOriginatorOpts{
+	orig, resp, err := api.OriginatorsApi.AddOriginator(ctx, u.ID, req, &moov.AddOriginatorOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
 		XRequestID:      optional.NewString(requestID),
 	})
@@ -121,21 +123,23 @@ func createOriginator(ctx context.Context, api *moov.APIClient, depId, requestID
 	return orig, nil
 }
 
-func createReceiver(ctx context.Context, api *moov.APIClient, u *user, depId, requestID string) (moov.Receiver, error) {
-	// Create a date in the past
-	birthDate := time.Now().Truncate(24 * time.Hour).Add(-20 * 24 * time.Hour) // 20 days ago
-
+func createReceiver(ctx context.Context, api *moov.APIClient, u *user, flags *featureFlags, depId, requestID string) (moov.Receiver, error) {
 	req := moov.CreateReceiver{
 		Email:             email(name()), // new random email address
 		DefaultDepository: depId,
-		BirthDate:         birthDate,
-		Address: moov.Address{
+		Metadata:          u.Name,
+	}
+	if !flags.CustomersCallsDisabled {
+		// Create a date in the past
+		birthDate := time.Now().Truncate(24 * time.Hour).Add(-20 * 24 * time.Hour) // 20 days ago
+		req.BirthDate = birthDate
+
+		req.Address = moov.Address{
 			Address1:   "123 1st St",
 			City:       "Anytown",
 			State:      "CA",
 			PostalCode: "90301",
-		},
-		Metadata: u.Name,
+		}
 	}
 	receiver, resp, err := api.ReceiversApi.AddReceivers(ctx, u.ID, req, &moov.AddReceiversOpts{
 		XIdempotencyKey: optional.NewString(generateID()),
