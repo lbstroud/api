@@ -65,3 +65,8 @@ release-push:
 	docker push moov/apitest:$(VERSION)
 	docker push moov/localdevproxy:$(VERSION)
 	docker push moov/localdevproxy:latest
+
+.PHONY: tag
+tag:
+	git tag $(VERSION)
+	git push origin $(VERSION)
