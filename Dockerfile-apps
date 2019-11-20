@@ -3,7 +3,8 @@ RUN chmod 777 -R /var/cache/nginx/
 COPY nginx/nginx.conf /opt/nginx/nginx.conf
 COPY nginx/default.conf /opt/nginx/conf.d/default.conf
 
-COPY ./apps/ /opt/nginx/www/
+COPY ./apps/ /opt/nginx/www/apps/
+COPY ./apps/index.html /opt/nginx/www/index.html
 RUN echo '# empty prometheus metrics response' > /opt/nginx/www/metrics
 
 RUN adduser -q --gecos '' --disabled-login --shell /bin/false moov
