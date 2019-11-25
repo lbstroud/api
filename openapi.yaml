@@ -167,39 +167,39 @@ paths:
   /v1/ach/gateways:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1gateways'
 
-# OFAC endpoints
-  /v1/ofac/companies/{companyID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyID%7D'
-  /v1/ofac/companies/{companyID}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyID%7D~1watch'
-  /v1/ofac/companies/{companyID}/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1%7BcompanyID%7D~1watch~1%7BwatchID%7D'
-  /v1/ofac/companies/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1watch'
-  /v1/ofac/companies/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1companies~1watch~1%7BwatchID%7D'
-  # Customer Endpoints
-  /v1/ofac/customers/{customerID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D'
-  /v1/ofac/customers/{customerID}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1watch'
-  /v1/ofac/customers/{customerID}/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1watch~1%7BwatchID%7D'
-  /v1/ofac/customers/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch'
-  /v1/ofac/customers/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1customers~1watch~1%7BwatchID%7D'
+  # Watchmanendpoints
+  /v1/watchman/companies/{companyID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D'
+  /v1/watchman/companies/{companyID}/watch:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D~1watch'
+  /v1/watchman/companies/{companyID}/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D~1watch~1%7BwatchID%7D'
+  /v1/watchman/companies/watch:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1watch'
+  /v1/watchman/companies/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1watch~1%7BwatchID%7D'
+  # OFAC Customer Endpoints
+  /v1/watchman/ofac/customers/{customerID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D'
+  /v1/watchman/ofac/customers/{customerID}/watch:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D~1watch'
+  /v1/watchman/ofac/customers/{customerID}/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D~1watch~1%7BwatchID%7D'
+  /v1/watchman/ofac/customers/watch:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1watch'
+  /v1/watchman/ofac/customers/watch/{watchID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1watch~1%7BwatchID%7D'
   # Other Endpoints
-  /v1/ofac/downloads:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1downloads'
-  /v1/ofac/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1search'
-  /v1/ofac/sdn/{sdnID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnID%7D'
-  /v1/ofac/sdn/{sdnID}/alts:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnID%7D~1alts'
-  /v1/ofac/sdn/{sdnID}/addresses:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ofac/master/openapi.yaml#/paths/~1sdn~1%7BsdnID%7D~1addresses'
+  /v1/watchman/ofac/downloads:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1downloads'
+  /v1/watchman/ofac/search:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1search'
+  /v1/watchman/ofac/sdn/{sdnID}:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D'
+  /v1/watchman/ofac/sdn/{sdnID}/alts:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D~1alts'
+  /v1/watchman/ofac/sdn/{sdnID}/addresses:
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D~1addresses'
 
 # FED endpoints
   /v1/fed/ach/search:
@@ -313,12 +313,12 @@ paths:
       responses:
         '200':
           description: Service is running properly
-  /v1/ofac/ping:
+  /v1/watchman/ping:
     get:
       tags:
         - Monitor
-      operationId: pingOFAC
-      summary: Check that the moov-io/ofac service is running
+      operationId: pingWatchman
+      summary: Check that the moov-io/watchman service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
