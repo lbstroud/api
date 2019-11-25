@@ -10,6 +10,7 @@
 
 package openapi
 
+// Login struct for Login
 type Login struct {
 	// Email address associated to the User
 	Email string `json:"email,omitempty"`

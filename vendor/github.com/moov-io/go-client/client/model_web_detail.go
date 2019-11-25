@@ -10,6 +10,7 @@
 
 package openapi
 
+// WebDetail struct for WebDetail
 type WebDetail struct {
 	// Metadata for the transaction, placed in addenda 05 record
 	PaymentInformation string `json:"paymentInformation,omitempty"`

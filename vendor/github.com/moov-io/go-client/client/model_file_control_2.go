@@ -10,6 +10,7 @@
 
 package openapi
 
+// FileControl2 struct for FileControl2
 type FileControl2 struct {
 	// FileControl ID
 	ID string `json:"ID,omitempty"`

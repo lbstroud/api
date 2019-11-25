@@ -83,29 +83,12 @@ Class | Method | HTTP request | Description
 *MonitorApi* | [**PingCustomers**](docs/MonitorApi.md#pingcustomers) | **Get** /v1/customers/ping | Check that the moov-io/customers service is running
 *MonitorApi* | [**PingFED**](docs/MonitorApi.md#pingfed) | **Get** /v1/fed/ping | Check that the moov-io/fed service is running
 *MonitorApi* | [**PingImageCashLetter**](docs/MonitorApi.md#pingimagecashletter) | **Get** /v1/imagecashletter/ping | Check that the moov-io/imagecashletter service is running
-*MonitorApi* | [**PingOFAC**](docs/MonitorApi.md#pingofac) | **Get** /v1/ofac/ping | Check that the moov-io/ofac service is running
 *MonitorApi* | [**PingPaygate**](docs/MonitorApi.md#pingpaygate) | **Get** /v1/paygate/ping | Check that the moov-io/paygate service is running
+*MonitorApi* | [**PingWatchman**](docs/MonitorApi.md#pingwatchman) | **Get** /v1/watchman/ping | Check that the moov-io/watchman service is running
 *OAuth2Api* | [**CheckOAuthClientCredentials**](docs/OAuth2Api.md#checkoauthclientcredentials) | **Get** /v1/oauth2/authorize | Verify OAuth2 Bearer token
 *OAuth2Api* | [**CreateOAuth2Client**](docs/OAuth2Api.md#createoauth2client) | **Post** /v1/oauth2/client | Create OAuth2 client credentials
 *OAuth2Api* | [**CreateOAuth2Token**](docs/OAuth2Api.md#createoauth2token) | **Post** /v1/oauth2/token | Generate OAuth2 access token
 *OAuth2Api* | [**GetClientsForUserId**](docs/OAuth2Api.md#getclientsforuserid) | **Get** /v1/oauth2/clients | List OAuth2 clients for the authenticated user
-*OFACApi* | [**AddOFACCompanyNameWatch**](docs/OFACApi.md#addofaccompanynamewatch) | **Post** /v1/ofac/companies/watch | Add company watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
-*OFACApi* | [**AddOFACCompanyWatch**](docs/OFACApi.md#addofaccompanywatch) | **Post** /v1/ofac/companies/{companyID}/watch | Add OFAC watch on a Company
-*OFACApi* | [**AddOFACCustomerNameWatch**](docs/OFACApi.md#addofaccustomernamewatch) | **Post** /v1/ofac/customers/watch | Add customer watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
-*OFACApi* | [**AddOFACCustomerWatch**](docs/OFACApi.md#addofaccustomerwatch) | **Post** /v1/ofac/customers/{customerID}/watch | Add OFAC watch on a Customer
-*OFACApi* | [**GetLatestDownloads**](docs/OFACApi.md#getlatestdownloads) | **Get** /v1/ofac/downloads | Return list of recent downloads of OFAC data
-*OFACApi* | [**GetOFACCompany**](docs/OFACApi.md#getofaccompany) | **Get** /v1/ofac/companies/{companyID} | Get information about a company, trust or organization such as addresses, alternate names, and remarks.
-*OFACApi* | [**GetOFACCustomer**](docs/OFACApi.md#getofaccustomer) | **Get** /v1/ofac/customers/{customerID} | Get information about a customer, addresses, alternate names, and their SDN metadata.
-*OFACApi* | [**GetSDN**](docs/OFACApi.md#getsdn) | **Get** /v1/ofac/sdn/{sdnID} | Specially designated national
-*OFACApi* | [**GetSDNAddresses**](docs/OFACApi.md#getsdnaddresses) | **Get** /v1/ofac/sdn/{sdnID}/addresses | Get addresses for a given SDN
-*OFACApi* | [**GetSDNAltNames**](docs/OFACApi.md#getsdnaltnames) | **Get** /v1/ofac/sdn/{sdnID}/alts | Get alternate names for a given SDN
-*OFACApi* | [**RemoveOFACCompanyNameWatch**](docs/OFACApi.md#removeofaccompanynamewatch) | **Delete** /v1/ofac/companies/watch/{watchID} | Remove a Company name watch
-*OFACApi* | [**RemoveOFACCompanyWatch**](docs/OFACApi.md#removeofaccompanywatch) | **Delete** /v1/ofac/companies/{companyID}/watch/{watchID} | Remove company watch
-*OFACApi* | [**RemoveOFACCustomerNameWatch**](docs/OFACApi.md#removeofaccustomernamewatch) | **Delete** /v1/ofac/customers/watch/{watchID} | Remove a Customer name watch
-*OFACApi* | [**RemoveOFACCustomerWatch**](docs/OFACApi.md#removeofaccustomerwatch) | **Delete** /v1/ofac/customers/{customerID}/watch/{watchID} | Remove customer watch
-*OFACApi* | [**Search**](docs/OFACApi.md#search) | **Get** /v1/ofac/search | Search SDN names and metadata
-*OFACApi* | [**UpdateOFACCompanyStatus**](docs/OFACApi.md#updateofaccompanystatus) | **Put** /v1/ofac/companies/{companyID} | Update a Companies sanction status to always block or always allow transactions.
-*OFACApi* | [**UpdateOFACCustomerStatus**](docs/OFACApi.md#updateofaccustomerstatus) | **Put** /v1/ofac/customers/{customerID} | Update a Customer&#39;s sanction status to always block or always allow transactions.
 *OriginatorsApi* | [**AddOriginator**](docs/OriginatorsApi.md#addoriginator) | **Post** /v1/ach/originators | Create a new Originator object
 *OriginatorsApi* | [**DeleteOriginator**](docs/OriginatorsApi.md#deleteoriginator) | **Delete** /v1/ach/originators/{originatorID} | Permanently deletes an Originator and associated Receivers, Depositories, and Transfers. It cannot be undone. Also immediately cancels any active Transfers for the Originator.
 *OriginatorsApi* | [**GetOriginatorByID**](docs/OriginatorsApi.md#getoriginatorbyid) | **Get** /v1/ach/originators/{originatorID} | Retrieves the details of an existing Originator. You need only supply the unique Originator identifier that was returned upon receiver creation.
@@ -131,6 +114,23 @@ Class | Method | HTTP request | Description
 *UserApi* | [**UpdateUserProfile**](docs/UserApi.md#updateuserprofile) | **Patch** /v1/users/{userID} | Update a User&#39;s profile information
 *UserApi* | [**UserLogin**](docs/UserApi.md#userlogin) | **Post** /v1/users/login | Attempt to login with an email and password
 *UserApi* | [**UserLogout**](docs/UserApi.md#userlogout) | **Delete** /v1/users/login | Invalidat a user&#39;s cookie(s).
+*WatchmanApi* | [**AddOfacCompanyNameWatch**](docs/WatchmanApi.md#addofaccompanynamewatch) | **Post** /v1/watchman/companies/watch | Add company watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
+*WatchmanApi* | [**AddOfacCompanyWatch**](docs/WatchmanApi.md#addofaccompanywatch) | **Post** /v1/watchman/companies/{companyID}/watch | Add watch on a OFAC Company
+*WatchmanApi* | [**AddOfacCustomerNameWatch**](docs/WatchmanApi.md#addofaccustomernamewatch) | **Post** /v1/watchman/ofac/customers/watch | Add customer watch by name. The match percentage will be included in the webhook&#39;s JSON payload.
+*WatchmanApi* | [**AddOfacCustomerWatch**](docs/WatchmanApi.md#addofaccustomerwatch) | **Post** /v1/watchman/ofac/customers/{customerID}/watch | Add watch on a OFAC Customer
+*WatchmanApi* | [**GetLatestDownloads**](docs/WatchmanApi.md#getlatestdownloads) | **Get** /v1/watchman/ofac/downloads | Return list of recent downloads of list data
+*WatchmanApi* | [**GetOfacCompany**](docs/WatchmanApi.md#getofaccompany) | **Get** /v1/watchman/companies/{companyID} | Get information about a company, trust or organization such as addresses, alternate names, and remarks.
+*WatchmanApi* | [**GetOfacCustomer**](docs/WatchmanApi.md#getofaccustomer) | **Get** /v1/watchman/ofac/customers/{customerID} | Get information about a customer, addresses, alternate names, and their SDN metadata.
+*WatchmanApi* | [**GetSDN**](docs/WatchmanApi.md#getsdn) | **Get** /v1/watchman/ofac/sdn/{sdnID} | Specially designated national
+*WatchmanApi* | [**GetSDNAddresses**](docs/WatchmanApi.md#getsdnaddresses) | **Get** /v1/watchman/ofac/sdn/{sdnID}/addresses | Get addresses for a given SDN
+*WatchmanApi* | [**GetSDNAltNames**](docs/WatchmanApi.md#getsdnaltnames) | **Get** /v1/watchman/ofac/sdn/{sdnID}/alts | Get alternate names for a given SDN
+*WatchmanApi* | [**RemoveOfacCompanyNameWatch**](docs/WatchmanApi.md#removeofaccompanynamewatch) | **Delete** /v1/watchman/companies/watch/{watchID} | Remove a Company name watch
+*WatchmanApi* | [**RemoveOfacCompanyWatch**](docs/WatchmanApi.md#removeofaccompanywatch) | **Delete** /v1/watchman/companies/{companyID}/watch/{watchID} | Remove company watch
+*WatchmanApi* | [**RemoveOfacCustomerNameWatch**](docs/WatchmanApi.md#removeofaccustomernamewatch) | **Delete** /v1/watchman/ofac/customers/watch/{watchID} | Remove a Customer name watch
+*WatchmanApi* | [**RemoveOfacCustomerWatch**](docs/WatchmanApi.md#removeofaccustomerwatch) | **Delete** /v1/watchman/ofac/customers/{customerID}/watch/{watchID} | Remove customer watch
+*WatchmanApi* | [**Search**](docs/WatchmanApi.md#search) | **Get** /v1/watchman/ofac/search | Search SDN names and metadata
+*WatchmanApi* | [**UpdateOfacCompanyStatus**](docs/WatchmanApi.md#updateofaccompanystatus) | **Put** /v1/watchman/companies/{companyID} | Update a Companies sanction status to always block or always allow transactions.
+*WatchmanApi* | [**UpdateOfacCustomerStatus**](docs/WatchmanApi.md#updateofaccustomerstatus) | **Put** /v1/watchman/ofac/customers/{customerID} | Update a Customer&#39;s sanction status to always block or always allow transactions.
 *WireFilesApi* | [**CreateWireFile**](docs/WireFilesApi.md#createwirefile) | **Post** /v1/wire/files/create | Create a new File object
 *WireFilesApi* | [**DeleteWireFileByID**](docs/WireFilesApi.md#deletewirefilebyid) | **Delete** /v1/wire/files/{fileID} | Permanently deletes a File and associated FEDWireMessage. It cannot be undone.
 *WireFilesApi* | [**GetWireFileByID**](docs/WireFilesApi.md#getwirefilebyid) | **Get** /v1/wire/files/{fileID} | Retrieves the details of an existing File. You need only supply the unique File identifier that was returned upon creation.
@@ -154,7 +154,6 @@ Class | Method | HTTP request | Description
  - [Address2](docs/Address2.md)
  - [Adjustment](docs/Adjustment.md)
  - [Advice](docs/Advice.md)
- - [Alt](docs/Alt.md)
  - [Amount](docs/Amount.md)
  - [Amounts](docs/Amounts.md)
  - [Batch](docs/Batch.md)
@@ -228,10 +227,15 @@ Class | Method | HTTP request | Description
  - [MessageDisposition](docs/MessageDisposition.md)
  - [OAuth2Client](docs/OAuth2Client.md)
  - [OAuth2Token](docs/OAuth2Token.md)
+ - [OfacAlt](docs/OfacAlt.md)
  - [OfacCompany](docs/OfacCompany.md)
  - [OfacCompanyStatus](docs/OfacCompanyStatus.md)
  - [OfacCustomer](docs/OfacCustomer.md)
  - [OfacCustomerStatus](docs/OfacCustomerStatus.md)
+ - [OfacEntityAddress](docs/OfacEntityAddress.md)
+ - [OfacSdn](docs/OfacSdn.md)
+ - [OfacWatch](docs/OfacWatch.md)
+ - [OfacWatchRequest](docs/OfacWatchRequest.md)
  - [Originator](docs/Originator.md)
  - [OriginatorOptionF](docs/OriginatorOptionF.md)
  - [OriginatorToBeneficiary](docs/OriginatorToBeneficiary.md)
@@ -250,6 +254,7 @@ Class | Method | HTTP request | Description
  - [RemittanceData](docs/RemittanceData.md)
  - [RemittanceFreeText](docs/RemittanceFreeText.md)
  - [RemittanceOriginator](docs/RemittanceOriginator.md)
+ - [ReturnCode](docs/ReturnCode.md)
  - [ReturnDetail](docs/ReturnDetail.md)
  - [ReturnDetailAddendumA](docs/ReturnDetailAddendumA.md)
  - [ReturnDetailAddendumB](docs/ReturnDetailAddendumB.md)
@@ -257,7 +262,6 @@ Class | Method | HTTP request | Description
  - [ReturnDetailAddendumD](docs/ReturnDetailAddendumD.md)
  - [Returns](docs/Returns.md)
  - [RoutingNumberSummary](docs/RoutingNumberSummary.md)
- - [Sdn](docs/Sdn.md)
  - [Search](docs/Search.md)
  - [SecondaryRemittanceDocument](docs/SecondaryRemittanceDocument.md)
  - [SenderDepositoryInstitution](docs/SenderDepositoryInstitution.md)
@@ -270,12 +274,10 @@ Class | Method | HTTP request | Description
  - [Transfer](docs/Transfer.md)
  - [TypeSubType](docs/TypeSubType.md)
  - [UnstructuredAddenda](docs/UnstructuredAddenda.md)
- - [UpdateCompanyStatus](docs/UpdateCompanyStatus.md)
- - [UpdateCustomerStatus](docs/UpdateCustomerStatus.md)
+ - [UpdateOfacCompanyStatus](docs/UpdateOfacCompanyStatus.md)
+ - [UpdateOfacCustomerStatus](docs/UpdateOfacCustomerStatus.md)
  - [User](docs/User.md)
  - [UserProfile](docs/UserProfile.md)
- - [Watch](docs/Watch.md)
- - [WatchRequest](docs/WatchRequest.md)
  - [WebDetail](docs/WebDetail.md)
  - [WireDictionary](docs/WireDictionary.md)
  - [WireLocation](docs/WireLocation.md)

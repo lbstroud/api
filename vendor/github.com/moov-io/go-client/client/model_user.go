@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// User struct for User
 type User struct {
 	// Moov API user ID
 	ID string `json:"ID,omitempty"`

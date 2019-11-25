@@ -10,7 +10,7 @@
 
 package openapi
 
-// RemittanceOriginator
+// RemittanceOriginator RemittanceOriginator
 type RemittanceOriginator struct {
 	// Identification Type  * `OI` - Organization ID * `PI` - Private ID
 	IdentificationType string `json:"identificationType,omitempty"`

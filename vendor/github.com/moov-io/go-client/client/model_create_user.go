@@ -10,6 +10,7 @@
 
 package openapi
 
+// CreateUser struct for CreateUser
 type CreateUser struct {
 	// Email address associated to the User
 	Email string `json:"email"`

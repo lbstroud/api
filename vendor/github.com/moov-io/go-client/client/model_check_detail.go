@@ -10,6 +10,7 @@
 
 package openapi
 
+// CheckDetail struct for CheckDetail
 type CheckDetail struct {
 	// CheckDetail ID
 	ID string `json:"ID,omitempty"`

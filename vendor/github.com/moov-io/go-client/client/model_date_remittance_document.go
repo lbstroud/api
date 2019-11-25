@@ -10,6 +10,7 @@
 
 package openapi
 
+// DateRemittanceDocument struct for DateRemittanceDocument
 type DateRemittanceDocument struct {
 	// DateRemittanceDocument CCYYMMDD
 	DateRemittanceDocument string `json:"dateRemittanceDocument,omitempty"`

@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// FileHeader2 struct for FileHeader2
 type FileHeader2 struct {
 	// FileHeader ID
 	ID string `json:"ID,omitempty"`

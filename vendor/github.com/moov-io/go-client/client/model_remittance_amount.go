@@ -10,7 +10,7 @@
 
 package openapi
 
-// RemittanceAmount
+// RemittanceAmount RemittanceAmount
 type RemittanceAmount struct {
 	// CurrencyCode
 	CurrencyCode string `json:"currencyCode,omitempty"`

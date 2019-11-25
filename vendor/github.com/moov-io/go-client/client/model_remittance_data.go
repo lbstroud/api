@@ -10,6 +10,7 @@
 
 package openapi
 
+// RemittanceData struct for RemittanceData
 type RemittanceData struct {
 	// Name
 	Name string `json:"name,omitempty"`

@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// ImageViewDetail struct for ImageViewDetail
 type ImageViewDetail struct {
 	// ImageViewDetail ID
 	ID string `json:"ID,omitempty"`

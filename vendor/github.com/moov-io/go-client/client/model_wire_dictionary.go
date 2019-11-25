@@ -10,7 +10,7 @@
 
 package openapi
 
-// Search results containing WIREDictionary of Participants
+// WireDictionary Search results containing WIREDictionary of Participants
 type WireDictionary struct {
 	WIREParticipants []WireParticipant `json:"WIREParticipants,omitempty"`
 }

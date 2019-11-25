@@ -10,6 +10,7 @@
 
 package openapi
 
+// OAuth2Token struct for OAuth2Token
 type OAuth2Token struct {
 	// OAuth2 Bearer access token
 	AccessToken string `json:"access_token,omitempty"`

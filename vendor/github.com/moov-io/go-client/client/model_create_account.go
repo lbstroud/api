@@ -10,6 +10,7 @@
 
 package openapi
 
+// CreateAccount struct for CreateAccount
 type CreateAccount struct {
 	// Customer ID associated with accounts
 	CustomerID string `json:"customerID"`

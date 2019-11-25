@@ -10,6 +10,7 @@
 
 package openapi
 
+// File2 struct for File2
 type File2 struct {
 	// File ID
 	ID          string       `json:"ID,omitempty"`

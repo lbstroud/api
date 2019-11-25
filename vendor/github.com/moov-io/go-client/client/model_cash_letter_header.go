@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// CashLetterHeader struct for CashLetterHeader
 type CashLetterHeader struct {
 	// CashLetterHeader ID
 	ID string `json:"ID,omitempty"`

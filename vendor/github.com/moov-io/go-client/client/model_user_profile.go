@@ -10,6 +10,7 @@
 
 package openapi
 
+// UserProfile struct for UserProfile
 type UserProfile struct {
 	// Legal first name
 	FirstName string `json:"firstName,omitempty"`

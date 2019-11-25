@@ -10,7 +10,7 @@
 
 package openapi
 
-// ACHParticipant holds a FedACH dir routing record as defined by Fed ACH Format.  https://www.frbservices.org/EPaymentsDirectory/achFormat.html
+// AchParticipant ACHParticipant holds a FedACH dir routing record as defined by Fed ACH Format.  https://www.frbservices.org/EPaymentsDirectory/achFormat.html
 type AchParticipant struct {
 	// The institution's routing number
 	RoutingNumber string `json:"routingNumber,omitempty"`
@@ -25,9 +25,8 @@ type AchParticipant struct {
 	// Financial Institution's new routing number resulting from a merger or renumber
 	NewRoutingNumber string `json:"newRoutingNumber,omitempty"`
 	// Financial Institution Name
-	CustomerName string `json:"customerName,omitempty"`
-	// FEDACH delivery address
-	AchLocation []AchLocation `json:"achLocation,omitempty"`
+	CustomerName string      `json:"customerName,omitempty"`
+	AchLocation  AchLocation `json:"achLocation,omitempty"`
 	// The Financial Institution's phone number
 	PhoneNumber string `json:"phoneNumber,omitempty"`
 	// Code is based on the customers receiver code  * `1` - Receives Gov/Comm

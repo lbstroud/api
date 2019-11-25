@@ -10,6 +10,7 @@
 
 package openapi
 
+// OAuth2Client struct for OAuth2Client
 type OAuth2Client struct {
 	// OAuth2 client ID
 	ClientId string `json:"client_id,omitempty"`

@@ -10,7 +10,7 @@
 
 package openapi
 
-// A JSON array of currency amounts
+// Amounts A JSON array of currency amounts
 type Amounts struct {
 	Amounts []string `json:"amounts"`
 }

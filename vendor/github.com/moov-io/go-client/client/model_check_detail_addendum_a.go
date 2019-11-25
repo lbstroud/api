@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// CheckDetailAddendumA struct for CheckDetailAddendumA
 type CheckDetailAddendumA struct {
 	// CheckDetailAddendumA ID
 	ID string `json:"ID,omitempty"`

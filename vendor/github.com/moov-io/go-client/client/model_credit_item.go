@@ -10,6 +10,7 @@
 
 package openapi
 
+// CreditItem struct for CreditItem
 type CreditItem struct {
 	// CreditItem ID
 	ID string `json:"ID,omitempty"`

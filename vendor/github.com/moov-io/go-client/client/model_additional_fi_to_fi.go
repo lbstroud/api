@@ -10,6 +10,7 @@
 
 package openapi
 
+// AdditionalFiToFi struct for AdditionalFiToFi
 type AdditionalFiToFi struct {
 	// LineOne
 	LineOne string `json:"lineOne,omitempty"`

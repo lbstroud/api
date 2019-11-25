@@ -10,7 +10,7 @@
 
 package openapi
 
-// CurrencyInstructedAmount
+// CurrencyInstructedAmount CurrencyInstructedAmount
 type CurrencyInstructedAmount struct {
 	// SwiftFieldTag
 	SwiftFieldTag string `json:"swiftFieldTag,omitempty"`

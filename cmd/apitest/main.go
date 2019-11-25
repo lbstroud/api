@@ -205,15 +205,15 @@ func pingApps(ctx context.Context) error {
 	resp.Body.Close()
 	log.Println("FED PONG")
 
-	// ofac
-	resp, err = api.MonitorApi.PingOFAC(ctx, &moov.PingOFACOpts{
+	// Watchman
+	resp, err = api.MonitorApi.PingWatchman(ctx, &moov.PingWatchmanOpts{
 		XRequestID: optional.NewString(requestID),
 	})
 	if err != nil {
-		return fmt.Errorf("ERROR: failed to ping OFAC: %v", err)
+		return fmt.Errorf("ERROR: failed to ping Watchman: %v", err)
 	}
 	resp.Body.Close()
-	log.Println("OFAC PONG")
+	log.Println("Watchman PONG")
 
 	// paygate
 	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{

@@ -10,7 +10,7 @@
 
 package openapi
 
-// RelatedRemittance
+// RelatedRemittance RelatedRemittance
 type RelatedRemittance struct {
 	// RemittanceIdentification
 	RemittanceIdentification string `json:"remittanceIdentification,omitempty"`

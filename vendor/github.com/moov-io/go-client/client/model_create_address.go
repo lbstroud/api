@@ -10,6 +10,7 @@
 
 package openapi
 
+// CreateAddress struct for CreateAddress
 type CreateAddress struct {
 	Type string `json:"type"`
 	// First line of the address

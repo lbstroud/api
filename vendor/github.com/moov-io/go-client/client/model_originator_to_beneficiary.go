@@ -10,7 +10,7 @@
 
 package openapi
 
-// OriginatorToBeneficiary
+// OriginatorToBeneficiary OriginatorToBeneficiary
 type OriginatorToBeneficiary struct {
 	// LineOne
 	LineOne string `json:"lineOne,omitempty"`

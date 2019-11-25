@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// Event struct for Event
 type Event struct {
 	// ID to uniquely identify a event
 	ID string `json:"ID,omitempty"`

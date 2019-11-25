@@ -10,12 +10,15 @@
 
 package openapi
 
-// Alternate name from OFAC list
-type Alt struct {
-	EntityID         string  `json:"entityID,omitempty"`
-	AlternateID      string  `json:"alternateID,omitempty"`
-	AlternateType    string  `json:"alternateType,omitempty"`
-	AlternateName    string  `json:"alternateName,omitempty"`
-	AlternateRemarks string  `json:"alternateRemarks,omitempty"`
-	Match            float32 `json:"match,omitempty"`
+// OfacSdn Specially designated national from OFAC list
+type OfacSdn struct {
+	EntityID string `json:"entityID,omitempty"`
+	SdnName  string `json:"sdnName,omitempty"`
+	// SDN's typically represent an individual (customer) or trust/company/organization. OFAC endpoints refer to customers or companies as different entities, but underlying both is the same SDN metadata.
+	SdnType string `json:"sdnType,omitempty"`
+	Program string `json:"program,omitempty"`
+	Title   string `json:"title,omitempty"`
+	Remarks string `json:"remarks,omitempty"`
+	// Remarks on SDN and often additional information about the SDN
+	Match float32 `json:"match,omitempty"`
 }

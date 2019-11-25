@@ -10,6 +10,7 @@
 
 package openapi
 
+// OutputMessageAccountabilityData struct for OutputMessageAccountabilityData
 type OutputMessageAccountabilityData struct {
 	// OutputCycleDate (CCYYMMDD)
 	OutputCycleDate string `json:"outputCycleDate,omitempty"`

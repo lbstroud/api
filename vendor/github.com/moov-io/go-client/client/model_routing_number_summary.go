@@ -10,6 +10,7 @@
 
 package openapi
 
+// RoutingNumberSummary struct for RoutingNumberSummary
 type RoutingNumberSummary struct {
 	// RoutingNumberSummary ID
 	ID string `json:"ID,omitempty"`

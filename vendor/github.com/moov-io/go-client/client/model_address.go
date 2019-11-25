@@ -10,12 +10,16 @@
 
 package openapi
 
-// Physical address from OFAC list
+// Address optional object required for Know Your Customer (KYC) validation of this Originator
 type Address struct {
-	EntityID                    string  `json:"entityID,omitempty"`
-	AddressID                   string  `json:"addressID,omitempty"`
-	Address                     string  `json:"address,omitempty"`
-	CityStateProvincePostalCode string  `json:"cityStateProvincePostalCode,omitempty"`
-	Country                     string  `json:"country,omitempty"`
-	Match                       float32 `json:"match,omitempty"`
+	// first line of a postal address
+	Address1 string `json:"address1,omitempty"`
+	// second and optional line of a postal address
+	Address2 string `json:"address2,omitempty"`
+	// name of a United States incorporated city
+	City string `json:"city,omitempty"`
+	// two charcer code of a US state
+	State string `json:"state,omitempty"`
+	// United States postal code
+	PostalCode string `json:"postalCode,omitempty"`
 }

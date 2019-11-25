@@ -10,6 +10,7 @@
 
 package openapi
 
+// EntryDetail struct for EntryDetail
 type EntryDetail struct {
 	// Entry Detail ID
 	ID string `json:"ID,omitempty"`

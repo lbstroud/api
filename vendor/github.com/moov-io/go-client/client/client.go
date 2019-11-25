@@ -68,8 +68,6 @@ type APIClient struct {
 
 	OAuth2Api *OAuth2ApiService
 
-	OFACApi *OFACApiService
-
 	OriginatorsApi *OriginatorsApiService
 
 	ReceiversApi *ReceiversApiService
@@ -77,6 +75,8 @@ type APIClient struct {
 	TransfersApi *TransfersApiService
 
 	UserApi *UserApiService
+
+	WatchmanApi *WatchmanApiService
 
 	WireFilesApi *WireFilesApiService
 }
@@ -108,11 +108,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ImageCashLetterFilesApi = (*ImageCashLetterFilesApiService)(&c.common)
 	c.MonitorApi = (*MonitorApiService)(&c.common)
 	c.OAuth2Api = (*OAuth2ApiService)(&c.common)
-	c.OFACApi = (*OFACApiService)(&c.common)
 	c.OriginatorsApi = (*OriginatorsApiService)(&c.common)
 	c.ReceiversApi = (*ReceiversApiService)(&c.common)
 	c.TransfersApi = (*TransfersApiService)(&c.common)
 	c.UserApi = (*UserApiService)(&c.common)
+	c.WatchmanApi = (*WatchmanApiService)(&c.common)
 	c.WireFilesApi = (*WireFilesApiService)(&c.common)
 
 	return c
@@ -208,9 +208,15 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 	return c.cfg.HTTPClient.Do(request)
 }
 
-// Change base path to allow switching to mocks
+// ChangeBasePath changes base path to allow switching to mocks
 func (c *APIClient) ChangeBasePath(path string) {
 	c.cfg.BasePath = path
+}
+
+// Allow modification of underlying config for alternate implementations and testing
+// Caution: modifying the configuration while live can cause data races and potentially unwanted behavior
+func (c *APIClient) GetConfig() *Configuration {
+	return c.cfg
 }
 
 // prepareRequest build the request

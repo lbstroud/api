@@ -14,6 +14,7 @@ import (
 	"os"
 )
 
+// InlineObject struct for InlineObject
 type InlineObject struct {
 	// Document to be uploaded
 	File *os.File `json:"file"`

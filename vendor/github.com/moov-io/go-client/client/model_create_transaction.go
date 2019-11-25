@@ -10,6 +10,7 @@
 
 package openapi
 
+// CreateTransaction struct for CreateTransaction
 type CreateTransaction struct {
 	Lines []TransactionLine `json:"lines,omitempty"`
 }

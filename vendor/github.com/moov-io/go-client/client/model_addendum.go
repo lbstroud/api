@@ -10,6 +10,7 @@
 
 package openapi
 
+// Addendum struct for Addendum
 type Addendum struct {
 	// TODO
 	TypeCode string `json:"typeCode"`

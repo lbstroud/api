@@ -10,7 +10,7 @@
 
 package openapi
 
-// FIToFI
+// FiToFi FIToFI
 type FiToFi struct {
 	// LineOne
 	LineOne string `json:"lineOne,omitempty"`

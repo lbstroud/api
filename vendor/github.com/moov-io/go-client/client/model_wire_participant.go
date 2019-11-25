@@ -10,16 +10,15 @@
 
 package openapi
 
-// WIREParticipant holds a FedWIRE dir routing record as defined by Fed WIRE Format.  https://frbservices.org/EPaymentsDirectory/fedwireFormat.html
+// WireParticipant WIREParticipant holds a FedWIRE dir routing record as defined by Fed WIRE Format.  https://frbservices.org/EPaymentsDirectory/fedwireFormat.html
 type WireParticipant struct {
 	// The institution's routing number
 	RoutingNumber string `json:"routingNumber,omitempty"`
 	// Short name of financial institution
 	TelegraphicName string `json:"telegraphicName,omitempty"`
 	// Financial Institution Name
-	CustomerName string `json:"customerName,omitempty"`
-	// FEDWIRE Delivery Address
-	WireLocation []WireLocation `json:"wireLocation,omitempty"`
+	CustomerName string       `json:"customerName,omitempty"`
+	WireLocation WireLocation `json:"wireLocation,omitempty"`
 	// Designates funds transfer status  * `Y` - Eligible * `N` - Ineligible
 	FundsTransferStatus string `json:"fundsTransferStatus,omitempty"`
 	// Designates funds settlement only status   * `S` - Settlement-Only

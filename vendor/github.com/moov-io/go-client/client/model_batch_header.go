@@ -10,6 +10,7 @@
 
 package openapi
 
+// BatchHeader struct for BatchHeader
 type BatchHeader struct {
 	// Batch Header ID
 	ID string `json:"ID,omitempty"`

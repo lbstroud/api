@@ -10,6 +10,7 @@
 
 package openapi
 
+// Error2 struct for Error2
 type Error2 struct {
 	// An error message describing the problem intended for humans.
 	Error string `json:"error"`

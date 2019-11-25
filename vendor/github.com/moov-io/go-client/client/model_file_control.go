@@ -10,6 +10,7 @@
 
 package openapi
 
+// FileControl struct for FileControl
 type FileControl struct {
 	// Moov API File ID
 	ID string `json:"ID,omitempty"`

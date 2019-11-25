@@ -10,8 +10,10 @@
 
 package openapi
 
-// Customer or Company watch
-type Watch struct {
-	// Object representing a customer or company watch
-	WatchID string `json:"watchID,omitempty"`
+// UpdateOfacCompanyStatus Request body to update a company status.
+type UpdateOfacCompanyStatus struct {
+	// manual override of company/SDN sanction status
+	Status string `json:"status"`
+	// Free form notes about manually changing the Company status
+	Notes string `json:"notes,omitempty"`
 }
