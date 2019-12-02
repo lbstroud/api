@@ -89,8 +89,8 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	case "oauth2":
 		r.URL.Host += bind.HTTP("auth")
 		r.URL.Path = "/oauth2/"
-	case "ofac":
-		r.URL.Host += bind.HTTP("ofac")
+	case "ofac", "watchman":
+		r.URL.Host += bind.HTTP("watchman")
 	case "users":
 		r.URL.Host += bind.HTTP("auth")
 		r.URL.Path = "/users/"
