@@ -46,6 +46,8 @@ github.com/moov-io/go-client v0.3.1-0.20191101165434-635c485d233a h1:wIwwd3I+DwJ
 github.com/moov-io/go-client v0.3.1-0.20191101165434-635c485d233a/go.mod h1:tzUw6+xBWv9ksFAsYwdS0XvyYOnMTNvOeZGcXlmQYgY=
 github.com/moov-io/go-client v0.3.1-0.20191125205212-7c2b0f2081cc h1:DnQgIRYpZoC3kklIAfxfh+Etp7ejYh+Bve4Dz3Fhq08=
 github.com/moov-io/go-client v0.3.1-0.20191125205212-7c2b0f2081cc/go.mod h1:tzUw6+xBWv9ksFAsYwdS0XvyYOnMTNvOeZGcXlmQYgY=
+github.com/moov-io/go-client v0.3.1-0.20191202144850-b9cf06046bc8 h1:Tndbq6nvwE0NnoKYDq5dWXth0D1hXRfajXw90FROV2c=
+github.com/moov-io/go-client v0.3.1-0.20191202144850-b9cf06046bc8/go.mod h1:tzUw6+xBWv9ksFAsYwdS0XvyYOnMTNvOeZGcXlmQYgY=
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

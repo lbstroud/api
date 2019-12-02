@@ -144,6 +144,9 @@ func makeConfiguration() *moov.Configuration {
 			conf.BasePath = *flagApiAddress
 		}
 	}
+	if *flagDebug {
+		conf.Debug = true
+	}
 	apiAddressOnce.Do(func() {
 		log.Printf("Using %s as base API address", conf.BasePath)
 	})
