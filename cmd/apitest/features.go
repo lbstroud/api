@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -13,7 +14,7 @@ type featureFlags struct {
 }
 
 func grabPaygateFeatures(flagLocal *bool, paygateAdminAddress string, httpClient *http.Client) (*featureFlags, error) {
-	if !*flagLocal {
+	if !*flagLocal && !*flagLocalDev {
 		return &featureFlags{
 			AccountsCallsDisabled:  true,
 			CustomersCallsDisabled: true,
@@ -38,5 +39,10 @@ func grabPaygateFeatures(flagLocal *bool, paygateAdminAddress string, httpClient
 	if err := json.NewDecoder(resp.Body).Decode(&flags); err != nil {
 		return nil, fmt.Errorf("failed to read feature flags: %v", err)
 	}
+
+	if *flagDebug {
+		log.Printf("[DEBUG] feature flags: %#v", flags)
+	}
+
 	return &flags, nil
 }
