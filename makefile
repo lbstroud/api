@@ -26,11 +26,11 @@ endif
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...
-	@docker run -p '8000:8080' -it moov/api:latest
+	@docker run --read-only -p '8000:8080' -v $(shell pwd)/nginx/cache/:/var/cache/nginx -v $(shell pwd)/nginx/run/:/var/run -it moov/api:latest
 
 serve-apps:
 	@echo Load http://localhost:8000 in a web browser...
-	@docker run -p '8000:8080' -it moov/api-apps:latest
+	@docker run --read-only -p '8000:8080' -v $(shell pwd)/nginx/cache/:/var/cache/nginx -v $(shell pwd)/nginx/run/:/var/run -it moov/api-apps:latest
 
 dist: build
 ifeq ($(OS),Windows_NT)

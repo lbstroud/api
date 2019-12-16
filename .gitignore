@@ -1,1 +1,4 @@
 /bin/
+
+./nginx/cache/
+./nginx/run/
