@@ -17,7 +17,6 @@ COPY --from=builder redoc-static.html /opt/nginx/www/index.html
 RUN echo '# empty prometheus metrics response' > /opt/nginx/www/metrics
 
 RUN adduser -q --gecos '' --disabled-login --shell /bin/false moov
-USER moov
 
 EXPOSE 8080
 ENTRYPOINT ["nginx"]
