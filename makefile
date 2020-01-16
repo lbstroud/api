@@ -24,6 +24,10 @@ else
 	@echo "Skipping Docker builds on TravisCI"
 endif
 
+.PHONY: generate
+generate:
+	wget -O apps/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.1.0/dist/rapidoc-min.js
+
 serve:
 	@echo Load http://localhost:8000 in a web browser...
 	@docker run --read-only -p '8000:8080' -v $(shell pwd)/nginx/cache/:/var/cache/nginx -v $(shell pwd)/nginx/run/:/var/run -it moov/api:latest
