@@ -4,7 +4,13 @@
     <meta charset="utf-8">
     <script src="../rapidoc-min.js"></script>
   </head>
-  <body>
-    <rapi-doc spec-url="https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml"></rapi-doc>
+  <body onload="scroll();">
+    <rapi-doc
+      id="spec"
+      render-style="read"
+      spec-url="https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml">
+    </rapi-doc>
+
+    <script type="text/javascript" src="../scroll.js"></script>
   </body>
 </html>
