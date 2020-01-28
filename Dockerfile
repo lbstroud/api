@@ -6,7 +6,12 @@ RUN npm update -g && npm install -g --save call-me-maybe mobx styled-components 
 COPY openapi.yaml openapi.yaml
 
 RUN speccy lint openapi.yaml
-RUN redoc-cli bundle openapi.yaml
+RUN redoc-cli bundle openapi.yaml \
+        --options.theme.menu.backgroundColor="#263238" \
+        --options.theme.menu.textColor="#ffffff" \
+        --options.theme.menu.rightPanel.backgroundColor="#263238" \
+        --options.theme.menu.rightPanel.textColor="#333333" \
+        --options.nativeScrollbars
 
 FROM nginx:1.17
 USER nginx
