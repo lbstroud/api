@@ -80,6 +80,9 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  x-logo:
+    url: 'https://moov.io/images/logo.png'
+    altText: Moov logo
 servers:
   - url: https://api.moov.io
     description: Production server
