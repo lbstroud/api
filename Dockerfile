@@ -18,7 +18,9 @@ COPY nginx/nginx.conf /opt/nginx/nginx.conf
 COPY nginx/default.conf /opt/nginx/conf.d/default.conf
 COPY nginx/metrics /opt/nginx/www/metrics
 
-COPY --from=builder redoc-static.html /opt/nginx/www/index.html
+COPY ./site/ /opt/nginx/www/
+
+COPY --from=builder redoc-static.html /opt/nginx/www/v1/index.html
 
 EXPOSE 8080
 ENTRYPOINT ["nginx"]
