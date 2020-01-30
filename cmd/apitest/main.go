@@ -27,10 +27,13 @@ import (
 
 	"github.com/moov-io/api"
 	"github.com/moov-io/api/cmd/apitest/local"
+	"github.com/moov-io/base/admin"
 	"github.com/moov-io/base/http/bind"
 	moov "github.com/moov-io/go-client/client"
 
 	"github.com/antihax/optional"
+	"github.com/go-kit/kit/metrics/prometheus"
+	stdprometheus "github.com/prometheus/client_golang/prometheus"
 	"go4.org/syncutil"
 )
 
@@ -43,6 +46,8 @@ var (
 	flagLocalDev   = flag.Bool("dev", false, "Use tilt local HTTP address")
 
 	flagVersion = flag.Bool("version", false, "Show the version and quit")
+
+	adminAddr = flag.String("admin.addr", ":9090", "Admin HTTP listen address")
 
 	// Business logic flags
 	flagACHType = flag.String("ach.type", "PPD", "ACH Service Class Code (SEC) to use. Options: PPD, IAT")
@@ -59,6 +64,9 @@ var (
 	// TODO(adam): can we run this in CI now? with paygate's docker-compose setup??
 	flagVerifyTransfers    = flag.String("verify-transfers.dir", "", "Verify the created transfers exist in the given directory of ACH files")
 	flagVerifyInitialSleep = flag.Duration("verify-transfers.initial-sleep", 1*time.Minute, "Duration to sleep so paygate can process and merge all transfers")
+
+	flagPauseAfterTransfers = flag.Bool("pause", false, "time.Sleep after transfers (intended for prometheus to scrape metrics)")
+	flagPauseDuration       = flag.Duration("pause.duration", 2*time.Minute, "Duration to pause for after transfers")
 )
 
 func main() {
@@ -71,6 +79,16 @@ func main() {
 
 	log.SetFlags(log.Ldate | log.Ltime | log.LUTC | log.Lmicroseconds | log.Lshortfile)
 	log.Printf("Starting apitest %s", api.Version())
+
+	adminServer := admin.NewServer(*adminAddr)
+	adminServer.AddVersionHandler(api.Version()) // Setup 'GET /version'
+	go func() {
+		log.Printf("listening on %s", adminServer.BindAddr())
+		if err := adminServer.Listen(); err != nil {
+			log.Printf("problem starting admin http: %v", err)
+		}
+	}()
+	defer adminServer.Shutdown()
 
 	ctx := context.TODO()
 
@@ -123,6 +141,12 @@ func main() {
 		if err := verifyTransfersWereMerged(*flagVerifyTransfers, iterations); err != nil {
 			log.Fatalf("FAILURE: %v", err)
 		}
+	}
+
+	// Pause after transfers
+	if *flagPauseAfterTransfers {
+		log.Printf("pausing for %v\n", flagPauseDuration)
+		time.Sleep(*flagPauseDuration)
 	}
 }
 
@@ -245,9 +269,23 @@ type iteration struct {
 	transfer moov.Transfer
 }
 
-var logmu sync.Mutex // guards iterate(..) logging
+var (
+	logmu sync.Mutex // guards iterate(..) logging
+
+	successfulTransfers = prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+		Name: "successful_ach_transfers",
+		Help: "Counter of successful ACH transfers",
+	}, []string{"source"})
+
+	failedTransfers = prometheus.NewCounterFrom(stdprometheus.CounterOpts{
+		Name: "failed_ach_transfers",
+		Help: "Counter of failed ACH transfers",
+	}, []string{"source"})
+)
 
 func iterate(ctx context.Context) *iteration {
+	var failureOncer sync.Once
+
 	var lines []string
 	debugLogger := func(tpl string, args ...interface{}) {
 		if *flagFakeData {
@@ -257,6 +295,10 @@ func iterate(ctx context.Context) *iteration {
 		}
 	}
 	errLogger := func(tpl string, args ...interface{}) {
+		failureOncer.Do(func() {
+			failedTransfers.With("source", "apitest").Add(1)
+		})
+
 		if *flagFakeData {
 			lines = append(lines, fmt.Sprintf(tpl, args...))
 		} else {
@@ -429,6 +471,8 @@ func iterate(ctx context.Context) *iteration {
 		return nil
 	}
 	debugLogger("SUCCESS: invalid OAuth2 access token was rejected")
+
+	successfulTransfers.With("source", "apitest").Add(1)
 
 	return &iteration{
 		user:                 user,
