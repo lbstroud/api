@@ -1,9 +1,15 @@
 PLATFORM=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 VERSION=v$(shell date -u +"%Y.%m.%d").3
 
-.PHONY: build build-api build-apitest build-localdevproxy docker release dist test
+.PHONY: all build build-api build-apitest build-localdevproxy docker release dist test
 
-build: build-api build-apitest build-localdevproxy
+all: build
+
+version:
+	@go run ./internal/version/ $(VERSION)
+
+build: version build-api build-apitest build-localdevproxy
+
 
 build-api:
 ifneq ($(TRAVIS_OS_NAME),osx)

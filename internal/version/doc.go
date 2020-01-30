@@ -2,8 +2,10 @@
 // Use of this source code is governed by an Apache License
 // license that can be found in the LICENSE file.
 
-package api
+// +build !ignore
 
-func Version() string {
-	return "v2020.01.30.3"
+package main
+
+func main() {
+
 }
