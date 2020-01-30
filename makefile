@@ -1,5 +1,5 @@
 PLATFORM=$(shell uname -s | tr '[:upper:]' '[:lower:]')
-VERSION=v$(shell date -u +"%Y.%m.%d").2
+VERSION=v$(shell date -u +"%Y.%m.%d").3
 
 .PHONY: build build-api build-apitest build-localdevproxy docker release dist test
 

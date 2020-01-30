@@ -10,5 +10,5 @@ import (
 )
 
 func Version() string {
-	return fmt.Sprintf("v%s.1", time.Now().Format("2006-01-02"))
+	return fmt.Sprintf("v%s.3", time.Now().Format("2006-01-02"))
 }
