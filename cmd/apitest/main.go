@@ -47,7 +47,7 @@ var (
 
 	flagVersion = flag.Bool("version", false, "Show the version and quit")
 
-	adminAddr = flag.String("admin.addr", ":9090", "Admin HTTP listen address")
+	adminAddr = flag.String("admin.addr", bind.Admin("apitest"), "Admin HTTP listen address")
 
 	// Business logic flags
 	flagACHType = flag.String("ach.type", "PPD", "ACH Service Class Code (SEC) to use. Options: PPD, IAT")
