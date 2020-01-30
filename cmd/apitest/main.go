@@ -302,7 +302,7 @@ func iterate(ctx context.Context) *iteration {
 		if *flagFakeData {
 			lines = append(lines, fmt.Sprintf(tpl, args...))
 		} else {
-			log.Fatalf(tpl, args...)
+			log.Printf(tpl, args...)
 		}
 	}
 	defer func() { // after an iteration print all logs at once
