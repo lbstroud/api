@@ -27,11 +27,11 @@ import (
 
 	"github.com/moov-io/api"
 	"github.com/moov-io/api/cmd/apitest/local"
+	"github.com/moov-io/base"
 	"github.com/moov-io/base/admin"
 	"github.com/moov-io/base/http/bind"
 	moov "github.com/moov-io/go-client/client"
 
-	"github.com/antihax/optional"
 	"github.com/go-kit/kit/metrics/prometheus"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 	"go4.org/syncutil"
@@ -91,6 +91,7 @@ func main() {
 	defer adminServer.Shutdown()
 
 	ctx := context.TODO()
+	requestID := base.ID()
 
 	// Basic sanity check against apps
 	if err := pingApps(ctx, requestID); err != nil {
