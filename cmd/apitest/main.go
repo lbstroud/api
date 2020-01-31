@@ -45,6 +45,7 @@ var (
 	flagLocal      = flag.Bool("local", false, "Use local HTTP addresses (e.g. 'go run')")
 	flagLocalDev   = flag.Bool("dev", false, "Use tilt local HTTP address")
 
+	flagPing    = flag.Bool("ping", false, "Ping Moov applications and quit")
 	flagVersion = flag.Bool("version", false, "Show the version and quit")
 
 	adminAddr = flag.String("admin.addr", bind.Admin("apitest"), "Admin HTTP listen address")
@@ -96,6 +97,10 @@ func main() {
 	// Basic sanity check against apps
 	if err := pingApps(ctx, requestID); err != nil {
 		log.Fatalf("FAILURE: %v", err)
+	}
+	if *flagPing {
+		log.Println("INFO: all applications responded")
+		return
 	}
 
 	// If we're going to verify we need the directory to be empty beforehand
