@@ -128,6 +128,22 @@ func main() {
 	} else {
 		if iter := iterate(ctx, requestID); iter != nil {
 			iterations = append(iterations, iter) // just one user and transfer
+
+			// Verify you can't just add x-user-id
+			ac := &authChecker{
+				apiAddress: *flagApiAddress,
+				requestID:  iter.requestID,
+				userID:     iter.userID,
+
+				origDepID:    iter.originatorDepository.ID,
+				originatorID: iter.originator.ID,
+				recDepID:     iter.receiverDepository.ID,
+				receiverID:   iter.receiver.ID,
+				transferID:   iter.transfer.ID,
+			}
+			if err := ac.checkAll(); err != nil {
+				log.Fatalf("FAILURE: auth bypass %s", err)
+			}
 		}
 	}
 
@@ -246,6 +262,9 @@ func pingApps(ctx context.Context, requestID string) error {
 type iteration struct {
 	user       *user
 	oauthToken moov.OAuth2Token
+
+	requestID string
+	userID    string
 
 	originator           moov.Originator
 	originatorAccount    *moov.Account
@@ -465,6 +484,8 @@ func iterate(ctx context.Context, requestID string) *iteration {
 	return &iteration{
 		user:                 user,
 		oauthToken:           *oauthToken,
+		requestID:            requestID,
+		userID:               user.ID,
 		originator:           orig,
 		originatorAccount:    origAcct,
 		originatorDepository: origDep,
