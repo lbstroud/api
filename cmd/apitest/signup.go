@@ -38,7 +38,7 @@ type user struct {
 }
 
 // createUser randomly generates a user (with profile data) and creates it against the given Moov API.
-func createUser(ctx context.Context, api *moov.APIClient, requestID string) (*user, error) {
+func createUser(ctx context.Context, api *moov.APIClient) (*user, error) {
 	first, last := name()
 	req := moov.CreateUser{
 		Email:     email(first, last),
@@ -48,7 +48,6 @@ func createUser(ctx context.Context, api *moov.APIClient, requestID string) (*us
 		Phone:     phone(),
 	}
 	_, resp, err := api.UserApi.CreateUser(ctx, req, &moov.CreateUserOpts{
-		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if err != nil {
@@ -68,7 +67,6 @@ func createUser(ctx context.Context, api *moov.APIClient, requestID string) (*us
 	// Now login
 	login := moov.Login{Email: req.Email, Password: *flagPassword}
 	u, resp, err := api.UserApi.UserLogin(ctx, login, &moov.UserLoginOpts{
-		XRequestID:      optional.NewString(requestID),
 		XIdempotencyKey: optional.NewString(generateID()),
 	})
 	if resp != nil {

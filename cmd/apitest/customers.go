@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-func attemptCustomerApproval(ctx context.Context, address string, customerID, requestID string) error {
+func attemptCustomerApproval(ctx context.Context, address string, customerID string) error {
 	u, err := url.Parse(address)
 	if err != nil {
 		return fmt.Errorf("failed to parse %s: %v", address, err)

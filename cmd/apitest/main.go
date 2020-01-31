@@ -93,7 +93,7 @@ func main() {
 	ctx := context.TODO()
 
 	// Basic sanity check against apps
-	if err := pingApps(ctx); err != nil {
+	if err := pingApps(ctx, requestID); err != nil {
 		log.Fatalf("FAILURE: %v", err)
 	}
 
@@ -115,7 +115,7 @@ func main() {
 			wg.Add(1)
 			gate.Start()
 			go func() {
-				if iter := iterate(ctx); iter != nil {
+				if iter := iterate(ctx, requestID); iter != nil {
 					mu.Lock()
 					iterations = append(iterations, iter)
 					mu.Unlock()
@@ -126,7 +126,7 @@ func main() {
 		}
 		wg.Wait()
 	} else {
-		if iter := iterate(ctx); iter != nil {
+		if iter := iterate(ctx, requestID); iter != nil {
 			iterations = append(iterations, iter) // just one user and transfer
 		}
 	}
@@ -196,16 +196,13 @@ func makeConfiguration() *moov.Configuration {
 	return conf
 }
 
-func pingApps(ctx context.Context) error {
-	requestID := generateID()
+func pingApps(ctx context.Context, requestID string) error {
 	conf := makeConfiguration()
 	conf.AddDefaultHeader("X-Request-ID", requestID)
 	api := moov.NewAPIClient(conf)
 
 	// ACH
-	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{
-		XRequestID: optional.NewString(requestID),
-	})
+	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping ACH: %v", err)
 	}
@@ -213,9 +210,7 @@ func pingApps(ctx context.Context) error {
 	log.Println("ACH PONG")
 
 	// auth
-	resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{
-		XRequestID: optional.NewString(requestID),
-	})
+	resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping auth: %v", err)
 	}
@@ -223,9 +218,7 @@ func pingApps(ctx context.Context) error {
 	log.Println("auth PONG")
 
 	// fed
-	resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{
-		XRequestID: optional.NewString(requestID),
-	})
+	resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping FED: %v", err)
 	}
@@ -233,9 +226,7 @@ func pingApps(ctx context.Context) error {
 	log.Println("FED PONG")
 
 	// Watchman
-	resp, err = api.MonitorApi.PingWatchman(ctx, &moov.PingWatchmanOpts{
-		XRequestID: optional.NewString(requestID),
-	})
+	resp, err = api.MonitorApi.PingWatchman(ctx, &moov.PingWatchmanOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping Watchman: %v", err)
 	}
@@ -243,9 +234,7 @@ func pingApps(ctx context.Context) error {
 	log.Println("Watchman PONG")
 
 	// paygate
-	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{
-		XRequestID: optional.NewString(requestID),
-	})
+	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)
 	}
@@ -283,7 +272,7 @@ var (
 	}, []string{"source"})
 )
 
-func iterate(ctx context.Context) *iteration {
+func iterate(ctx context.Context, requestID string) *iteration {
 	var failureOncer sync.Once
 
 	var lines []string
@@ -314,7 +303,6 @@ func iterate(ctx context.Context) *iteration {
 		fmt.Println("")
 	}()
 
-	requestID := generateID()
 	conf := makeConfiguration()
 	conf.AddDefaultHeader("X-Request-ID", requestID)
 	debugLogger("Using X-Request-ID: %s", requestID)
@@ -327,7 +315,7 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Create our random user
-	user, err := createUser(ctx, api, requestID)
+	user, err := createUser(ctx, api)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -338,13 +326,13 @@ func iterate(ctx context.Context) *iteration {
 	setMoovAuthCookie(conf, user)
 
 	// Verify Cookie works
-	if err := verifyUserIsLoggedIn(ctx, api, user, requestID); err != nil {
+	if err := verifyUserIsLoggedIn(ctx, api, user); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 	debugLogger("SUCCESS: Cookie works for user %s", user.ID)
 
-	oauthToken, err := createOAuthToken(ctx, api, user, requestID)
+	oauthToken, err := createOAuthToken(ctx, api, user)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -364,7 +352,7 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Setup our micro-deposit origination account (or read its info if already setup)
-	microDepositOrig, err := createMicroDepositAccount(ctx, api, user, requestID)
+	microDepositOrig, err := createMicroDepositAccount(ctx, api, user)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -373,14 +361,14 @@ func iterate(ctx context.Context) *iteration {
 
 	// Create Originator Account
 	// We create these accounts because they won't exist in the Accounts service already. (We're using fake data/accounts.)
-	origAcct, err := createAccount(ctx, api, user, "from account", "", requestID)
+	origAcct, err := createAccount(ctx, api, user, "from account", "")
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 
 	// Create Originator Depository
-	origDep, err := createDepository(ctx, api, user, origAcct, requestID)
+	origDep, err := createDepository(ctx, api, user, origAcct)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -388,7 +376,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Originator Depository (id=%s) for user", origDep.ID)
 
 	// Create Originator
-	orig, err := createOriginator(ctx, api, user, featureFlags, origDep.ID, requestID)
+	orig, err := createOriginator(ctx, api, user, featureFlags, origDep.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -397,7 +385,7 @@ func iterate(ctx context.Context) *iteration {
 
 	// By default with -local assume we want to approve customers.
 	if !featureFlags.CustomersCallsDisabled {
-		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, orig.CustomerID, requestID); err != nil {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, orig.CustomerID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		} else {
@@ -406,14 +394,14 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Create Receiver Account
-	receiverAcct, err := createAccount(ctx, api, user, "to account", "", requestID)
+	receiverAcct, err := createAccount(ctx, api, user, "to account", "")
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 
 	// Create Receiver Depository
-	receiverDep, err := createDepository(ctx, api, user, receiverAcct, requestID)
+	receiverDep, err := createDepository(ctx, api, user, receiverAcct)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -421,7 +409,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Receiver Depository (id=%s) for user", receiverDep.ID)
 
 	// Create Receiver
-	receiver, err := createReceiver(ctx, api, user, featureFlags, receiverDep.ID, requestID)
+	receiver, err := createReceiver(ctx, api, user, featureFlags, receiverDep.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -429,7 +417,7 @@ func iterate(ctx context.Context) *iteration {
 	debugLogger("SUCCESS: Created Receiver (id=%s) for user", receiver.ID)
 
 	if !featureFlags.CustomersCallsDisabled {
-		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, receiver.CustomerID, requestID); err != nil {
+		if err := attemptCustomerApproval(ctx, *flagCustomersAdminAddress, receiver.CustomerID); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		} else {
@@ -438,7 +426,7 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Create Transfer
-	tx, err := createTransfer(ctx, api, receiver, orig, amount(), requestID, user.ID)
+	tx, err := createTransfer(ctx, api, receiver, orig, amount(), user.ID)
 	if err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
@@ -447,11 +435,11 @@ func iterate(ctx context.Context) *iteration {
 
 	// Verify the Transaction was posted
 	if !featureFlags.AccountsCallsDisabled {
-		if err := checkTransactions(ctx, api, origAcct.ID, user, tx.Amount, requestID); err != nil {
+		if err := checkTransactions(ctx, api, origAcct.ID, user, tx.Amount); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		}
-		if err := checkTransactions(ctx, api, receiverAcct.ID, user, tx.Amount, requestID); err != nil {
+		if err := checkTransactions(ctx, api, receiverAcct.ID, user, tx.Amount); err != nil {
 			errLogger("FAILURE: %v", err)
 			return nil
 		}
@@ -459,14 +447,14 @@ func iterate(ctx context.Context) *iteration {
 	}
 
 	// Attempt a Failed login
-	if err := attemptFailedLogin(ctx, api, requestID); err != nil {
+	if err := attemptFailedLogin(ctx, api); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}
 	debugLogger("SUCCESS: invalid login credentials were rejected")
 
 	// Attempt a Failed OAuth2 auth check
-	if err := attemptFailedOAuth2Login(ctx, api, requestID); err != nil {
+	if err := attemptFailedOAuth2Login(ctx, api); err != nil {
 		errLogger("FAILURE: %v", err)
 		return nil
 	}

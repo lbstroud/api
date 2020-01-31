@@ -14,7 +14,7 @@ import (
 	"github.com/antihax/optional"
 )
 
-func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, number, requestID string) (*moov.Account, error) {
+func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, number string) (*moov.Account, error) {
 	req := moov.CreateAccount{
 		CustomerID: u.ID,
 		Name:       name,
@@ -22,9 +22,7 @@ func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, numb
 		Type:       "Savings",
 		Balance:    1000 * 100, // $1,000
 	}
-	opts := &moov.CreateAccountOpts{
-		XRequestID: optional.NewString(requestID),
-	}
+	opts := &moov.CreateAccountOpts{}
 	account, resp, err := api.AccountsApi.CreateAccount(ctx, u.ID, req, opts)
 	if resp != nil {
 		resp.Body.Close()
@@ -35,7 +33,7 @@ func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, numb
 	return &account, nil
 }
 
-func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user, requestID string) (*moov.Account, error) {
+func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user) (*moov.Account, error) {
 	// The hardcoded values here need to match paygate's expectations for the micro-deposit origination account
 	//
 	// TODO(adam): We need to do something about micro-deposit buildup that slowly depletes this account balance.
@@ -44,7 +42,6 @@ func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user
 		Number:        optional.NewString("123"),
 		RoutingNumber: optional.NewString("121042882"),
 		Type_:         optional.NewString("Savings"),
-		XRequestID:    optional.NewString(requestID),
 	}
 	accounts, resp, err := api.AccountsApi.SearchAccounts(ctx, u.ID, opts)
 	if resp != nil && resp.Body != nil {
@@ -56,14 +53,13 @@ func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user
 	if len(accounts) > 0 {
 		return &accounts[0], nil
 	}
-	return createAccount(ctx, api, u, "micro-deposit origination", "123", requestID)
+	return createAccount(ctx, api, u, "micro-deposit origination", "123")
 }
 
 // Verify accountID and Transaction exist of a given amount (used to double check transfers).
-func checkTransactions(ctx context.Context, api *moov.APIClient, accountID string, u *user, amount string, requestID string) error {
+func checkTransactions(ctx context.Context, api *moov.APIClient, accountID string, u *user, amount string) error {
 	opts := &moov.GetAccountTransactionsOpts{
-		Limit:      optional.NewFloat32(25),
-		XRequestID: optional.NewString(requestID),
+		Limit: optional.NewFloat32(25),
 	}
 	transactions, resp, err := api.AccountsApi.GetAccountTransactions(ctx, accountID, u.ID, opts)
 	if resp != nil && resp.Body != nil {
@@ -84,10 +80,9 @@ func checkTransactions(ctx context.Context, api *moov.APIClient, accountID strin
 	return fmt.Errorf("accounts: unable to find %q transaction for account=%s", amount, accountID)
 }
 
-func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, accountID string, u *user, requestID string) ([]*moov.Transaction, error) {
+func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, accountID string, u *user) ([]*moov.Transaction, error) {
 	opts := &moov.GetAccountTransactionsOpts{
-		Limit:      optional.NewFloat32(25),
-		XRequestID: optional.NewString(requestID),
+		Limit: optional.NewFloat32(25),
 	}
 	transactions, resp, err := api.AccountsApi.GetAccountTransactions(ctx, accountID, u.ID, opts)
 	if resp != nil && resp.Body != nil {
