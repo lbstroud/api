@@ -26,14 +26,19 @@ func attemptCustomerApproval(ctx context.Context, address string, customerID str
 	if err != nil {
 		return err
 	}
+	req.Header.Set("Origin", "https://moov.io")
 
 	resp, err := adminHTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode > 299 {
 		bs, _ := ioutil.ReadAll(resp.Body)
 		return fmt.Errorf("problem updating customer=%s status=%v: %v", customerID, resp.Status, string(bs))
+	}
+	if err := checkCORSHeaders(resp); err != nil {
+		return fmt.Errorf("attempt customer approval: %v", err)
 	}
 	return nil
 }

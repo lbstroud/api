@@ -31,6 +31,9 @@ func createDepository(ctx context.Context, api *moov.APIClient, u *user, account
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return dep, fmt.Errorf("create depository: %v", err)
+		}
 	}
 	if err != nil {
 		return dep, fmt.Errorf("problem creating depository (name: %q) for user (userID=%s): %v", account.Name, u.ID, err)
@@ -51,6 +54,9 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return fmt.Errorf("initiate micro-deposits: %v", err)
+		}
 	}
 	if err != nil {
 		return fmt.Errorf("problem starting micro deposits: %v", err)
@@ -82,6 +88,9 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return fmt.Errorf("confirm micro-deposits: %v", err)
+		}
 	}
 	if err != nil {
 		return fmt.Errorf("problem verifying micro deposits: %v", err)
@@ -112,6 +121,9 @@ func createOriginator(ctx context.Context, api *moov.APIClient, u *user, flags *
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return orig, fmt.Errorf("create originator: %v", err)
+		}
 	}
 	if err != nil {
 		return orig, fmt.Errorf("problem creating originator: %v", err)
@@ -142,6 +154,9 @@ func createReceiver(ctx context.Context, api *moov.APIClient, u *user, flags *fe
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return receiver, fmt.Errorf("create receiver: %v", err)
+		}
 	}
 	if err != nil {
 		return receiver, fmt.Errorf("problem creating receiver: %v", err)
@@ -176,15 +191,22 @@ func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Rece
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return tx, fmt.Errorf("create transfer: %v", err)
+		}
 	}
 	if err != nil {
 		return tx, fmt.Errorf("problem creating %s transfer: %v", amount, err)
 	}
+
 	if *flagCleanup {
 		// Delete the transfer (and underlying file) since we're only making one Transfer
 		resp, err = api.TransfersApi.DeleteTransferByID(ctx, tx.ID, userID, &moov.DeleteTransferByIDOpts{})
 		if resp != nil {
 			resp.Body.Close()
+			if err := checkCORSHeaders(resp); err != nil {
+				return tx, fmt.Errorf("delete transfer: %v", err)
+			}
 		}
 		if err != nil {
 			return tx, fmt.Errorf("problem deleting transfer: %v", err)

@@ -32,6 +32,9 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user) (*moov.
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("create oauth client: %v", err)
+		}
 	}
 	if err != nil {
 		return nil, fmt.Errorf("problem creating user: %v", err)
@@ -51,6 +54,9 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user) (*moov.
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("create oauth token: %v", err)
+		}
 	}
 	if err != nil {
 		return nil, fmt.Errorf("problem creating user: %v", err)
@@ -64,6 +70,9 @@ func createOAuthToken(ctx context.Context, api *moov.APIClient, u *user) (*moov.
 	resp, err = api.OAuth2Api.CheckOAuthClientCredentials(ctx, accessToken, &moov.CheckOAuthClientCredentialsOpts{})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("check oauth credentials: %v", err)
+		}
 	}
 	return &token, err
 }
@@ -77,6 +86,9 @@ func attemptFailedOAuth2Login(ctx context.Context, api *moov.APIClient) error {
 		resp.Body.Close()
 		if resp.StatusCode != http.StatusForbidden {
 			return fmt.Errorf("got %s response code", resp.Status)
+		}
+		if err := checkCORSHeaders(resp); err != nil {
+			return fmt.Errorf("attempt failed oauth login: %v", err)
 		}
 	}
 	if err == nil {

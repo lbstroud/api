@@ -144,6 +144,7 @@ func main() {
 			if err := ac.checkAll(); err != nil {
 				log.Fatalf("FAILURE: auth bypass %s", err)
 			}
+			log.Println("INFO: CORS headers present on all HTTP responses")
 		}
 	}
 
@@ -324,6 +325,7 @@ func iterate(ctx context.Context, requestID string) *iteration {
 
 	conf := makeConfiguration()
 	conf.AddDefaultHeader("X-Request-ID", requestID)
+	conf.AddDefaultHeader("Origin", "https://moov.io")
 	debugLogger("Using X-Request-ID: %s", requestID)
 	api := moov.NewAPIClient(conf)
 

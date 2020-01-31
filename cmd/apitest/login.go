@@ -40,6 +40,9 @@ func verifyUserIsLoggedIn(ctx context.Context, api *moov.APIClient, user *user) 
 	resp, err := api.UserApi.CheckUserLogin(ctx, &moov.CheckUserLoginOpts{})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return fmt.Errorf("verify user logged in: %v", err)
+		}
 	}
 	if err != nil {
 		return fmt.Errorf("problem checking user (id=%s) login: %v", user.ID, err)
@@ -61,6 +64,9 @@ func attemptFailedLogin(ctx context.Context, api *moov.APIClient) error {
 		resp.Body.Close()
 		if resp.StatusCode != http.StatusForbidden {
 			return fmt.Errorf("got %s response code", resp.Status)
+		}
+		if err := checkCORSHeaders(resp); err != nil {
+			return fmt.Errorf("attempt failed login: %v", err)
 		}
 	}
 	if err == nil {

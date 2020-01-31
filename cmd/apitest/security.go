@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -78,6 +79,11 @@ func (ac *authChecker) canWeBypassAuth(objPathSegments ...string) error {
 	}
 	defer resp.Body.Close()
 
+	if err := checkCORSHeaders(resp); err != nil {
+		fmt.Printf("response headers:\n%#v\n", resp.Header)
+		return err
+	}
+
 	switch resp.StatusCode {
 	case http.StatusOK:
 		bs, _ := ioutil.ReadAll(resp.Body)
@@ -94,4 +100,14 @@ func (ac *authChecker) canWeBypassAuth(objPathSegments ...string) error {
 	}
 
 	return fmt.Errorf("unexpected HTTP status %v", resp.Status)
+}
+
+func checkCORSHeaders(resp *http.Response) error {
+	if v := resp.Header.Get("Access-Control-Allow-Origin"); v == "" {
+		return errors.New("missing CORS headers: Origin")
+	}
+	if v := resp.Header.Get("Access-Control-Allow-Credentials"); v == "" {
+		return errors.New("missing CORS headers: Credentials")
+	}
+	return nil
 }

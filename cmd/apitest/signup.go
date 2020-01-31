@@ -62,6 +62,9 @@ func createUser(ctx context.Context, api *moov.APIClient) (*user, error) {
 	}
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("create user: %v", err)
+		}
 	}
 
 	// Now login
@@ -71,6 +74,9 @@ func createUser(ctx context.Context, api *moov.APIClient) (*user, error) {
 	})
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("user login: %v", err)
+		}
 	}
 	if err != nil {
 		return nil, fmt.Errorf("problem logging in for user: %v", err)

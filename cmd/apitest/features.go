@@ -27,12 +27,23 @@ func grabPaygateFeatures(flagLocal *bool, paygateAdminAddress string, httpClient
 	}
 	u.Path = "/features"
 
-	resp, err := httpClient.Get(u.String())
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("problem creating request: %v", err)
+	}
+	req.Header.Set("Origin", "https://moov.io")
+
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load feature flags: %v", err)
 	}
+	defer resp.Body.Close()
+
 	if resp.StatusCode > 200 {
 		return nil, fmt.Errorf("unexpected HTTP status: %s", resp.Status)
+	}
+	if err := checkCORSHeaders(resp); err != nil {
+		return nil, fmt.Errorf("get paygate features: %v", err)
 	}
 
 	var flags featureFlags

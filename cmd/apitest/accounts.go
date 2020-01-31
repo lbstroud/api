@@ -26,6 +26,9 @@ func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, numb
 	account, resp, err := api.AccountsApi.CreateAccount(ctx, u.ID, req, opts)
 	if resp != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("create account: %v", err)
+		}
 	}
 	if err != nil {
 		return nil, fmt.Errorf("problem creating account %q: %v", name, err)
@@ -46,6 +49,9 @@ func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user
 	accounts, resp, err := api.AccountsApi.SearchAccounts(ctx, u.ID, opts)
 	if resp != nil && resp.Body != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("create micro-deposit: %v", err)
+		}
 	}
 	if err != nil {
 		return nil, fmt.Errorf("micro-deposits: SearchAccounts: userID=%s: %v", u.ID, err)
@@ -64,6 +70,9 @@ func checkTransactions(ctx context.Context, api *moov.APIClient, accountID strin
 	transactions, resp, err := api.AccountsApi.GetAccountTransactions(ctx, accountID, u.ID, opts)
 	if resp != nil && resp.Body != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return fmt.Errorf("check transactions: %v", err)
+		}
 	}
 	if err != nil {
 		return fmt.Errorf("accounts: GetAccountTransactions: %v", err)
@@ -87,6 +96,9 @@ func getMicroDepositsTransactions(ctx context.Context, api *moov.APIClient, acco
 	transactions, resp, err := api.AccountsApi.GetAccountTransactions(ctx, accountID, u.ID, opts)
 	if resp != nil && resp.Body != nil {
 		resp.Body.Close()
+		if err := checkCORSHeaders(resp); err != nil {
+			return nil, fmt.Errorf("get micro-deposit transactions: %v", err)
+		}
 	}
 	if err != nil {
 		return nil, fmt.Errorf("accounts: getMicroDeposits: %v", err)
