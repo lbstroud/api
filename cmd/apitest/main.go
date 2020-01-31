@@ -85,9 +85,7 @@ func main() {
 	adminServer.AddVersionHandler(api.Version()) // Setup 'GET /version'
 	go func() {
 		log.Printf("listening on %s", adminServer.BindAddr())
-		if err := adminServer.Listen(); err != nil {
-			log.Printf("problem starting admin http: %v", err)
-		}
+		adminServer.Listen()
 	}()
 	defer adminServer.Shutdown()
 
