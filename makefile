@@ -39,7 +39,7 @@ endif
 
 .PHONY: generate
 generate:
-	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.1.1/dist/rapidoc-min.js
+	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.2.1/dist/rapidoc-min.js
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...
