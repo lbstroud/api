@@ -263,8 +263,7 @@ paths:
 # Ping Routes (Used to ensure app is running, but apps likely support /ready and /live as well)
   /v1/ach/ping:
     get:
-      tags:
-      - Monitor
+      tags: ['Monitor']
       operationId: pingACH
       summary: Check that the moov-io/ach service is running
       parameters:
@@ -274,8 +273,7 @@ paths:
           description: Service is running properly
   /v1/auth/ping:
     get:
-      tags:
-      - Monitor
+      tags: ['Monitor']
       operationId: pingAuth
       summary: Check that the moov-io/auth service is running
       parameters:
@@ -285,8 +283,7 @@ paths:
           description: Service is running properly
   /v1/fed/ping:
     get:
-      tags:
-        - Monitor
+      tags: ['Monitor']
       operationId: pingFED
       summary: Check that the moov-io/fed service is running
       parameters:
@@ -296,8 +293,7 @@ paths:
           description: Service is running properly
   /v1/accounts/ping:
     get:
-      tags:
-        - Monitor
+      tags: ['Monitor']
       operationId: pingAccounts
       summary: Check that the moov-io/accounts service is running
       parameters:
@@ -307,8 +303,7 @@ paths:
           description: Service is running properly
   /v1/customers/ping:
     get:
-      tags:
-        - Monitor
+      tags: ['Monitor']
       operationId: pingCustomers
       summary: Check that the moov-io/customers service is running
       parameters:
@@ -318,8 +313,7 @@ paths:
           description: Service is running properly
   /v1/watchman/ping:
     get:
-      tags:
-        - Monitor
+      tags: ['Monitor']
       operationId: pingWatchman
       summary: Check that the moov-io/watchman service is running
       parameters:
@@ -329,8 +323,7 @@ paths:
           description: Service is running properly
   /v1/imagecashletter/ping:
     get:
-      tags:
-        - Monitor
+      tags: ['Monitor']
       operationId: pingImageCashLetter
       summary: Check that the moov-io/imagecashletter service is running
       parameters:
@@ -340,10 +333,19 @@ paths:
           description: Service is running properly
   /v1/paygate/ping:
     get:
-      tags:
-      - Monitor
+      tags: ['Monitor']
       operationId: pingPaygate
       summary: Check that the moov-io/paygate service is running
+      parameters:
+        - $ref: '#/components/parameters/requestID'
+      responses:
+        '200':
+          description: Service is running properly
+  /v1/wire/ping:
+    get:
+      tags: ['Monitor']
+      operationId: pingWire
+      summary: Check that the moov-io/wire service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
