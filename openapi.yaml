@@ -58,20 +58,15 @@ info:
 
     The Moov API offers many services:
     - Automated Clearing House (ACH) origination and file management
-    - Transfers and ACH Receiver management.
-    - X9 / Image Cash Ledger (ICL) specification support (image uplaod)
+    - Transfers and ACH Receiver management
+    - Image Cash Ledger (ICL) file creation and modification API
+    - Fed WIRE file creation and modification API
 
     ACH is implemented a RESTful API enabling ACH transactions to be submitted and received without a deep understanding of a full NACHA file specification.
 
-    An Originator can initiate a Transfer as either a push (credit) or pull (debit) to a Receiver. Originators and Receivers must have a valid Depository account for a Transfer. A Transfer is initiated by an Originator to a Receiver with an amount and flow of funds.
-    ```
-    Originator                 ->   Gateway   ->   Receiver
-     - OriginatorDepository                         - ReceiverDepository
-     - Type   (Push or Pull)
-     - Amount (USD 12.43)
-     - Status (Pending)
-     ```
-     If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io).
+    An `Originator` can initiate a `Transfer` as either a push (credit) or pull (debit) to a `Receiver`. Originators and Receivers must have a valid `Depository` account for a `Transfer`. A `Transfer` is initiated by an `Originator` to a `Receiver` with an amount and flow of funds.
+
+    If you find a security related problem please contact us at [`security@moov.io`](mailto:security@moov.io).
   version: "v1"
   title: "Moov API"
   contact:
