@@ -1,5 +1,5 @@
 FROM node:13-buster as builder
-RUN npm update -g && npm install -g --save redoc redoc-cli speccy \
+RUN npm update -g && npm install -g --save redoc@v2.0.0-rc.19 redoc-cli speccy \
         react react-dom styled-components mobx base64-js ieee754 isarray inherits readable-stream \
         to-arraybuffer xtend builtin-status-codes
 
