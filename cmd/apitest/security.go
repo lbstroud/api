@@ -35,6 +35,10 @@ type authChecker struct {
 }
 
 func (ac *authChecker) checkAll() error {
+	if *flagLocal {
+		return nil // skip this check in local dev
+	}
+
 	if err := ac.canWeBypassAuth("depositories", ac.origDepID); err != nil {
 		return fmt.Errorf("originator depository: %v", err)
 	}
@@ -103,6 +107,9 @@ func (ac *authChecker) canWeBypassAuth(objPathSegments ...string) error {
 }
 
 func checkCORSHeaders(resp *http.Response) error {
+	if *flagLocal {
+		return nil // skip this check in local dev
+	}
 	if v := resp.Header.Get("Access-Control-Allow-Origin"); v == "" {
 		return errors.New("missing CORS headers: Origin")
 	}
