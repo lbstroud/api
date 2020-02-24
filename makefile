@@ -10,7 +10,6 @@ version:
 
 build: version build-api build-apitest build-localdevproxy
 
-
 build-api:
 ifneq ($(TRAVIS_OS_NAME),osx)
 	docker build --pull -t moov/api:$(VERSION) -f Dockerfile .
@@ -39,7 +38,7 @@ endif
 
 .PHONY: generate
 generate:
-	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.2.1/dist/rapidoc-min.js
+	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.4.0/dist/rapidoc-min.js
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...
