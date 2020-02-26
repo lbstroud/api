@@ -108,7 +108,7 @@ func findMoovCookie(cookies []*http.Cookie) *http.Cookie {
 // Y - last name
 // D - random int between 0 and 50
 //
-// An email address returned is not guarenteed to be unique.
+// An email address returned is not guaranteed to be unique.
 func email(first, last string) string {
 	return fmt.Sprintf("%s.%s%d@example.com", strings.ToLower(first), strings.ToLower(last), randSource.Int63()%50)
 }

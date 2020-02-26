@@ -18,10 +18,7 @@ import (
 func verifyDirIsEmpty(dir string) bool {
 	s, err := os.Stat(dir)
 	if err != nil || !s.IsDir() {
-		if os.IsNotExist(err) {
-			return true // dir doesn't exist
-		}
-		return false // dir doesnisn't a directory
+		return os.IsNotExist(err)
 	}
 	fd, err := os.Open(dir)
 	if err != nil {

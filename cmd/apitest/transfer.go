@@ -78,6 +78,7 @@ func verifyDepository(ctx context.Context, api *moov.APIClient, accountID string
 	for i := range microDepositTransactions {
 		microDeposits.Amounts = append(microDeposits.Amounts, fmt.Sprintf("USD %.2f", microDepositTransactions[i].Lines[0].Amount/100))
 	}
+
 	if *flagDebug {
 		log.Printf("verifying Depository with micro-deposit amounts: %s", strings.Join(microDeposits.Amounts, ", "))
 	}
