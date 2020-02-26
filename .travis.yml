@@ -48,7 +48,7 @@ script:
   # Ignore a Consul CVE as we don't use that
   - go list -m all | ./bin/nancy -exclude-vulnerability CVE-2020-7219,fc041c7e-0c64-4b74-991e-64196a704ace
   - ./bin/golangci-lint run --timeout=1m --disable=errcheck
-  - staticcheck ./cmd/server/*.go ./internal/*/*.go *.go
+  - staticcheck ./cmd/*/*.go ./internal/*/*.go *.go
   - make dist
   - make test
 deploy:
