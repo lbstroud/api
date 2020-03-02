@@ -58,6 +58,7 @@ deploy:
   file_glob: true
   file:
     - bin/apitest-*
+    - openapi.yaml
   on:
     repo: moov-io/api
     tags: true
