@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Moov Auth Endpoints</title>
+    <title>Moov Accounts Endpoints</title>
     <script src="../../rapidoc-min.js"></script>
   </head>
   <body onload="scroll();">
     <rapi-doc
       id="spec"
       render-style="read"
-      spec-url="https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml">
+      spec-url="https://raw.githubusercontent.com/moov-io/accounts/$accountsVersion/openapi.yaml">
     </rapi-doc>
 
     <script type="text/javascript" src="../../scroll.js"></script>

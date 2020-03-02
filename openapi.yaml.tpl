@@ -93,167 +93,167 @@ tags:
 paths:
 # Auth routes
   /v1/users/create:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1create'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1users~1create'
   /v1/users/login:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1login'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1users~1login'
   /v1/users/{userID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1users~1%7BuserID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1users~1%7BuserID%7D'
   /v1/oauth2/authorize:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1authorize'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1oauth2~1authorize'
   /v1/oauth2/clients:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1clients'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1oauth2~1clients'
   /v1/oauth2/client:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1client'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1oauth2~1client'
   /v1/oauth2/token:
-    $ref: 'https://raw.githubusercontent.com/moov-io/auth/master/openapi.yaml#/paths/~1oauth2~1token'
+    $ref: 'https://raw.githubusercontent.com/moov-io/auth/$authVersion/openapi.yaml#/paths/~1oauth2~1token'
 
 # ACH Files
   /v1/ach/files:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files'
   /v1/ach/files/create:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1create'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1create'
   /v1/ach/files/{fileID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1%7BfileID%7D'
   /v1/ach/files/{fileID}/contents:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1contents'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1%7BfileID%7D~1contents'
   /v1/ach/files/{fileID}/validate:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1validate'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1%7BfileID%7D~1validate'
   /v1/ach/files/{fileID}/segment:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1segment'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1%7BfileID%7D~1segment'
   /v1/ach/files/{fileID}/batches:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1batches'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1%7BfileID%7D~1batches'
   /v1/ach/files/{fileID}/batches/{batchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1batches~1%7BbatchID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/$achVersion/openapi.yml#/paths/~1files~1%7BfileID%7D~1batches~1%7BbatchID%7D'
 
 # Paygate Routes
   /v1/ach/originators:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1originators'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1originators'
   /v1/ach/originators/{originatorID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1originators~1%7BoriginatorID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1originators~1%7BoriginatorID%7D'
   /v1/ach/receivers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers'
   /v1/ach/receivers/{receiverID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D'
   /v1/ach/receivers/{receiverID}/depositories:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D~1depositories'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D~1depositories'
   /v1/ach/receivers/{receiverID}/depositories/{depositoryID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D~1depositories~1%7BdepositoryID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D~1depositories~1%7BdepositoryID%7D'
   /v1/ach/depositories:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1depositories'
   /v1/ach/depositories/{depositoryID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D'
   /v1/ach/depositories/{depositoryID}/micro-deposits:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits'
   /v1/ach/depositories/{depositoryID}/micro-deposits/confirm:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits~1confirm'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits~1confirm'
   /v1/ach/transfers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1transfers'
   /v1/ach/transfers/batch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1batch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1transfers~1batch'
   /v1/ach/transfers/{transferID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D'
   /v1/ach/transfers/{transferID}/failed:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1failed'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1failed'
   /v1/ach/transfers/{transferID}/files:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1files'
   /v1/ach/transfers/{transferID}/events:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1events'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1events'
   /v1/ach/events:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1events'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1events'
   /v1/ach/events/{eventID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1events~1%7BeventID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1events~1%7BeventID%7D'
   /v1/ach/gateways:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1gateways'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1gateways'
 
   # Watchmanendpoints
   /v1/watchman/companies/{companyID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D'
   /v1/watchman/companies/{companyID}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D~1watch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D~1watch'
   /v1/watchman/companies/{companyID}/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D~1watch~1%7BwatchID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1companies~1%7BcompanyID%7D~1watch~1%7BwatchID%7D'
   /v1/watchman/companies/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1watch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1companies~1watch'
   /v1/watchman/companies/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1companies~1watch~1%7BwatchID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1companies~1watch~1%7BwatchID%7D'
   # OFAC Customer Endpoints
   /v1/watchman/ofac/customers/{customerID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D'
   /v1/watchman/ofac/customers/{customerID}/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D~1watch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D~1watch'
   /v1/watchman/ofac/customers/{customerID}/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D~1watch~1%7BwatchID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1customers~1%7BcustomerID%7D~1watch~1%7BwatchID%7D'
   /v1/watchman/ofac/customers/watch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1watch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1customers~1watch'
   /v1/watchman/ofac/customers/watch/{watchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1customers~1watch~1%7BwatchID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1customers~1watch~1%7BwatchID%7D'
   # Other Endpoints
   /v1/watchman/ofac/downloads:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1downloads'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1downloads'
   /v1/watchman/ofac/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1search'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1search'
   /v1/watchman/ofac/sdn/{sdnID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D'
   /v1/watchman/ofac/sdn/{sdnID}/alts:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D~1alts'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D~1alts'
   /v1/watchman/ofac/sdn/{sdnID}/addresses:
-    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D~1addresses'
+    $ref: 'https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml#/paths/~1ofac~1sdn~1%7BsdnID%7D~1addresses'
 
 # FED endpoints
   /v1/fed/ach/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1fed~1ach~1search'
+    $ref: 'https://raw.githubusercontent.com/moov-io/fed/$fedVersion/openapi.yaml#/paths/~1fed~1ach~1search'
   /v1/fed/wire/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/fed/master/openapi.yaml#/paths/~1fed~1wire~1search'
+    $ref: 'https://raw.githubusercontent.com/moov-io/fed/$fedVersion/openapi.yaml#/paths/~1fed~1wire~1search'
 
 # Accounts Endpoints
   /v1/accounts:
-    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts'
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/$accountsVersion/openapi.yaml#/paths/~1accounts'
   /v1/accounts/search:
-    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts~1search'
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/$accountsVersion/openapi.yaml#/paths/~1accounts~1search'
   /v1/accounts/transactions:
-    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts~1transactions'
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/$accountsVersion/openapi.yaml#/paths/~1accounts~1transactions'
   /v1/accounts/{accountID}/transactions:
-    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/master/openapi.yaml#/paths/~1accounts~1%7BaccountID%7D~1transactions'
+    $ref: 'https://raw.githubusercontent.com/moov-io/accounts/$accountsVersion/openapi.yaml#/paths/~1accounts~1%7BaccountID%7D~1transactions'
 
 # Customer endpoint
   /v1/customers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers'
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/$customersVersion/openapi.yaml#/paths/~1customers'
   /v1/customers/{customerID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/$customersVersion/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D'
   /v1/customers/{customerID}/documents:
-    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1documents'
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/$customersVersion/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1documents'
   /v1/customers/{customerID}/documents/{documentID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1documents~1%7BdocumentID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/customers/$customersVersion/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1documents~1%7BdocumentID%7D'
 
 # ImageCashLetter endpoints
   /v1/imagecashletter/files:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files'
   /v1/imagecashletter/files/create:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1create'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files~1create'
   /v1/imagecashletter/files/{fileID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1%7BfileID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D'
   /v1/imagecashletter/files/{fileID}/contents:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1contents'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1contents'
   /v1/imagecashletter/files/{fileID}/validate:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1validate'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1validate'
   /v1/imagecashletter/files/{fileID}/cashLetters:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1cashLetters'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1cashLetters'
   /v1/imagecashletter/files/{fileID}/cashLetters/{cashLetterID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1cashLetters~1%7BcashLetterID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1cashLetters~1%7BcashLetterID%7D'
 
   # wire endpoints
   /v1/wire/files:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml#/paths/~1files'
   /v1/wire/files/create:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1create'
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml#/paths/~1files~1create'
   /v1/wire/files/{fileID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7BfileID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D'
   /v1/wire/files/{fileID}/contents:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1contents'
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1contents'
   /v1/wire/files/{fileID}/validate:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1validate'
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1validate'
   /v1/wire/files/{fileID}/FEDWireMessage:
-    $ref: 'https://raw.githubusercontent.com/moov-io/wire/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1FEDWireMessage'
+    $ref: 'https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml#/paths/~1files~1%7BfileID%7D~1FEDWireMessage'
 
 # Ping Routes (Used to ensure app is running, but apps likely support /ready and /live as well)
   /v1/ach/ping:

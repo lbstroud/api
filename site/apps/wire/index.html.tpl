@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Moov Customers Endpoints</title>
+    <title>Moov Wire Endpoints</title>
     <script src="../../rapidoc-min.js"></script>
   </head>
   <body onload="scroll();">
     <rapi-doc
       id="spec"
       render-style="read"
-      spec-url="https://raw.githubusercontent.com/moov-io/customers/master/openapi.yaml">
+      spec-url="https://raw.githubusercontent.com/moov-io/wire/$wireVersion/openapi.yaml">
     </rapi-doc>
 
     <script type="text/javascript" src="../../scroll.js"></script>

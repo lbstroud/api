@@ -9,7 +9,7 @@
     <rapi-doc
       id="spec"
       render-style="read"
-      spec-url="https://raw.githubusercontent.com/moov-io/watchman/master/openapi.yaml">
+      spec-url="https://raw.githubusercontent.com/moov-io/watchman/$watchmanVersion/openapi.yaml">
     </rapi-doc>
 
     <script type="text/javascript" src="../../scroll.js"></script>

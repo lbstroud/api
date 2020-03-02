@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Moov ACH Endpoints</title>
+    <title>Moov FED Endpoints</title>
     <script src="../../rapidoc-min.js"></script>
   </head>
   <body onload="scroll();">
     <rapi-doc
       id="spec"
       render-style="read"
-      spec-url="https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml">
+      spec-url="https://raw.githubusercontent.com/moov-io/fed/$fedVersion/openapi.yaml">
     </rapi-doc>
 
     <script type="text/javascript" src="../../scroll.js"></script>

@@ -2,3 +2,7 @@
 
 ./nginx/cache/
 ./nginx/run/
+
+/openapi.yaml
+/site/apps/*/index.html
+/site/admin/*/index.html
