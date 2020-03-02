@@ -76,7 +76,7 @@ func replaceVersions(path string) error {
 func main() {
 	for i := range templateFilepaths {
 		if err := replaceVersions(templateFilepaths[i]); err != nil {
-			log.Fatal("path=%s error=%v", templateFilepaths[i], err)
+			log.Fatalf("path=%s error=%v", templateFilepaths[i], err)
 		}
 	}
 }
