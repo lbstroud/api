@@ -30,10 +30,10 @@ var (
 		"accounts":        "v0.4.1",
 		"ach":             "v1.3.1",
 		"auth":            "v0.8.0",
-		"customers":       "v0.3.0",
+		"customers":       "v0.3.0", // uncomment in admin/index.html on next release
 		"fed":             "v0.4.1",
 		"imagecashletter": "v0.3.0",
-		"paygate":         "v0.7.1",
+		"paygate":         "v0.7.1", // uncomment in admin/index.html on next release
 		"watchman":        "v0.13.1",
 		"wire":            "v0.3.0",
 	}
