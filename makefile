@@ -8,7 +8,7 @@ all: build
 version:
 	@go run ./internal/version/ $(VERSION)
 
-build: version build-api build-apitest build-localdevproxy
+build: version generate build-api build-apitest build-localdevproxy
 
 build-api:
 ifneq ($(TRAVIS_OS_NAME),osx)
