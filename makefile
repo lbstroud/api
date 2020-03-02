@@ -1,14 +1,14 @@
 PLATFORM=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 VERSION=v$(shell date -u +"%Y.%m.%d").1
 
-.PHONY: all build build-api build-apitest build-localdevproxy docker release dist test
+.PHONY: all build build-api build-apitest docker release dist test
 
 all: build
 
 version:
 	@go run ./internal/version/ $(VERSION)
 
-build: version generate build-api build-apitest build-localdevproxy
+build: version generate build-api build-apitest
 
 build-api:
 ifneq ($(TRAVIS_OS_NAME),osx)
@@ -23,15 +23,6 @@ ifneq ($(TRAVIS_OS_NAME),osx)
 	CGO_ENABLED=0 go build -o bin/apitest ./cmd/apitest/
 	docker build --pull -t moov/apitest:$(VERSION) -f Dockerfile-apitest ./
 	docker tag moov/apitest:$(VERSION) moov/apitest:latest
-else
-	@echo "Skipping Docker builds on TravisCI"
-endif
-
-build-localdevproxy:
-ifneq ($(TRAVIS_OS_NAME),osx)
-	CGO_ENABLED=0 go build -o bin/localdevproxy ./cmd/localdevproxy/
-	docker build --pull -t moov/localdevproxy:$(VERSION) -f Dockerfile-localdevproxy ./
-	docker tag moov/localdevproxy:$(VERSION) moov/localdevproxy:latest
 else
 	@echo "Skipping Docker builds on TravisCI"
 endif
@@ -75,8 +66,6 @@ release: docker AUTHORS
 release-push:
 	docker push moov/api:$(VERSION)
 	docker push moov/apitest:$(VERSION)
-	docker push moov/localdevproxy:$(VERSION)
-	docker push moov/localdevproxy:latest
 
 .PHONY: tag
 tag:
