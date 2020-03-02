@@ -19,7 +19,11 @@ var (
 	templateFilepaths = func() []string {
 		paths := append(
 			readFilepaths(filepath.Join("site", "admin", "*", "index.html.tpl")),
-			filepath.Join("openapi.yaml.tpl"),
+			[]string{
+				filepath.Join("openapi.yaml.tpl"),
+				filepath.Join("site", "admin", "index.html.tpl"),
+				filepath.Join("site", "apps", "index.html.tpl"),
+			}...,
 		)
 		paths = append(paths, readFilepaths(filepath.Join("site", "apps", "*", "index.html.tpl"))...)
 		sort.Strings(paths)

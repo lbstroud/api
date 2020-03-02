@@ -76,3 +76,29 @@ body {
 #content p a:hover {
     color: #22a3e4;
 }
+
+#apidocs {
+    background-color: #1d2024;
+    border-radius: 10px;
+    height: 70px;
+}
+
+#apidocs a {
+    color: #AFBAC4;
+}
+
+#apidocs h3 {
+    color: #AFBAC4;
+    padding-top: 25px;
+    padding-left: 25px;
+}
+
+#apidocs ul {
+    float: right;
+    list-style-type: none;
+}
+
+#apidocs ul li {
+    padding-top: 10px;
+    padding-right: 25px;
+}

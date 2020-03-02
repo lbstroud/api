@@ -24,36 +24,36 @@
       <ul>
         <li>
           <a href="./accounts/">Accounts</a>
-          <span>- General Ledger and financial account service with an HTTP API</span>
+          <span>(Version: $accountsVersion) - General Ledger and financial account service with an HTTP API</span>
         </li>
         <li>
           <a href="./ach/">ACH</a>
-          <span>- Automated Clearing House library implementing NACHA file creation and validation</span>
+          <span>(Version: $achVersion) - Automated Clearing House library implementing NACHA file creation and validation</span>
         </li>
         <!-- <li><a href="./auth/">Auth</a></li> -->
         <li>
           <a href="./customers/">Customers</a>
-          <span>- Registry supporting Know Your Customer (KYC), Customer Identification Program (CIP), and OFAC checks</span>
+          <span>(Version: $customersVersion) - Registry supporting Know Your Customer (KYC), Customer Identification Program (CIP), and OFAC checks</span>
         </li>
         <li>
           <a href="./fed/">Fed</a>
-          <span>- ABA Routing Number and Bank Name Lookup</span>
+          <span>(Version: $fedVersion) - ABA Routing Number and Bank Name Lookup</span>
         </li>
         <li>
           <a href="./imagecashletter/">Image Cash Letter (ICL)</a>
-          <span>- X9's Specifications for ICL (Image Cash Letter) to provide Check 21 services</span>
+          <span>(Version: $imagecashletterVersion) - X9's Specifications for ICL (Image Cash Letter) to provide Check 21 services</span>
         </li>
         <li>
           <a href="./paygate/">Paygate</a>
-          <span>- RESTful API enabling electronic payments to be submitted and received without a deep understanding payment file specification</span>
+          <span>(Version: $paygateVersion) - RESTful API enabling electronic payments to be submitted and received without a deep understanding payment file specification</span>
         </li>
         <li>
           <a href="./watchman/">Watchman</a>
-          <span>- AML/CTF/KYC/OFAC Search of global watchlist, sanctions, and politically exposed person (PEP)</span>
+          <span>(Version: $watchmanVersion) - AML/CTF/KYC/OFAC Search of global watchlist, sanctions, and politically exposed person (PEP)</span>
         </li>
         <li>
           <a href="./wire/">Wire</a>
-          <span>- FedWire funds service file parser and writer</span>
+          <span>(Version: $wireVersion) - FedWire funds service file parser and writer</span>
         </li>
 
       </ul>

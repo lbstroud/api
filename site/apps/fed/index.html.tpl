@@ -3,9 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>Moov FED Endpoints</title>
+    <link rel="stylesheet" href="../../style.css">
     <script src="../../rapidoc-min.js"></script>
   </head>
   <body onload="scroll();">
+    <div id="apidocs">
+      <ul>
+        <li><a href="../">App Endpoints</a></li>
+      </ul>
+
+      <h3>Fed Version: $fedVersion</h3>
+    </div>
+
     <rapi-doc
       id="spec"
       render-style="read"
