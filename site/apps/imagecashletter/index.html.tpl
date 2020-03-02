@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Moov Watchman Admin Endpoints</title>
+    <title>Moov ImageCashLetter Endpoints</title>
     <script src="../../rapidoc-min.js"></script>
   </head>
   <body onload="scroll();">
     <rapi-doc
       id="spec"
       render-style="read"
-      spec-url="https://raw.githubusercontent.com/moov-io/watchman/master/openapi-admin.yaml">
+      spec-url="https://raw.githubusercontent.com/moov-io/imagecashletter/$imagecashletterVersion/openapi.yaml">
     </rapi-doc>
 
     <script type="text/javascript" src="../../scroll.js"></script>

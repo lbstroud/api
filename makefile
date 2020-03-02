@@ -8,7 +8,7 @@ all: build
 version:
 	@go run ./internal/version/ $(VERSION)
 
-build: version build-api build-apitest build-localdevproxy
+build: version generate build-api build-apitest build-localdevproxy
 
 build-api:
 ifneq ($(TRAVIS_OS_NAME),osx)
@@ -39,6 +39,7 @@ endif
 .PHONY: generate
 generate:
 	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.4.0/dist/rapidoc-min.js
+	@go run ./cmd/writeVersions/
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...
