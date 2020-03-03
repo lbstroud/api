@@ -48,7 +48,7 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	r.URL.Host = "localhost"
 	r.URL.Path = "/"
 
-	// Routing logic, should match Ingress routes and ./cmd/localdevproxy's logic
+	// Routing logic, should match Ingress routes
 	switch strings.ToLower(parts[2]) {
 	case "ach":
 		switch strings.ToLower(parts[3]) {
