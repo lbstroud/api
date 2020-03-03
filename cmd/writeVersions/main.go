@@ -37,7 +37,7 @@ var (
 		"customers":       "v0.4.0-rc2",
 		"fed":             "v0.4.1",
 		"imagecashletter": "v0.3.0",
-		"paygate":         "v0.7.1", // uncomment in admin/index.html on next release
+		"paygate":         "v0.8.0-rc2",
 		"watchman":        "v0.13.1",
 		"wire":            "v0.3.0",
 	}
