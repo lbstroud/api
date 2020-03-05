@@ -39,7 +39,7 @@ var (
 		"imagecashletter": "v0.3.0",
 		"paygate":         "v0.8.0-rc2",
 		"watchman":        "v0.13.1",
-		"wire":            "v0.3.0",
+		"wire":            "v0.4.0",
 	}
 )
 
