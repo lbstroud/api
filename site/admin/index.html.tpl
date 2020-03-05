@@ -22,22 +22,18 @@
       <h3>Moov Admin - API Documentation</h3>
 
       <ul>
-        <!--
         <li>
           <a href="./customers/">Customers</a>
           <span>(Version $customersVersion) - Solving customer identification and verification for AML, KYC, CIP, etc regulations</span>
         </li>
-        -->
         <li>
           <a href="./paygate/">Paygate</a>
           <span>(Version $paygateVersion) - Enabling electronic payments to be submitted and received without a deep understanding payment file specification</span>
         </li>
-        <!--
         <li>
           <a href="./watchman/">Watchman</a>
           <span>(Version $watchmanVersion) - Sanctions search from the US and European governments</span>
         </li>
-        -->
       </ul>
     </div>
   </body>
