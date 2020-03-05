@@ -78,6 +78,13 @@ func replaceVersions(path string) error {
 }
 
 func main() {
+	// Check latest releases for apps
+	for key := range versions {
+		if err := checkLatestVersion(key); err != nil {
+			log.Printf("ERROR checking %s version: %v", key, err)
+		}
+	}
+
 	for i := range templateFilepaths {
 		if err := replaceVersions(templateFilepaths[i]); err != nil {
 			log.Fatalf("path=%s error=%v", templateFilepaths[i], err)
