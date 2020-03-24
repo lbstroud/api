@@ -5,9 +5,10 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -19,26 +20,61 @@ var (
 	}
 )
 
-type wrapper struct {
+func checkLatestVersion(w func(app string, current, latest, prerelease string), app string) error {
+	latest, err := latestRelease(app)
+	if err != nil {
+		return fmt.Errorf("latest: %v", err)
+	}
+	prerelease, err := latestPreRelease(app)
+	if err != nil {
+		return fmt.Errorf("pre-release: %v", err)
+	}
+	current := versions[app]
+
+	if latest == "" || prerelease == "" {
+		return nil
+	}
+	if strings.EqualFold(latest, current) || strings.EqualFold(prerelease, current) {
+		return nil
+	}
+	w(app, current, latest, prerelease) // write version differences
+	return nil
+}
+
+func latestRelease(app string) (string, error) {
+	return retrieveVersion(
+		app,
+		fmt.Sprintf("https://api.github.com/repos/moov-io/%s/releases/latest", app),
+	)
+}
+
+func latestPreRelease(app string) (string, error) {
+	return retrieveVersion(
+		app,
+		fmt.Sprintf("https://api.github.com/repos/moov-io/%s/releases", app),
+	)
+}
+
+type body struct {
 	Tag string `json:"tag_name"`
 }
 
-func checkLatestVersion(app string) error {
-	resp, err := httpClient.Get(fmt.Sprintf("https://api.github.com/repos/moov-io/%s/releases/latest", app))
+func retrieveVersion(app, url string) (string, error) {
+	resp, err := httpClient.Get(url)
 	if err != nil {
-		return fmt.Errorf("error getting %s version: %v", app, err)
+		return "", fmt.Errorf("error getting %s version: %v", app, err)
 	}
 	defer resp.Body.Close()
 
-	var wrapper wrapper
-	if err := json.NewDecoder(resp.Body).Decode(&wrapper); err != nil {
-		return fmt.Errorf("error reading %s json: %v", app, err)
-	}
+	bs, _ := ioutil.ReadAll(resp.Body)
 
-	if v := versions[app]; strings.EqualFold(wrapper.Tag, v) {
-		return nil // configured version is latest
-	} else {
-		log.Printf("WARN %s is configured for %s but %s is latest release", app, v, wrapper.Tag)
+	var wrapper body
+	if err := json.NewDecoder(bytes.NewReader(bs)).Decode(&wrapper); err != nil {
+		var wrapper2 []body
+		if err := json.NewDecoder(bytes.NewReader(bs)).Decode(&wrapper2); err != nil {
+			return "", fmt.Errorf("error reading %s json: %v", app, err)
+		}
+		return wrapper2[0].Tag, nil
 	}
-	return nil
+	return wrapper.Tag, nil
 }

@@ -13,6 +13,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"text/tabwriter"
+	"time"
 )
 
 var (
@@ -78,12 +80,19 @@ func replaceVersions(path string) error {
 }
 
 func main() {
-	// Check latest releases for apps
+	// Print the latest release and pre-release for apps
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
+	fmt.Fprintln(w, "App\tCurrent\tLatest\tPre-Release")
+	writeFn := func(app string, current, latest, prerelease string) {
+		fmt.Fprintln(w, fmt.Sprintf("%s\t%s\t%s\t%s", app, current, latest, prerelease))
+	}
 	for key := range versions {
-		if err := checkLatestVersion(key); err != nil {
+		if err := checkLatestVersion(writeFn, key); err != nil {
 			log.Printf("ERROR checking %s version: %v", key, err)
 		}
+		time.Sleep(250 * time.Millisecond)
 	}
+	w.Flush() // print version table
 
 	for i := range templateFilepaths {
 		if err := replaceVersions(templateFilepaths[i]); err != nil {
