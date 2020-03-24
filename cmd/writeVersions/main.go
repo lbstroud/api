@@ -37,7 +37,7 @@ var (
 		"customers":       "v0.4.0-rc2",
 		"fed":             "v0.4.1",
 		"imagecashletter": "v0.3.0",
-		"paygate":         "v0.8.0-rc2",
+		"paygate":         "v0.8.0-rc3",
 		"watchman":        "v0.14.0-rc1",
 		"wire":            "v0.4.0",
 	}
