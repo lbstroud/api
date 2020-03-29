@@ -29,7 +29,7 @@ endif
 
 .PHONY: generate
 generate:
-	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.4.3/dist/rapidoc-min.js
+	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.5.0/dist/rapidoc-min.js
 	@go run ./cmd/writeVersions/
 
 serve:
