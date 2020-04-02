@@ -40,7 +40,7 @@ var (
 		"fed":             "v0.4.3",
 		"imagecashletter": "v0.3.0",
 		"paygate":         "v0.8.0-rc3",
-		"watchman":        "v0.14.0-rc1",
+		"watchman":        "v0.14.0-rc3",
 		"wire":            "v0.4.0",
 	}
 )
