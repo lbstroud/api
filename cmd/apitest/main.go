@@ -376,6 +376,14 @@ func iterate(ctx context.Context, requestID string) *iteration {
 		setMoovOAuthToken(conf, oauthToken)
 	}
 
+	// Setup the Gateway
+	gateway, err := setupGateway(ctx, api, user)
+	if err != nil {
+		errLogger("FAILURE: %v", err)
+		return nil
+	}
+	debugLogger("SUCCESS: Setup Gateway (id=%s) for user", gateway.ID)
+
 	// Setup our micro-deposit origination account (or read its info if already setup)
 	microDepositOrig, err := createMicroDepositAccount(ctx, api, user)
 	if err != nil {

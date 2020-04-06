@@ -52,7 +52,7 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	switch strings.ToLower(parts[2]) {
 	case "ach":
 		switch strings.ToLower(parts[3]) {
-		case "depositories", "originators", "receivers", "transfers":
+		case "depositories", "gateways", "originators", "receivers", "transfers":
 			r.URL.Host += bind.HTTP("paygate")
 		default:
 			r.URL.Host += bind.HTTP("ach")
