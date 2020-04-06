@@ -84,7 +84,7 @@ func main() {
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 	fmt.Fprintln(w, "App\tCurrent\tLatest\tPre-Release")
 	writeFn := func(app string, current, latest, prerelease string) {
-		fmt.Fprintln(w, fmt.Sprintf("%s\t%s\t%s\t%s", app, current, latest, prerelease))
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", app, current, latest, prerelease)
 	}
 	for key := range versions {
 		if err := checkLatestVersion(writeFn, key); err != nil {
