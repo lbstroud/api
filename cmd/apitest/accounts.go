@@ -36,6 +36,10 @@ func createAccount(ctx context.Context, api *moov.APIClient, u *user, name, numb
 	return &account, nil
 }
 
+var (
+	defaultRoutingNumber = "121042882"
+)
+
 func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user) (*moov.Account, error) {
 	// The hardcoded values here need to match paygate's expectations for the micro-deposit origination account
 	//
@@ -43,7 +47,7 @@ func createMicroDepositAccount(ctx context.Context, api *moov.APIClient, u *user
 	// It causes problems eventually as the balance runs too low for any further micro-deposits (apitest runs).
 	opts := &moov.SearchAccountsOpts{
 		Number:        optional.NewString("123"),
-		RoutingNumber: optional.NewString("121042882"),
+		RoutingNumber: optional.NewString(defaultRoutingNumber),
 		Type_:         optional.NewString("Savings"),
 	}
 	accounts, resp, err := api.AccountsApi.SearchAccounts(ctx, u.ID, opts)
