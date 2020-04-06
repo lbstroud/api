@@ -34,7 +34,7 @@ var (
 
 	versions = map[string]string{
 		"accounts":        "v0.4.1",
-		"ach":             "v1.3.1",
+		"ach":             "v1.4.0-rc1",
 		"auth":            "v0.8.0",
 		"customers":       "v0.4.0-rc2",
 		"fed":             "v0.4.3",
