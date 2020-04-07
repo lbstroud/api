@@ -260,7 +260,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingACH
-      summary: Check that the moov-io/ach service is running
+      summary: Ping ACH
+      description: Check that the moov-io/ach service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -275,7 +276,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingAuth
-      summary: Check that the moov-io/auth service is running
+      summary: Ping Auth
+      description: Check that the moov-io/auth service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -290,7 +292,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingFED
-      summary: Check that the moov-io/fed service is running
+      summary: Ping Fed
+      description: Check that the moov-io/fed service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -305,7 +308,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingAccounts
-      summary: Check that the moov-io/accounts service is running
+      summary: Ping Accounts
+      description: Check that the moov-io/accounts service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -320,7 +324,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingCustomers
-      summary: Check that the moov-io/customers service is running
+      summary: Ping Customers
+      description: Check that the moov-io/customers service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -335,7 +340,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingWatchman
-      summary: Check that the moov-io/watchman service is running
+      summary: Ping Watchman
+      description: Check that the moov-io/watchman service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -350,7 +356,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingImageCashLetter
-      summary: Check that the moov-io/imagecashletter service is running
+      summary: Ping ICL
+      description: Check that the moov-io/imagecashletter service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -365,7 +372,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingPaygate
-      summary: Check that the moov-io/paygate service is running
+      summary: Ping PayGate
+      description: Check that the moov-io/paygate service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
@@ -380,7 +388,8 @@ paths:
     get:
       tags: ['Monitor']
       operationId: pingWire
-      summary: Check that the moov-io/wire service is running
+      summary: Ping Wire
+      description: Check that the moov-io/wire service is running
       parameters:
         - $ref: '#/components/parameters/requestID'
       responses:
