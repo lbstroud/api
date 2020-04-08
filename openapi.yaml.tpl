@@ -134,10 +134,6 @@ paths:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers'
   /v1/ach/receivers/{receiverID}:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D'
-  /v1/ach/receivers/{receiverID}/depositories:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D~1depositories'
-  /v1/ach/receivers/{receiverID}/depositories/{depositoryID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D~1depositories~1%7BdepositoryID%7D'
   /v1/ach/depositories:
     $ref: 'https://raw.githubusercontent.com/moov-io/paygate/$paygateVersion/openapi.yaml#/paths/~1depositories'
   /v1/ach/depositories/{depositoryID}:
