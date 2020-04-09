@@ -33,15 +33,15 @@ var (
 	}()
 
 	versions = map[string]string{
-		"accounts":        "v0.4.1",
-		"ach":             "v1.4.0-rc1",
+		"accounts":        "master", // v0.5.0-rc1
+		"ach":             "master", // v1.4.0-rc2
 		"auth":            "v0.8.0",
-		"customers":       "v0.4.0-rc2",
-		"fed":             "v0.4.3",
-		"imagecashletter": "v0.3.0",
-		"paygate":         "v0.8.0-rc3",
-		"watchman":        "v0.14.0-rc3",
-		"wire":            "v0.4.0",
+		"customers":       "master", // v0.4.0-rc2
+		"fed":             "master", // v0.4.3
+		"imagecashletter": "master", // v0.3.0
+		"paygate":         "master", // v0.8.0-rc3
+		"watchman":        "master", // v0.14.0-rc3
+		"wire":            "master", // v0.4.0
 	}
 )
 
