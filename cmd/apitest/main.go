@@ -223,7 +223,7 @@ func pingApps(ctx context.Context, requestID string) error {
 	api := moov.NewAPIClient(conf)
 
 	// ACH
-	resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{})
+	_, resp, err := api.MonitorApi.PingACH(ctx, &moov.PingACHOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping ACH: %v", err)
 	}
@@ -231,7 +231,7 @@ func pingApps(ctx context.Context, requestID string) error {
 	log.Println("ACH PONG")
 
 	// auth
-	resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{})
+	_, resp, err = api.MonitorApi.PingAuth(ctx, &moov.PingAuthOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping auth: %v", err)
 	}
@@ -239,7 +239,7 @@ func pingApps(ctx context.Context, requestID string) error {
 	log.Println("auth PONG")
 
 	// fed
-	resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{})
+	_, resp, err = api.MonitorApi.PingFED(ctx, &moov.PingFEDOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping FED: %v", err)
 	}
@@ -247,7 +247,7 @@ func pingApps(ctx context.Context, requestID string) error {
 	log.Println("FED PONG")
 
 	// Watchman
-	resp, err = api.MonitorApi.PingWatchman(ctx, &moov.PingWatchmanOpts{})
+	_, resp, err = api.MonitorApi.PingWatchman(ctx, &moov.PingWatchmanOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping Watchman: %v", err)
 	}
@@ -255,7 +255,7 @@ func pingApps(ctx context.Context, requestID string) error {
 	log.Println("Watchman PONG")
 
 	// paygate
-	resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{})
+	_, resp, err = api.MonitorApi.PingPaygate(ctx, &moov.PingPaygateOpts{})
 	if err != nil {
 		return fmt.Errorf("ERROR: failed to ping paygate: %v", err)
 	}
