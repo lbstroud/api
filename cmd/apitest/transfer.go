@@ -181,6 +181,9 @@ func createTransfer(ctx context.Context, api *moov.APIClient, receiver moov.Rece
 		req.IATDetail = createIATDetail(receiver, orig)
 	case ach.PPD:
 		req.StandardEntryClassCode = "PPD"
+		req.PPDDetail = moov.PpdDetail{
+			PaymentInformation: "apitest transfer",
+		}
 	case ach.WEB:
 		req.StandardEntryClassCode = "WEB"
 		req.WEBDetail = createWEBDetail()
