@@ -37,11 +37,11 @@ var (
 		"ach":             "master", // v1.4.0-rc2
 		"auth":            "v0.8.0",
 		"customers":       "master", // v0.4.0-rc2
-		"fed":             "master", // v0.4.3
-		"imagecashletter": "master", // v0.3.0
+		"fed":             "v0.5.0",
+		"imagecashletter": "v0.4.2",
 		"paygate":         "master", // v0.8.0-rc3
-		"watchman":        "master", // v0.14.0-rc3
-		"wire":            "master", // v0.4.0
+		"watchman":        "v0.14.0",
+		"wire":            "v0.5.0",
 	}
 )
 
