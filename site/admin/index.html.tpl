@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="nav">
-      <img src="https://moov.io/images/logo.png" />
+      <a href="https://moov.io"><img src="https://moov.io/images/logo.png" /></a>
 
       <ul>
         <li><a href="https://moov.io">Home</a></li>
