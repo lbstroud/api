@@ -26,9 +26,9 @@ To install with `npm` run the following: `npm install -g @stoplight/prism-cli`.
 Then start their server and start calling endpoints.
 
 ```
-prism mock api.oas3.yaml # Static examples
+prism mock openapiv2.yaml # Static examples
 
-prism mock -d api.oas3.yaml # Dynamic examples
+prism mock -d openapiv2.yaml # Dynamic examples
 ```
 
 ## API Requirements
