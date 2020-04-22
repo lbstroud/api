@@ -109,21 +109,21 @@ paths:
 
 # ACH Files
   /v1/ach/files:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files'
   /v1/ach/files/create:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1create'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1create'
   /v1/ach/files/{fileID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1%7BfileID%7D'
   /v1/ach/files/{fileID}/contents:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1contents'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1contents'
   /v1/ach/files/{fileID}/validate:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1validate'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1validate'
   /v1/ach/files/{fileID}/segment:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1segment'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1segment'
   /v1/ach/files/{fileID}/batches:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1batches'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1batches'
   /v1/ach/files/{fileID}/batches/{batchID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yml#/paths/~1files~1%7BfileID%7D~1batches~1%7BbatchID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/ach/master/openapi.yaml#/paths/~1files~1%7BfileID%7D~1batches~1%7BbatchID%7D'
 
 # Paygate Routes
   /v1/ach/originators:
