@@ -1,0 +1,74 @@
+openapi: 3.0.2
+info:
+  description: Moov API // TODO
+  version: v1
+  title: Moov API
+  contact:
+    url: https://github.com/moov-io/api
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:9999
+    description: Local development
+
+tags:
+  - name: Customers
+    description: |
+      Endpoints for searching, creating, and verifying individuals according to US government criteria for money movement within the country.
+  - name: Tenants
+    description: |
+      Tenant objects represent a group of Organizations under one legal entity. Typically this is for a vendor who is reselling ACH services to many companies and assigns an Organization for each of their clients.
+      Tenants are created with the admin HTTP server as part of user signup.
+  - name: Organizations
+    description: |
+      Organization objects represent an group or large unit that initiates ACH transfers. These are typically businesses or business units who have configurations for their financial institution. The API allows you to create, delete, and update your organizations.
+  - name: Transfers
+    description: |
+      Transfer objects create a transaction initiated by an originator to a receiver with a defined flow and fund amount. The API allows you to create or delete a transfers while the status of the transfer is pending.
+
+paths:
+# Customers
+  /v1/customers:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers'
+  /v1/customers/{customerID}:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D'
+  /v1/customers/{customerID}/address:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1address'
+  /v1/customers/{customerID}/metadata:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1metadata'
+  /v1/customers/{customerID}/status:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1status'
+  /v1/customers/{customerID}/accounts:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1accounts'
+  /v1/customers/{customerID}/disclaimers:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1disclaimers'
+  /v1/customers/{customerID}/documents:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1documents'
+  /v1/customers/{customerID}/ofac:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1ofac'
+  /v1/customers/{customerID}/refresh/ofac:
+    $ref: 'https://raw.githubusercontent.com/adamdecaf/customers/create-accounts/openapi.yaml#/paths/~1customers~1%7BcustomerID%7D~1refresh~1ofac'
+
+# Tenants
+  /v1/tenants:
+    $ref: "https://raw.githubusercontent.com/adamdecaf/paygate/tenants-and-orgs/openapi.yaml#/paths/~1tenants"
+  /v1/tenants/{tenantID}:
+    $ref: "https://raw.githubusercontent.com/adamdecaf/paygate/tenants-and-orgs/openapi.yaml#/paths/~1tenants~1%7BtenantID%7D"
+
+# Organizations
+  /v1/organizations:
+    $ref: "https://raw.githubusercontent.com/adamdecaf/paygate/tenants-and-orgs/openapi.yaml#/paths/~1organizations"
+  /v1/organizations/{organizationID}:
+    $ref: "https://raw.githubusercontent.com/adamdecaf/paygate/tenants-and-orgs/openapi.yaml#/paths/~1organizations~1%7BorganizationID%7D"
+
+# Transfers
+  /v1/transfers:
+    $ref: "https://raw.githubusercontent.com/adamdecaf/paygate/tenants-and-orgs/openapi.yaml#/paths/~1transfers"
+  /v1/transfers/{transferID}:
+    $ref: "https://raw.githubusercontent.com/adamdecaf/paygate/tenants-and-orgs/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D"
+
+
+components:
+  schemas: {}
