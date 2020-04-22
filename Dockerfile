@@ -1,17 +1,33 @@
-FROM node:13-buster as builder
-RUN npm update -g && npm install -g --save redoc@v2.0.0-rc.19 redoc-cli speccy \
-        react react-dom styled-components mobx base64-js ieee754 isarray inherits readable-stream \
-        to-arraybuffer xtend builtin-status-codes
+# FROM node:14-buster
+# RUN npm --version
+# RUN npm install -g --save redoc-cli
 
-COPY openapi.yaml openapi.yaml
+# speccy
 
-RUN speccy lint openapi.yaml
-RUN redoc-cli bundle openapi.yaml \
-        --options.theme.menu.backgroundColor="#263238" \
-        --options.theme.menu.textColor="#ffffff" \
-        --options.theme.menu.rightPanel.backgroundColor="#263238" \
-        --options.theme.menu.rightPanel.textColor="#333333" \
-        --options.nativeScrollbars
+# RUN npm install -g --save redoc@v2.0.0-rc.27 node-linux-x64
+# RUN cat /root/.npm/_logs/*
+
+# RUN npm install -g --save redoc@v2.0.0-rc.27 redoc-cli speccy
+
+# RUN npm update -g
+# RUN chown -R root:root /root/.npm
+# RUN npm install -g --save redoc@v2.0.0-rc.19 redoc-cli speccy
+# react react-dom styled-components mobx base64-js ieee754 isarray inherits readable-stream
+# to-arraybuffer xtend builtin-status-codes
+
+# RUN npm update -g
+# RUN npm cache clean --force
+# RUN chown -R $(whoami) ~/.npm
+
+# COPY openapi.yaml openapi.yaml
+
+# RUN speccy lint openapi.yaml
+# RUN redoc-cli bundle openapi.yaml \
+#         --options.theme.menu.backgroundColor="#263238" \
+#         --options.theme.menu.textColor="#ffffff" \
+#         --options.theme.menu.rightPanel.backgroundColor="#263238" \
+#         --options.theme.menu.rightPanel.textColor="#333333" \
+#         --options.nativeScrollbars
 
 FROM nginx:1.17
 USER nginx
@@ -22,7 +38,7 @@ COPY nginx/metrics /opt/nginx/www/metrics
 
 COPY ./site/ /opt/nginx/www/
 
-COPY --from=builder redoc-static.html /opt/nginx/www/v1/index.html
+# COPY --from=builder redoc-static.html /opt/nginx/www/v1/index.html
 
 EXPOSE 8080
 ENTRYPOINT ["nginx"]

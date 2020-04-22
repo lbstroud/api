@@ -8,7 +8,7 @@ all: build
 version:
 	@go run ./internal/version/ $(VERSION)
 
-build: version generate build-api build-apitest
+build: version build-api build-apitest
 
 build-api:
 ifneq ($(TRAVIS_OS_NAME),osx)
@@ -26,11 +26,6 @@ ifneq ($(TRAVIS_OS_NAME),osx)
 else
 	@echo "Skipping Docker builds on TravisCI"
 endif
-
-.PHONY: generate
-generate:
-	wget -O site/rapidoc-min.js https://raw.githubusercontent.com/mrin9/RapiDoc/7.5.1/dist/rapidoc-min.js
-	@go run ./cmd/writeVersions/
 
 serve:
 	@echo Load http://localhost:8000 in a web browser...

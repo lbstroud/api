@@ -67,7 +67,8 @@ body {
     color: #cfcccc;
     font-family: quattrocento sans,sans-serif;
     padding-bottom: 20px;
-    padding-left: 20px;
+    padding-left: 10%;
+    width: 80%;
 }
 #content p a {
     color: #afbac4;
