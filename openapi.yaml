@@ -127,39 +127,39 @@ paths:
 
 # Paygate Routes
   /v1/ach/originators:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1originators'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1originators'
   /v1/ach/originators/{originatorID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1originators~1%7BoriginatorID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1originators~1%7BoriginatorID%7D'
   /v1/ach/receivers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1receivers'
   /v1/ach/receivers/{receiverID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1receivers~1%7BreceiverID%7D'
   /v1/ach/depositories:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1depositories'
   /v1/ach/depositories/{depositoryID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D'
   /v1/ach/depositories/{depositoryID}/micro-deposits:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits'
   /v1/ach/depositories/{depositoryID}/micro-deposits/confirm:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits~1confirm'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1depositories~1%7BdepositoryID%7D~1micro-deposits~1confirm'
   /v1/ach/transfers:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1transfers'
   /v1/ach/transfers/batch:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1batch'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1transfers~1batch'
   /v1/ach/transfers/{transferID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D'
   /v1/ach/transfers/{transferID}/failed:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1failed'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1failed'
   /v1/ach/transfers/{transferID}/files:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1files'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1files'
   /v1/ach/transfers/{transferID}/events:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1events'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1transfers~1%7BtransferID%7D~1events'
   /v1/ach/events:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1events'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1events'
   /v1/ach/events/{eventID}:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1events~1%7BeventID%7D'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1events~1%7BeventID%7D'
   /v1/ach/gateways:
-    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/master/openapi.yaml#/paths/~1gateways'
+    $ref: 'https://raw.githubusercontent.com/moov-io/paygate/release-v0.8/openapi.yaml#/paths/~1gateways'
 
   # Watchmanendpoints
   /v1/watchman/companies/{companyID}:
